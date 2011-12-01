@@ -1,9 +1,9 @@
 # output executable name
-EXEC = pray
+EXEC = pray_server
 # source files
 CXX = g++
-CXXFLAGS = `sdl-config --cflags` -Wall -W -O2 -g -Wunused -I./inc
-LDFLAGS = -lm -lrt `sdl-config --libs`
+CXXFLAGS = -Wall -W -O2 -g -Wunused -I./inc
+LDFLAGS = -lm -lrt 
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
 OBJS = $(SRCS:.cpp=.o)
