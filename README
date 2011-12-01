@@ -1,0 +1,1 @@
+PRay is a parallelized Raytracer that is supposed to run in a client-server mode via TCP sockets.
