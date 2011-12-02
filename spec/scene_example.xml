@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+  <camera name="cam1" default="true">
+    <position>
+      <vector x="1" y="1" z="1"/>
+    </position>
+    <target>
+      <vector x="2" y="2" z="2"/>
+    </target>
+    <normal>
+      <vector x="0" y="0" z="1"/>    
+    </normal>
+  </camera>
+  <camera name="cam2">
+    <position>
+      <vector x="1" y="1" z="1"/>
+    </position>
+    <angle>
+      <rotation rotx="30" roty="30" rotz="30"/>
+    </angle>
+  </camera>
+  <ambiantLight>
+    <color>
+      <rgb r="120" g="210" b="142"/>
+    </color>
+    <intensity value="2"/>
+  </ambiantLight>
+  <directionalLight>
+    <direction>
+      <vector x="1" y="1" z="1"/>
+    </direction>
+    <color>
+      <hexa h="#00FF00"/>
+    </color>
+    <intensity value="2"/>
+  </directionalLight>
+  <ponctualLight>
+    <position>
+      <vector x="1" y="1" z="1"/>
+    </position>
+    <color>
+      <rgb r="120" g="210" b="142"/>
+    </color>
+    <intensity value="2"/>
+  </ponctualLight>
+  <object>
+    <shape>
+      <sphere>
+        <center>
+          <vector x="1" y="1" z="1"/>
+        </center>
+        <radius value="20"/>
+      </sphere>
+    </shape>
+    <color>
+      <rgb r="120" g="210" b="142"/>
+    </color>
+  </object>
+  <object>
+    <shape>
+      <intersection>
+        <union>
+          <quadratic>
+            <coeff a="2" b="4" c="5" d="1" e="2"
+                   f="3" g="7" h="4" i="1" j="2"/>
+            <vector x="1" y="1" z="1"/>
+          </quadratic>
+        </union>
+        <box>
+          <center>
+            <vector x="1" y="1" z="1"/>
+          </center>
+          <size>
+            <vector x="1" y="1" z="1"/>
+          </size>
+        </box>
+      </intersection>
+    </shape>
+    <color>
+      <rgb r="120" g="210" b="142"/>
+    </color>
+  </object>
+  <object>
+    <shape>
+      <difference>
+        <rotation rotx="30" roty="20" rotz="30">
+          <plane>
+            <point>
+              <vector x="1" y="1" z="1"/>
+            </point>
+            <normal>
+              <vector x="1" y="1" z="1"/>
+            </normal>
+          </plane>
+        </rotation>
+        <box>
+          <center>
+            <vector x="1" y="1" z="1"/>
+          </center>
+          <size>
+            <vector x="1" y="1" z="1"/>
+          </size>
+        </box>
+      </difference>
+    </shape>
+  </object>
+</scene>
+  
