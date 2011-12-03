@@ -6,92 +6,93 @@
 template <class number>
 class Vec4 {
 public:
-    Vec3(number =0,number =0,number =0,number =1);
+    Vec4(number =0,number =0,number =0,number =1);
     number x;
     number y;
     number z;
     number t;
     number norm();
-    Vec3<number> normalize();
-    Vec3<number> cross(Vec3<number> n);
-    number scalar(Vec3<number> n);
-    Vec3<number> operator+(Vec3<number> n);
-    Vec3<number> operator-(Vec3<number> n);
-    Vec3<number> operator*(Vec3<number> n);
-    Vec3<number> operator*(number n);
+    Vec4<number> normalize();
+    Vec4<number> cross(Vec4<number> n);
+    number scalar(Vec4<number> n);
+    Vec4<number> operator+(Vec4<number> n);
+    Vec4<number> operator-(Vec4<number> n);
+    Vec4<number> operator*(Vec4<number> n);
+    Vec4<number> operator*(number n);
 private:
 };
 
 template <class number>
-Vec3<number>::Vec3(number x,number y,number z,number t) : x(x), y(y), z(z), t(t) {
+Vec4<number>::Vec4(number x,number y,number z,number t) : x(x), y(y), z(z), t(t) {
 }
 
 template <class number>
-number Vec3<number>::norm() {
-    return sqrt(x*x+y*y+z*z);
+number Vec4<number>::norm() {
+    return sqrt(x*x+y*y+z*z+t*t);
 }
 
 template <class number>
-Vec3<number> Vec3<number>::normalize() {
+Vec4<number> Vec4<number>::normalize() {
     number val=norm();
     if(val!=0) {
         x/=val;
         y/=val;
         z/=val;
+        t/=val;
     }
-    return Vec3<number>(x,y,z);
+    return Vec4<number>(x,y,z,t);
 }
 
 template <class number>
-Vec3<number> Vec3<number>::operator+(Vec3<number> n) {
+Vec4<number> Vec4<number>::operator+(Vec4<number> n) {
     n.x+=x;
     n.y+=y;
     n.z+=z;
+    n.t+=z;
     return n;
 }
 
 template <class number>
-Vec3<number> Vec3<number>::operator-(Vec3<number> n) {
-    Vec3<number> res;
+Vec4<number> Vec4<number>::operator-(Vec4<number> n) {
+    Vec4<number> res;
     res.x=x-n.x;
     res.y=y-n.y;
     res.z=z-n.z;
+    res.t=t-n.t;
     return res;
 }
 
 // vectorial product
 template <class number>
-Vec3<number> Vec3<number>::operator*(Vec3<number> n) {
-    Vec3<number> res;
-    res.x=(y*n.z-z*n.y);
-    res.y=(z*n.x-x*n.z);
-    res.z=(x*n.y-y*n.x);
-    return res;
+Vec4<number> Vec4<number>::operator*(Vec4<number> n) {
+    return cross(n);
 }
 
 template <class number>
-Vec3<number> Vec3<number>::operator*(number n) {
-    Vec3<number> res;
+Vec4<number> Vec4<number>::operator*(number n) {
+    Vec4<number> res;
     res.x=x*n;
     res.y=y*n;
-    res.z=z*n;
+    res.z=z*n;    
+    res.t=t*n;
     return res;
 }
 
 //cross product
 template <class number>
-Vec3<number> Vec3<number>::cross(Vec3<number> n) {
-    Vec3<number> res;
+Vec4<number> Vec4<number>::cross(Vec4<number> n) {
+    Vec4<number> res;
     res.x=y*n.z-z*n.y;
     res.y=z*n.x-x*n.z;
     res.z=x*n.y-y*n.x;
+    res.t=1;
     return res;
 }
 
 //cross product
 template <class number>
-number Vec3<number>::scalar(Vec3<number> n) {
-    return n.x*x+n.y*y+n.z*z;
+number Vec4<number>::scalar(Vec4<number> n) {
+    return n.x*x+n.y*y+n.z*z+n.t*t;
 }
 
 #endif
