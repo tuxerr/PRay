@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+  <camera>
+    <position x="1" y="1" z="1"/>
+    <target x="2" y="2" z="2"/>
+    <normal x="0" y="0" z="1"/>    
+  </camera>
+  <ambiantLight>
+    <color r="120" g="210" b="142"/>
+    <intensity value="2"/>
+  </ambiantLight>
+  <directionalLight>
+    <direction x="1" y="1" z="1"/>
+    <color r="120" g="210" b="142"/>
+    <intensity value="10"/>
+  </directionalLight>
+  <object>
+    <shape>
+      <sphere>
+        <center x="1" y="1" z="1"/>
+        <radius value="2"/>
+      </sphere>
+    </shape>
+    <material>
+      <color r="120" g="210" b="142"/>
+      <reflection factor="0.2"/>
+    </material>
+  </object>
+  <object>
+    <box>
+      <center x="5" y="1" z="1"/>
+      <size x="1" y="1" z="1"/>
+    </box>
+    <material>
+      <color r="120" g="210" b="142"/>
+      <reflection factor="0.2"/>
+    </material>
+  </object>
+</scene>
