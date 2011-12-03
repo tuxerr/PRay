@@ -20,27 +20,21 @@
     </angle>
   </camera>
   <ambiantLight>
-    <color>
-      <rgb r="120" g="210" b="142"/>
-    </color>
+    <color r="120" g="210" b="142"/>
     <intensity value="2"/>
   </ambiantLight>
   <directionalLight>
     <direction>
       <vector x="1" y="1" z="1"/>
     </direction>
-    <color>
-      <hexa h="#00FF00"/>
-    </color>
+    <color r="120" g="210" b="142"/>
     <intensity value="2"/>
   </directionalLight>
   <ponctualLight>
     <position>
       <vector x="1" y="1" z="1"/>
     </position>
-    <color>
-      <rgb r="120" g="210" b="142"/>
-    </color>
+    <color r="120" g="210" b="142"/>
     <intensity value="2"/>
   </ponctualLight>
   <object>
@@ -52,9 +46,7 @@
         <radius value="20"/>
       </sphere>
     </shape>
-    <color>
-      <rgb r="120" g="210" b="142"/>
-    </color>
+    <material predefined="glass"></material>
   </object>
   <object>
     <shape>
@@ -76,9 +68,11 @@
         </box>
       </intersection>
     </shape>
-    <color>
-      <rgb r="120" g="210" b="142"/>
-    </color>
+    <material>
+      <color r="120" g="210" b="142"/>
+      <reflection factor="0.2"/>
+      <refraction factor="0.7"/>
+    </material>
   </object>
   <object>
     <shape>
@@ -103,6 +97,6 @@
         </box>
       </difference>
     </shape>
+    <material predefined="mirror"></material>
   </object>
 </scene>
-  
