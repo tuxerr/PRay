@@ -7,14 +7,17 @@ LDFLAGS = -lm -lrt
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
 OBJS = $(SRCS:.cpp=.o)
+COMMONOBJS = $(wildcard ../common/*.o)
 
 all: $(EXEC)
 
 $(EXEC) : $(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+	cd ../common; make
+	$(CXX) -o $@ $^ $(COMMONOBJS) $(LDFLAGS)
 
 %.o : %.cpp
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 clean :
+	cd ../common; make clean
 	rm -rf $(OBJS)
