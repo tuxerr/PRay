@@ -1,4 +1,4 @@
-/*#include "sphere.h"
+#include "sphere.h"
 #include <math.h>
 
 Sphere::Sphere(Vec4<float> center, float radius, Material material) :
@@ -15,24 +15,22 @@ float Sphere::getRadius() {
   return radius;
 }
 
-Intersection* Sphere::getIntersection(Ray ray) {
-  Vec4<float> SC= center - ray.getOrigin();
+/*Dirty function, cleaning compulsory*/
+Intersection Sphere::getIntersection(Ray ray) {
+  Vec4<float> SC = center - ray.getOrigin();
   Vec4<float> rayDirection = ray.getDirection();
-  Intersection *result;
   if(SC.scalar(rayDirection) <= 0) {
-
-    result = NULL;
+    throw NO_INTERSECTION;
   } else {
-    Vec4<float> SA = SC.scalar(rayDirection)*rayDirection
-    float nAC2 = SC.norm()^2 - SA.norm()^2;
-    if(nAC2 >= radius^2) {
-      result = NULL;
+    Vec4<float> SA = SC.scalar(rayDirection)*rayDirection;
+    float nAC2 = pow(SC.norm(), 2) - pow(SA.norm(), 2);
+    if(nAC2 >= pow(radius, 2)) {
+      throw NO_INTERSECTION;
     } else {
-      float nAB = sqrt(radius^2 - nAC2 );
-      SB = SA - nAB*rayDirection;
-      Vec4 intersection = ray.getCenter + SB;
-      return = Intersection(intersection, (intersection - center).normalize(), material);
+      float nAB = sqrt(pow(radius, 2) - nAC2 );
+      SB = SA - rayDirection*nAB;
+      Vec4<float> intersection = ray.getOrigin + SB;
+      return Intersection(intersection, (intersection - center).normalize(), material);
     }
   }
-  return result;
-}*/
+}

@@ -1,4 +1,4 @@
-#include "Material.h"
+#include "material.h"
 
 Material::Material(float specularReflection, float diffuseReflection, float ambiantReflection, float shininess) : 
   specularReflection(specularReflection), diffuseReflection(diffuseReflection),

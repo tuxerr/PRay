@@ -8,8 +8,8 @@ class AmbientLight {
   float g;
   float b;
  public :
-  AmbiantLight (float intensity, float color);
-  AmbiantLight (float intensity, float r, float g, float b);
+  AmbientLight (float intensity, float color);
+  AmbientLight (float intensity, float r, float g, float b);
   float getIntensity();
   float getR();
   float getG();

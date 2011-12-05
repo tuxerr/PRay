@@ -1,4 +1,4 @@
-#include “Ray.h”
+#include "ray.h"
 
 Ray::Ray(Vec4<float> origin, Vec4<float> direction) :
   origin(origin), direction(direction)

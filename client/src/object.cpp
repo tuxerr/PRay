@@ -1,6 +1,6 @@
 #include "object.h"
 
-Material Object::Object(Material material) :
+Object::Object(Material material) :
   material(material)
 {
 
