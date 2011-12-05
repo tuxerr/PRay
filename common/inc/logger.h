@@ -42,4 +42,7 @@ private:
     Log_Type m_log_type;
 };
 
+Logger *logger;
+/* logger has to be instanciated by the main function to be accessible by everyone */
+
 #endif
