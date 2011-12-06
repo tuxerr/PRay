@@ -7,7 +7,7 @@ LDFLAGS = -lm -lrt `sdl-config --libs`
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
 OBJS = $(SRCS:.cpp=.o)
-COMMONOBJS = $(wildcard ../common/*.o)
+COMMONOBJS = $(wildcard ../common/src/*.o)
 
 all: $(EXEC)
 

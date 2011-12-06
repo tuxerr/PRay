@@ -2,12 +2,12 @@
 EXEC = pray_server
 # source files
 CXX = g++
-CXXFLAGS = -Wall -W -O2 -g -Wunused -I./inc
-LDFLAGS = -lm -lrt 
+CXXFLAGS = -Wall -W -O2 -g -Wunused -I./inc -I../common/inc
+LDFLAGS = -lm -lrt -lcurses
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
 OBJS = $(SRCS:.cpp=.o)
-COMMONOBJS = $(wildcard ../common/*.o)
+COMMONOBJS = $(wildcard ../common/src/*.o)
 
 all: $(EXEC)
 
