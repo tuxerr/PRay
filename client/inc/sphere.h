@@ -1,7 +1,7 @@
 #ifndef DEF_SPHERE
 #define DEF_SPHERE
 
-#define NO_INTERSECTION = 3;
+#define NO_INTERSECTION 3
 
 #include "vec4.h"
 #include "material.h"
