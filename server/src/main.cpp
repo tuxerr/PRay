@@ -1,9 +1,16 @@
+#include "logger.h"
 #include <ncurses.h>
+#include <ostream>
 
 using namespace std;
 
 int main(int argv, char *argc[])
 {
+    Logger log;
+    log.init();
+    log<<"salut"<<endl;
+//    log<<"salut les bitches"<<"HaHaHAHAHAHAHAHAHAH"<<2<<3.51<<endl;
+
     initscr(); // start curses mode
     clear();
     cbreak(); // line buffering disabled
@@ -61,7 +68,9 @@ int main(int argv, char *argc[])
             for (int i=4 ; i < row-2 ; i++)
                 mvprintw(i,3,"[%2d] Message", i-3);
             move(row-1,col-1);
+            log<<"log mode lolz";
             break;
+
         case m_ping:
             prev_mode = mode;
             mvprintw(2,2,"Ping mode");
@@ -98,7 +107,9 @@ int main(int argv, char *argc[])
         mode_ch = 0;
     }
     
-    endwin(); // end curses mode
+    int lul=2;
+    endwin(); // end curses mode            
+    log<<lul;
 
     return 0;
 }

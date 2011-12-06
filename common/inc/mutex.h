@@ -2,7 +2,6 @@
 #define DEF_MUTEX
 
 #include <iostream>
-#include "logger.h"
 #include <pthread.h>
 #include <stdlib.h>
 

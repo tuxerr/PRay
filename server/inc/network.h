@@ -11,12 +11,11 @@ class Network {
 public:
     Network(int port=DEFAULT_LISTENING_PORT);
     ~Network();
-    start();
 
 private:
     int client_number;
     int listening_port;
     
-}
+};
 
 #endif

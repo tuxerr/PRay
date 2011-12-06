@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "mutex.h"
 
 using namespace std;
 
@@ -19,7 +20,6 @@ enum Log_Type {
     LOG_ERROR
 };
 
-
 /**
  * \class Newtron's logging class.
  */
@@ -32,7 +32,13 @@ public:
 
     void init(string file_path=DEFAULT_LOG_PATH);
 
-    fstream &write(Log_Type type=LOG_INFO);
+/*    Logger& operator<<(Log_Type type); */
+
+    template <typename T>
+    Logger &operator<<(const T &a) {
+        m_file<<a;
+        return *this;
+    }
 
     void close();
 
@@ -40,9 +46,7 @@ private:
     string logtype_to_prefix(Log_Type type);
     fstream m_file;
     Log_Type m_log_type;
+    Mutex write_mutex;
 };
-
-Logger *logger;
-/* logger has to be instanciated by the main function to be accessible by everyone */
 
 #endif
