@@ -30,14 +30,14 @@ public:
 
     ~Logger();
 
+
     void init(string file_path=DEFAULT_LOG_PATH);
 
 /*    Logger& operator<<(Log_Type type); */
-
     template <typename T>
-    Logger &operator<<(const T &a) {
-        m_file<<a;
-        return *this;
+    Logger &operator<<(T &a) {
+	m_file<<a;
+	return *this;
     }
 
     void close();
@@ -48,5 +48,7 @@ private:
     Log_Type m_log_type;
     Mutex write_mutex;
 };
+
+
 
 #endif

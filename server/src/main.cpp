@@ -8,7 +8,8 @@ int main(int argv, char *argc[])
 {
     Logger log;
     log.init();
-    log<<"salut"<<endl;
+    int lul=2;
+    log<<"hi"<<" stackoverflow"<<lul;
 //    log<<"salut les bitches"<<"HaHaHAHAHAHAHAHAHAH"<<2<<3.51<<endl;
 
     initscr(); // start curses mode
@@ -107,7 +108,6 @@ int main(int argv, char *argc[])
         mode_ch = 0;
     }
     
-    int lul=2;
     endwin(); // end curses mode            
     log<<lul;
 
