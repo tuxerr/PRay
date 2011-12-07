@@ -21,7 +21,7 @@ enum Log_Type {
 };
 
 /**
- * \class Newtron's logging class.
+ * \class Logging class.
  */
 class Logger{
 public:
