@@ -52,9 +52,8 @@ class Logger : public ostream
 public:
     static void init(string file_path=DEFAULT_LOG_PATH); 
     ~Logger();
-    static Logger& log();
+    static Logger& log(Log_Type type=LOG_INFO);
     void set_logtype(Log_Type type);
-
     
 private:
     Logger(string file_path);

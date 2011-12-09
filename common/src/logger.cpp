@@ -40,8 +40,9 @@ void Logger::init(string file_path) {
     logger_ptr=&log;
 }
 
-Logger& Logger::log() {
+Logger& Logger::log(Log_Type type) {
     if(logger_ptr!=NULL) {
+	logger_ptr->set_logtype(type);
         return *logger_ptr;
     } else {
         cerr<<"Logger class is not initiated"<<endl;
