@@ -7,7 +7,7 @@ LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
 
 int LoggerStreambuf::flushBuffer () {
     int num = pptr()-pbase();
-    if(firstflush) {
+    if(firstflush && num!=0) {
         write_mut.lock();
         file<<prefix;
         firstflush=false;
