@@ -23,6 +23,8 @@ void TCPSocket::bind_to_port(int port) {
     if(bind(sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
 	Logger::log(LOG_ERROR)<<"Unable to bind socket on port "<<port<<". Exiting server"<<std::endl;
         exit(0);
+    } else {
+	Logger::log()<<"Socket binded to port "<<port<<std::endl;
     }
 }
 
@@ -36,6 +38,7 @@ void TCPSocket::bind_to_port_and_ip(int port,char *ip) {
     if(bind(sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
 	Logger::log(LOG_ERROR)<<"Unable to bind socket on port "<<port<<" and ip "<<ip<<". Exiting server"<<std::endl;
         exit(0);
-    }
+    } 
+
 }
 
