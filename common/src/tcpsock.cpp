@@ -13,27 +13,27 @@ TCPSocket::~TCPSocket() {
     closesocket(sock);
 }
 
-void TCPSocket::bind(int port) {
+void TCPSocket::bind_to_port(int port) {
     sockaddr_in conf;
     conf.sin_family=AF_INET;
     conf.sin_port=htons(port);
     conf.sin_addr.s_addr=htonl(INADDR_ANY);
     
     /* binding sock to the new sockaddr */
-    if(bind(*sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
+    if(bind(sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
 	Logger::log(LOG_ERROR)<<"Unable to bind socket on port "<<port<<". Exiting server"<<std::endl;
         exit(0);
     }
 }
 
-void TCPSocket::bind(int port,char *ip) {
+void TCPSocket::bind_to_port_and_ip(int port,char *ip) {
     sockaddr_in conf;
     conf.sin_family=AF_INET;
     conf.sin_port=htons(port);
     conf.sin_addr.s_addr=inet_addr(ip);
     
     /* binding sock to the new sockaddr */
-    if(bind(*sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
+    if(bind(sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
 	Logger::log(LOG_ERROR)<<"Unable to bind socket on port "<<port<<" and ip "<<ip<<". Exiting server"<<std::endl;
         exit(0);
     }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <pthread.h>
 #include "logger.h"
+#include "tcpsock.h"
 
 #define DEFAULT_LISTENING_PORT 12345
 
@@ -13,6 +14,8 @@ public:
     ~Network();
 
 private:
+    void tcp_accept_thread();
+
     int client_number;
     int listening_port;
     

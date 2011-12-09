@@ -59,7 +59,7 @@ void NcursesUI::run()
             for (int i=4 ; i < row-2 ; i++)
                 mvprintw(i,3,"[%2d] Message", i-3);
             move(row-1,col-1);
-            Logger::log()<<"in Log mode"<<endl;
+            Logger::log(LOG_WARNING)<<"in Log mode"<<endl;
             break;
 
         case m_ping:

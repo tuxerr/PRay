@@ -8,6 +8,7 @@ int main(int argv, char *argc[])
 {
     Logger::init("pray_server.log");
     Logger::log()<<"salut"<<endl;
+
     NcursesUI ui;
 
     ui.init();

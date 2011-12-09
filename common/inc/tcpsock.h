@@ -1,6 +1,7 @@
 #ifndef DEF_TCPSOCK
 #define DEF_TCPSOCK
 
+#include "logger.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>
@@ -20,8 +21,8 @@ class TCPSocket {
  public:
     TCPSocket();
     ~TCPSocket();
-    void bind(int port);
-    void bind(int port,char *ip);
+    void bind_to_port(int port);
+    void bind_to_port_and_ip(int port,char *ip);
     SOCKET sock;	
 
 };
