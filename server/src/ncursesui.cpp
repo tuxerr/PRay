@@ -1,8 +1,6 @@
 #include "ncursesui.h"
-#include <ncurses.h>
 
-NcursesUI::NcursesUI(Logger logger) :
-    log(logger),
+NcursesUI::NcursesUI() :
     preview_ping(0),
     mode(m_start)
 {
@@ -22,6 +20,7 @@ void NcursesUI::init()
     keypad(stdscr, TRUE); // reading keys like F1, F2, arrows keys
     noecho(); // no echo() while getch()
     getmaxyx(stdscr,row,col);
+    Logger::log()<<"Starting ncurses server UI"<<endl;
 }
 
 void NcursesUI::run()
@@ -60,7 +59,7 @@ void NcursesUI::run()
             for (int i=4 ; i < row-2 ; i++)
                 mvprintw(i,3,"[%2d] Message", i-3);
             move(row-1,col-1);
-            log<<"log mode lolz";
+            Logger::log()<<"in Log mode"<<endl;
             break;
 
         case m_ping:

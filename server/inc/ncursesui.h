@@ -1,6 +1,7 @@
 #ifndef DEF_NCURSESUI
 #define DEF_NCURSESUI
 
+#include <ncurses.h>
 #include "logger.h"
 
 enum mode_e { 
@@ -13,7 +14,6 @@ enum mode_e {
 
 class NcursesUI {
 private :
-    Logger log;
     int preview_ping;
     char command[256];
     int row;
@@ -22,7 +22,7 @@ private :
     enum mode_e mode;
     enum mode_e prev_mode;
 public :
-    NcursesUI(Logger);
+    NcursesUI();
     ~NcursesUI();
     void init();
     void run();
