@@ -1,5 +1,11 @@
 #include "directionalLight.h"
 
+DirectionalLight::DirectionalLight(float intensity, Color color, Vec4<float> direction) :
+  AmbientLight(intensity, color), direction(direction)
+{
+
+}
+
 DirectionalLight::DirectionalLight(float intensity, float color, Vec4<float> direction) :
   AmbientLight(intensity, color), direction(direction)
 {

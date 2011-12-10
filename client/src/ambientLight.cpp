@@ -1,13 +1,20 @@
 #include "ambientLight.h"
 
-AmbientLight::AmbientLight (float intensity, float color) :
-  intensity(intensity), r(color), g(color), b(color)
+
+AmbientLight::AmbientLight(float intensity, Color color) :
+  intensity(intensity), color(color)
+{
+
+}
+
+AmbientLight::AmbientLight (float intensity, float grey) :
+  intensity(intensity), color(grey)
 {
 
 }
 
 AmbientLight::AmbientLight (float intensity, float r, float g, float b) :
-  intensity(intensity), r(r), g(g), b(b)
+  intensity(intensity), Color(r, g, b)
 {
 
 }

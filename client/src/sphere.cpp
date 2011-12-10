@@ -30,7 +30,7 @@ Intersection Sphere::getIntersection(Ray ray) {
       float nAB = sqrt(pow(radius, 2) - nAC2 );
       Vec4<float> SB = SA - rayDirection*nAB;
       Vec4<float> intersection = ray.getOrigin() + SB;
-      return Intersection(intersection, (intersection - center).normalize(), material);
+      return Intersection(intersection, (intersection - center).normalize(), SB.norm(), material);
     }
   }
 }

@@ -23,6 +23,6 @@ Intersection Plane::getIntersection(Ray ray) {
     throw NO_INTERSECTION;
   } else {
     float t = (originDistance - PS) / PD;
-    return Intersection(ray.getOrigin() + ray.getDirection()*t, normal, material);
+    return Intersection(ray.getOrigin() + ray.getDirection()*t, normal, t, material);
   }
 }
