@@ -1,4 +1,4 @@
-#include "material.h"
+#include "phongMaterial.h"
 
 Material::Material(float specularReflection, float diffuseReflection, float ambiantReflection, float shininess) : 
   specularReflection(specularReflection), diffuseReflection(diffuseReflection),

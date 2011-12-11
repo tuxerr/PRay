@@ -2,7 +2,7 @@
 #include <math.h>
 
 Sphere::Sphere(Vec4<float> center, float radius, Material material) :
-  center(center), radius(radius), Object(material)
+  Object(material), center(center), radius(radius)
 {
 
 }
@@ -30,7 +30,7 @@ Intersection Sphere::getIntersection(Ray ray) {
       float nAB = sqrt(pow(radius, 2) - nAC2 );
       Vec4<float> SB = SA - rayDirection*nAB;
       Vec4<float> intersection = ray.getOrigin() + SB;
-      return Intersection(intersection, (intersection - center).normalize(), SB.norm(), material);
+      return Intersection(intersection, (intersection - center).normalize(), SB.norm(), this, ray);
     }
   }
 }

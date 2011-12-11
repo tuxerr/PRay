@@ -14,7 +14,7 @@ AmbientLight::AmbientLight (float intensity, float grey) :
 }
 
 AmbientLight::AmbientLight (float intensity, float r, float g, float b) :
-  intensity(intensity), Color(r, g, b)
+  intensity(intensity), color(r, g, b)
 {
 
 }
@@ -23,14 +23,6 @@ float AmbientLight::getIntensity() {
   return intensity;
 }
 
-float AmbientLight::getR() {
-  return r;
-}
-
-float AmbientLight::getG() {
-  return g;
-}
-
-float AmbientLight::getB() {
-  return b;
+Color AmbientLight::getColor() {
+  return color;
 }

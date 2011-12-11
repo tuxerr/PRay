@@ -5,6 +5,7 @@
 #include "ray.h"
 #include "intersection.h"
 #include "material.h"
+#include "vec4.h"
 
 class UglyMaterial : public Material {
 private:  
@@ -12,7 +13,7 @@ private:
 public :
   UglyMaterial(Color color);
   Color getColor();
-  Color getViewedColor(Ray ray, Intersection intersection);
+  Color getViewedColor(Ray ray, Vec4<float> normal);
 };
 
 

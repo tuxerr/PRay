@@ -1,8 +1,7 @@
 #include "plane.h"
 
-
 Plane::Plane(Vec4<float> normal, float originDistance, Material material) :
-  normal(normal), originDistance(originDistance), Object(material)
+  Object(materia), normal(normal), originDistance(originDistance)
 {
 
 }
@@ -23,6 +22,6 @@ Intersection Plane::getIntersection(Ray ray) {
     throw NO_INTERSECTION;
   } else {
     float t = (originDistance - PS) / PD;
-    return Intersection(ray.getOrigin() + ray.getDirection()*t, normal, t, material);
+    return Intersection(ray.getOrigin() + ray.getDirection()*t, normal, t, this, ray);
   }
 }

@@ -6,8 +6,9 @@
 #include "directionalLight.h"
 #include "intersection.h"
 #include "ray.h"
+#include <list>
 
-using namspace std;
+using namespace std;
 
 class Scene {
 
@@ -20,7 +21,7 @@ class Scene {
   list<Object> getObjects();
   list<DirectionalLight> getDirectionalLights();
   AmbientLight getAmbientLight();
-  Intersection getIntesection(Ray ray);
+  Intersection getIntersection(Ray ray);
 };
 
 #endif

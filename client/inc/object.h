@@ -5,7 +5,6 @@
 
 #include "material.h"
 #include "intersection.h"
-#include "object.h"
 #include "ray.h"
 
 class Object {

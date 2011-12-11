@@ -15,17 +15,17 @@ list<DirectionalLight> Scene::getDirectionalLights() {
 }
 
 AmbientLight Scene::getAmbientLight() {
-  return AmbientLight;
+  return ambientLight;
 }
 
-Intersection Scene::getIntesection(Ray ray) {
-  List<Object>::iterator iter = objects.begin();
-  Intersection result;
-  Intersection candidate;
-  for(iter = objects.begin(); iter != objects.end(); i++) {
+Intersection Scene::getIntersection(Ray ray) {
+  list<Object>::iterator iter = objects.begin();
+  Intersection result = (* iter).getIntersection(ray);
+  Intersection candidate = (* iter).getIntersection(ray);
+  for(iter = objects.begin(); iter != objects.end(); iter++) {
     try {
-      candidate = (* iter).getInstersection(ray);
-      if(candidate.getDistance() < result.getDistance) {
+      candidate = (* iter).getIntersection(ray);
+      if(candidate.getDistance() < result.getDistance()) {
 	result = candidate;
       }
     } catch(int e) {

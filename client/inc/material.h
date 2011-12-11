@@ -4,11 +4,11 @@
 #include "color.h"
 #include "ray.h"
 #include "intersection.h"
+#include "vec4.h"
 
 class Material {
  public :
-  Material();
-  virtual Color getViewedColor(Ray ray, Intersection intersection);
+  virtual Color getViewedColor(Ray ray, Vec4<float> normal);
 };
 
 #endif

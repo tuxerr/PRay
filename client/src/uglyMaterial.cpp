@@ -10,7 +10,7 @@ Color UglyMaterial::getColor() {
   return color;
 }
 
-Color UglyMaterial::getViewedColor(Ray ray, Intersection intersection) {
+Color UglyMaterial::getViewedColor(Ray ray, Vec4<float> normal) {
   return color;
 }
 
