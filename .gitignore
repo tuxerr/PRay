@@ -1,0 +1,19 @@
+# Project executables
+pray_server
+pray_client
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Precompiled headers
+*.h.gch
