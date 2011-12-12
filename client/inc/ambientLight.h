@@ -8,7 +8,7 @@ class AmbientLight {
   float intensity;
   Color color;
  public :
-  AmbientLight (float intensity, Color color);
+  AmbientLight (float intensity, const Color &color);
   AmbientLight (float intensity =1, float grey =1);
   AmbientLight (float intensity, float r, float g, float b);
   float getIntensity();

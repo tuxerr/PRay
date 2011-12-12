@@ -1,6 +1,6 @@
 #include "scene.h"
 
-Scene::Scene(list<Object> objects, list<DirectionalLight> directionalLights, AmbientLight ambientLight) :
+Scene::Scene(const list<Object> &objects, const list<DirectionalLight> &directionalLights, const AmbientLight &ambientLight) :
   objects(objects), directionalLights(directionalLights), ambientLight(ambientLight)
 {
 
@@ -18,7 +18,12 @@ AmbientLight Scene::getAmbientLight() {
   return ambientLight;
 }
 
-Intersection Scene::getIntersection(Ray ray) {
+Color Scene::renderRay(const Ray &ray) {
+  Intersection inter = getIntersection(ray);
+  inter.getMaterial().renderRay(ray, inter.getNormal(), this);
+}
+
+Intersection Scene::getIntersection(const Ray &ray) {
   list<Object>::iterator iter = objects.begin();
   Intersection result = (* iter).getIntersection(ray);
   Intersection candidate = (* iter).getIntersection(ray);

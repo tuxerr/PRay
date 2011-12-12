@@ -2,16 +2,18 @@
 #define DEF_RAY
 
 #include "vec4.h"
+#include "color.h"
 
 class Ray {
  private :
   Vec4<float> origin;
   Vec4<float> direction;
-  // Certainly needs a color but I’m not sure to know how to handle it.
+  Color color;
  public :
-  Ray(Vec4<float> origin, Vec4<float> direction);
+  Ray(const Vec4<float> &origin, const Vec4<float> &direction);
   Vec4<float> getOrigin();
   Vec4<float> getDirection();
+  Color getColor();
 };
 
 #endif

@@ -3,12 +3,12 @@
 
 #include "color.h"
 #include "ray.h"
-#include "intersection.h"
 #include "vec4.h"
+#include "scene.h"
 
 class Material {
  public :
-  virtual Color getViewedColor(Ray ray, Vec4<float> normal);
+  virtual Color renderRay(const Ray &ray, const Vec4<float> &normal, const Scene &scene);
 };
 
 #endif

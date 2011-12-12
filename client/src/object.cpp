@@ -1,11 +1,11 @@
 #include "object.h"
 
-Object::Object(Material* material) :
+Object::Object(const Material &material) :
   material(material)
 {
 
 }
 
 Material Object::getMaterial() {
-  return *material;
+  return material;
 }
