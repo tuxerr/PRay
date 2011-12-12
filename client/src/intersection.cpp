@@ -1,6 +1,6 @@
 #include "intersection.h"
 
-Intersection::Intersection(Vec4<float> point, Vec4<float> normal, float distance, Object object, Ray ray) :
+Intersection::Intersection(Vec4<float> point, Vec4<float> normal, float distance, Object* object, Ray ray) :
   point(point), normal(normal), distance(distance), object(object), ray(ray)
 {
 
@@ -19,7 +19,7 @@ float Intersection::getDistance() {
 }
 
 Object Intersection::getObject() {
-  return object;
+  return *object;
 }
 
 Ray Intersection::getRay() {
@@ -27,5 +27,6 @@ Ray Intersection::getRay() {
 }
 
 Color Intersection::getViewedColor() {
-  return material.getViewedColor(ray, normal);
+  return object->getMaterial().getViewedColor(ray, normal);
 }
+

@@ -1,3 +1,4 @@
 #include "material.h"
 
-Material::Material() {}
+// error: definition of implicitly-declared ‘Material::Material()’
+// Material::Material() {}

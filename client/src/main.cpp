@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        SDL_Surface *ecran = NULL;
+        SDL_Surface *screen = NULL;
         int width(800);
         int height(600);
         Color pixel;
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
         
         /*
-          TODO = scene loading
+          TODO : scene loading
         */
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
@@ -32,16 +32,16 @@ int main(int argc, char *argv[])
 
         Logger::log(LOG_INFO)<<"SDL initialised"<<endl;
         
-        ecran = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
+        screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
         
-        if (ecran == NULL)
+        if (screen == NULL)
         {
             Logger::log(LOG_ERROR)<<"Problem during screen initialisation"<<SDL_GetError()<<endl;
             exit(EXIT_FAILURE);
         }
 
         SDL_WM_SetCaption("PRay rendering", NULL);
-        SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 0, 0, 0));
+        SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
 
         Logger::log(LOG_INFO)<<"Screen initialised"<<endl;
 
@@ -49,10 +49,11 @@ int main(int argc, char *argv[])
 
         for (int j=0 ; j < height ; j++)
         {
-            for (int i=0 ; i < width : i++)
+            for (int i=0 ; i < width ; i++)
             {
-                pixel = scene.renderPixel(i,j);
-                putPixel(screen, i, j, SDL_MapRGB(screen->format, pixel.getR(), pixel.getG(), pixel.getB()));
+                // TODO : renderpixel(int, int) method
+                // pixel = scene.renderPixel(i,j);
+                // putPixel(screen, i, j, SDL_MapRGB(screen->format, pixel.getR(), pixel.getG(), pixel.getB()));
                 SDL_Flip(screen);
             }
         }
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 
         Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
 
-        SDL_FreeSurface(ecran);
+        SDL_FreeSurface(screen);
         SDL_Quit();
 
     }

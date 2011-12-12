@@ -7,11 +7,15 @@
 #include "intersection.h"
 #include "ray.h"
 
+class Intersection;
+
+class Material;
+
 class Object {
  protected :
-  Material material;
+  Material* material;
  public :
-  Object(Material material);
+  Object(Material* material);
   virtual Intersection getIntersection(Ray ray);
   Material getMaterial();
 };

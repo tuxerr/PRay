@@ -13,10 +13,10 @@ private :
   Vec4<float> point;
   Vec4<float> normal;
   float distance;
-  Object object;
+  Object* object;
   Ray ray;
 public :
-  Intersection(Vec4<float> point, Vec4<float> normal, float distance, Object object, Ray ray);
+  Intersection(Vec4<float> point, Vec4<float> normal, float distance, Object* object, Ray ray);
   Vec4<float> getPoint();
   Vec4<float> getNormal();
   float getDistance();
