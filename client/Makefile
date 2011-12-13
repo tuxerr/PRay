@@ -2,7 +2,7 @@
 EXEC = pray_client
 # source files
 CXX = g++
-CXXFLAGS = `sdl-config --cflags` -Wall -W -O2 -g -Wunused -I./inc -I../common/inc
+CXXFLAGS = `sdl-config --cflags` -Wall -W -O3 -march=native -Wunused -I./inc -I../common/inc
 LDFLAGS = -lm -lrt `sdl-config --libs`
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
