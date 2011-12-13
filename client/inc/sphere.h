@@ -5,7 +5,6 @@
 #include "material.h"
 #include "ray.h"
 #include "object.h"
-#include "intersection.h"
 
 using namespace std;
 
@@ -15,7 +14,7 @@ class Sphere : public Object {
   float radius;
  public :
   Sphere(const Vec4<float> &center, float radius, const Material &material);
-  Intersection getIntersection(Ray ray);
+  int getIntersection(const Ray &ray, float *distance, Vec4<float> *normal, Material *material);
   Vec4<float> getCenter();
   float getRadius();
 };

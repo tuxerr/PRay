@@ -1,11 +1,9 @@
-#ifndef DEF_INTERSECTION
+/*#ifndef DEF_INTERSECTION
 #define DEF_INTERSECTION
 
 #include "vec4.h"
 #include "color.h"
 #include "material.h"
-
-
 
 class Intersection {
 private :
@@ -20,3 +18,4 @@ public :
 };
 
 #endif
+*/

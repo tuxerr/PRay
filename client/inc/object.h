@@ -3,16 +3,17 @@
 
 #define NO_INTERSECTION 3
 
-#include "material.h"
-#include "intersection.h"
 #include "ray.h"
+//#include "material.h"
+
+class Material;
 
 class Object {
  protected :
-  Material material;
+  Material *material;
  public :
-  Object(const Material &material);
-  virtual Intersection getIntersection(const Ray &ray);
+  Object(Material &material);
+  virtual int getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material);
   Material getMaterial();
 };
 

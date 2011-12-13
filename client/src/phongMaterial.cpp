@@ -27,6 +27,6 @@ float PhongMaterial::getShininess() {
   return shininess;
 }
 
-Color renderRay(const Ray &ray, const Vec4<float> &normal, const Scene &scene) {
+Color PhongMaterial::renderRay(const Ray &ray, const Vec4<float> &normal, Scene *scene) {
   return color; //TODO
 }

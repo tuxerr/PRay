@@ -1,4 +1,4 @@
-#include "intersection.h"
+/*#include "intersection.h"
 
 Intersection::Intersection(const Vec4<float> &normal, float distance, const Material &material) :
   normal(normal), distance(distance), material(material)
@@ -17,3 +17,4 @@ float Intersection::getDistance() {
 Object Intersection::getMaterial() {
   return material;
 }
+*/

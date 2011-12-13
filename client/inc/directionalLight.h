@@ -1,9 +1,10 @@
 #ifndef DEF_DIRECTIONALLIGHT
 #define DEF_DIRECTIONALLIGHT
 
-#include "ambientLight.h"
+
 #include "vec4.h"
 #include "color.h"
+#include "ambientLight.h"
 
 class DirectionalLight : public AmbientLight {
  private :

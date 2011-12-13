@@ -5,15 +5,14 @@
 #include "material.h"
 #include "ray.h"
 #include "object.h"
-#include "intersection.h"
 
 class Plane : public Object {
  private :
   Vec4<float> normal;
   float originDistance;
  public :
-  Plane(const Vec4<float> &normal, float originDistance, const Material &material);
-  Intersection getIntersection(const Ray &ray);
+  Plane(const Vec4<float> &normal, float originDistance, Material &material);
+  int getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material);
   Vec4<float> getNormal();
   float getOriginDistance();
 };

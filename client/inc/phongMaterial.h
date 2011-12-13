@@ -2,6 +2,9 @@
 #define DEF_PHONGMATERIAL
 
 #include "color.h"
+#include "ray.h"
+#include "material.h"
+#include "vec4.h"
 
 class PhongMaterial {
  private :
@@ -36,7 +39,7 @@ class PhongMaterial {
   float getDiffuseReflection();
   float getAmbiantReflection();
   float getShininess();
-  
+  Color renderRay(const Ray &ray, const Vec4<float> &normal, Scene *scene);  
 };
 
 #endif

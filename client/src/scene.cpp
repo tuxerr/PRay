@@ -1,7 +1,9 @@
 #include "scene.h"
 
-Scene::Scene(const list<Object> &objects, const list<DirectionalLight> &directionalLights, const AmbientLight &ambientLight) :
-  objects(objects), directionalLights(directionalLights), ambientLight(ambientLight)
+#include "material.h"
+
+Scene::Scene(const list<Object> &objects, const list<DirectionalLight> &directionalLights, const AmbientLight &ambientLight, Camera & camera) :
+  objects(objects), directionalLights(directionalLights), ambientLight(ambientLight), camera(camera)
 {
 
 }
@@ -18,20 +20,29 @@ AmbientLight Scene::getAmbientLight() {
   return ambientLight;
 }
 
-Color Scene::renderRay(const Ray &ray) {
-  Intersection inter = getIntersection(ray);
-  inter.getMaterial().renderRay(ray, inter.getNormal(), this);
+Camera Scene::getCamera() {
+  return camera;
 }
 
-Intersection Scene::getIntersection(const Ray &ray) {
+Color Scene::renderRay(Ray &ray) {
+  float distance;
+  Vec4<float> normal;
+  Material material;
+  getIntersection(ray, &distance, &normal, &material);
+  return material.renderRay(ray, normal, this);
+}
+
+int Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material) {
   list<Object>::iterator iter = objects.begin();
-  Intersection result = (* iter).getIntersection(ray);
-  Intersection candidate = (* iter).getIntersection(ray);
+
+  *distance = -1;
+  float tempDistance = -1;
+
   for(iter = objects.begin(); iter != objects.end(); iter++) {
     try {
-      candidate = (* iter).getIntersection(ray);
-      if(candidate.getDistance() < result.getDistance()) {
-	result = candidate;
+      (* iter).getIntersection(ray, &tempDistance, normal, material);
+      if(tempDistance < *distance || *distance < 0) {
+	*distance = tempDistance;
       }
     } catch(int e) {
       if(e != NO_INTERSECTION) {
@@ -39,4 +50,8 @@ Intersection Scene::getIntersection(const Ray &ray) {
       }
     }
   }
+  if(*distance < 0) {
+    throw NO_INTERSECTION;
+  }
+  return 0;
 }
