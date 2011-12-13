@@ -1,6 +1,6 @@
 #include "uglyMaterial.h"
 
-UglyMaterial::UglyMaterial(Color color) :
+UglyMaterial::UglyMaterial(const Color &color) :
   color(color)
 {
 
@@ -10,7 +10,7 @@ Color UglyMaterial::getColor() {
   return color;
 }
 
-Color UglyMaterial::getViewedColor(Ray ray, Vec4<float> normal) {
+Color UglyMaterial::renderRay(const Ray &ray, const Vec4<float> &normal, const Scene &scene) {
   return color;
 }
 

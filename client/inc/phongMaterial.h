@@ -30,7 +30,8 @@ class PhongMaterial {
   float shininess;
 
  public :
-  PhongMaterial(Color color, float specularReflection, float diffuseReflection, float ambiantReflection, float shininess);
+  PhongMaterial(const Color &color, float specularReflection, float diffuseReflection, float ambiantReflection, float shininess);
+  Color getColor();
   float getSpecularReflection();
   float getDiffuseReflection();
   float getAmbiantReflection();

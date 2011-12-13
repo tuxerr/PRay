@@ -12,7 +12,7 @@ class Camera {
   float viewplaneHeight;
   float viewplaneDist;
  public :
-  Camera(Vec4<float> point, Vec4<float> direction, Vec4<float> normal, 
+  Camera(const Vec4<float> &point, const Vec4<float> &direction, const Vec4<float> &normal, 
 	 float viewplaneWidth, float viewplaneHeight, float viewplaneDist);
   Vec4<float> getPoint();
   Vec4<float> getDirection();

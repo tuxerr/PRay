@@ -1,7 +1,7 @@
 #include "ambientLight.h"
 
 
-AmbientLight::AmbientLight(float intensity, Color color) :
+AmbientLight::AmbientLight(float intensity, const Color &color) :
   intensity(intensity), color(color)
 {
 

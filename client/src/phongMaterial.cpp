@@ -1,24 +1,32 @@
 #include "phongMaterial.h"
 
-Material::Material(float specularReflection, float diffuseReflection, float ambiantReflection, float shininess) : 
-  specularReflection(specularReflection), diffuseReflection(diffuseReflection),
+PhongMaterial::PhongMaterial(const Color &color, float specularReflection, float diffuseReflection, float ambiantReflection, float shininess) : 
+  color(color), specularReflection(specularReflection), diffuseReflection(diffuseReflection),
   ambiantReflection(ambiantReflection), shininess(shininess)
 {
 
 }
 
-float Material::getSpecularReflection() {
+Color PhongMaterial::getColor() {
+  return color;
+}
+
+float PhongMaterial::getSpecularReflection() {
   return specularReflection;
 }
 
-float Material::getDiffuseReflection() {
+float PhongMaterial::getDiffuseReflection() {
   return diffuseReflection;
 }
 
-float Material::getAmbiantReflection() {
+float PhongMaterial::getAmbiantReflection() {
   return ambiantReflection;
 }
 
-float Material::getShininess() {
+float PhongMaterial::getShininess() {
   return shininess;
+}
+
+Color renderRay(const Ray &ray, const Vec4<float> &normal, const Scene &scene) {
+  return color; //TODO
 }

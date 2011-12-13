@@ -4,25 +4,26 @@
 #include <SDL/SDL_image.h>
 #include "logger.h"
 #include "color.h"
+#include "testScenes.h"
 
 int main(int argc, char *argv[])
 {
     Logger::init("pray_client.log");
 
-    string standaloneMode ("--standalone");
+    const string standaloneMode ("--standalone");
 
     if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
         SDL_Surface *screen = NULL;
-        int width(800);
-        int height(600);
+        const int width(800);
+        const int height(600);
         Color pixel;
 
         Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
         
-        /*
-          TODO : scene loading
-        */
+        // scene loading
+        TestScenes testScenes();
+        Scene scene = testScene.getTestScene1();
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
         {
@@ -51,9 +52,8 @@ int main(int argc, char *argv[])
         {
             for (int i=0 ; i < width ; i++)
             {
-                // TODO : renderpixel(int, int) method
-                // pixel = scene.renderPixel(i,j);
-                // putPixel(screen, i, j, SDL_MapRGB(screen->format, pixel.getR(), pixel.getG(), pixel.getB()));
+                pixel = scene.renderPixel(i,j);
+                putPixel(screen, i, j, SDL_MapRGB(screen->format, pixel.getR(), pixel.getG(), pixel.getB()));
                 SDL_Flip(screen);
             }
         }

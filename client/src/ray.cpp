@@ -1,6 +1,6 @@
 #include "ray.h"
 
-Ray::Ray(Vec4<float> origin, Vec4<float> direction) :
+Ray::Ray(const Vec4<float> &origin, const Vec4<float> &direction) :
   origin(origin), direction(direction)
 {
 
@@ -12,4 +12,8 @@ Vec4<float> Ray::getOrigin() {
 
 Vec4<float> Ray::getDirection() {
   return direction;
+}
+
+Color Ray::getColor() {
+  return color;
 }

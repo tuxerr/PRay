@@ -1,6 +1,6 @@
 #include "plane.h"
 
-Plane::Plane(Vec4<float> normal, float originDistance, Material material) :
+Plane::Plane(const Vec4<float> &normal, float originDistance, const Material &material) :
   Object(materia), normal(normal), originDistance(originDistance)
 {
 
@@ -15,13 +15,13 @@ float Plane::getOriginDistance() {
 }
 
 /*We are considering plane as a half space*/
-Intersection Plane::getIntersection(Ray ray) {
+Intersection Plane::getIntersection(const Ray &ray) {
   float PS = normal.scalar(ray.getOrigin());
   float PD = normal.scalar(ray.getDirection());
   if( PS <= originDistance || PD == 0 ) {
     throw NO_INTERSECTION;
   } else {
     float t = (originDistance - PS) / PD;
-    return Intersection(ray.getOrigin() + ray.getDirection()*t, normal, t, this, ray);
+    return Intersection(normal, t, material);
   }
 }

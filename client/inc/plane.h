@@ -12,8 +12,8 @@ class Plane : public Object {
   Vec4<float> normal;
   float originDistance;
  public :
-  Plane(Vec4<float> normal, float originDistance, Material material);
-  Intersection getIntersection(Ray ray);
+  Plane(const Vec4<float> &normal, float originDistance, const Material &material);
+  Intersection getIntersection(const Ray &ray);
   Vec4<float> getNormal();
   float getOriginDistance();
 };
