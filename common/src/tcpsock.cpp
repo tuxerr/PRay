@@ -2,7 +2,7 @@
 
 TCPSocket::TCPSocket() {
     sock=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
-    fcntl(sock,F_SETFL,O_NONBLOCK);
+//    fcntl(sock,F_SETFL,O_NONBLOCK);
     if(sock==INVALID_SOCKET) {
 	Logger::log(LOG_ERROR)<<"Error during the creation of a TCP socket"<<endl;
 	exit(0);
@@ -10,6 +10,7 @@ TCPSocket::TCPSocket() {
 }
 
 TCPSocket::~TCPSocket() {
+    shutdown(sock,SHUT_RDWR);
     closesocket(sock);
 }
 
@@ -23,8 +24,6 @@ void TCPSocket::bind_to_port(int port) {
     if(bind(sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
 	Logger::log(LOG_ERROR)<<"Unable to bind socket on port "<<port<<". Exiting server"<<std::endl;
         exit(0);
-    } else {
-	Logger::log()<<"Socket binded to port "<<port<<std::endl;
     }
 }
 

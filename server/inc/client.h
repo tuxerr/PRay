@@ -8,10 +8,11 @@
 #include <pthread.h>
 
 #define NETWORK_CLIENT_SLEEPTIME 30000
+#define RECV_L 3000
 
 class Client {
  public:
-    Client(SOCKET sock);
+    Client(SOCKET sock,sockaddr_in &addr_info);
     ~Client();
     int send_message(string mes);
     void launch_thread();
