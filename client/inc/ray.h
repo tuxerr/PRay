@@ -11,9 +11,9 @@ class Ray {
   Color color;
  public :
   Ray(const Vec4<float> &origin, const Vec4<float> &direction);
-  Vec4<float> getOrigin();
-  Vec4<float> getDirection();
-  Color getColor();
+  Vec4<float> getOrigin() const;
+  Vec4<float> getDirection() const;
+  Color getColor() const;
 };
 
 #endif

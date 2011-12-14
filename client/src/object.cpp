@@ -2,7 +2,7 @@
 
 #include "material.h"
 
-Object::Object(Material &material) :
+Object::Object(const Material & material) :
   material(&material)
 {
 
