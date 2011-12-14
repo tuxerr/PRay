@@ -1,25 +1,22 @@
 #include <cstdlib>
 #include <string>
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include "logger.h"
 #include "color.h"
 #include "testScenes.h"
-
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
-
 
 int main(int argc, char *argv[])
 {
     Logger::init("pray_client.log");
 
-    const string standaloneMode ("--standalone");
+    const string standaloneMode ("--test");
 
-    if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
+    if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
         SDL_Surface *screen = NULL;
         const int width(800);
-        const int height(600);
+        const int height(450);
         Color pixel;
 
         Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
@@ -51,29 +48,18 @@ int main(int argc, char *argv[])
 
         Logger::log(LOG_INFO)<<"Rendering started"<<endl;
 
-        for (int i=0 ; i < height ; i++)
+        for (int y=0 ; y < height ; y++)
         {
-            for (int j=0 ; j < width ; j++)
+            for (int x=0 ; x < width ; x++)
             {
-                pixel = scene.renderPixel(i,j);
-
-                if ( SDL_MUSTLOCK(screen) ) {
-                    if ( SDL_LockSurface(screen) < 0 ) {
-                        Logger::log(LOG_ERROR)<<"Can't lock screen: "<<SDL_GetError()<<endl;
-                        exit(EXIT_FAILURE);
-                    }
-                }
-
-                putpixel(screen, i, j, 
-                         SDL_MapRGB(screen->format, pixel.getR(), 
-                                    pixel.getG(), pixel.getB()));
-
-                if (SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
+                pixel = scene.renderPixel(x,y);
                 
-                SDL_UpdateRect(screen, i, j, 1, 1); // SDL_Flip(screen);
+                pixelRGBA(screen, x, y, pixel.getR(), pixel.getG(), pixel.getB(), 255);               
             }
 
-            Logger::log(LOG_INFO)<<"Line #"<<i<<" rendered"<<endl;
+            SDL_Flip(screen);
+
+            Logger::log(LOG_INFO)<<"Line #"<<y<<" rendered"<<endl;
         }
 
         SDL_Delay(1000);
@@ -90,38 +76,4 @@ int main(int argc, char *argv[])
     }
 
     return EXIT_SUCCESS;
-}
-
-
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
-{
-    int bpp = surface->format->BytesPerPixel;
-    // Here p is the address to the pixel we want to set
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
- 
-    switch(bpp) {
-    case 1:
-        *p = pixel;
-        break;
- 
-    case 2:
-        *(Uint16 *)p = pixel;
-        break;
- 
-    case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-            p[0] = (pixel >> 16) & 0xff;
-            p[1] = (pixel >> 8) & 0xff;
-            p[2] = pixel & 0xff;
-        } else {
-            p[0] = pixel & 0xff;
-            p[1] = (pixel >> 8) & 0xff;
-            p[2] = (pixel >> 16) & 0xff;
-        }
-        break;
- 
-    case 4:
-        *(Uint32 *)p = pixel;
-        break;
-    }
 }

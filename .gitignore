@@ -2,6 +2,12 @@
 pray_server
 pray_client
 
+# Logs
+*.log
+
+# Images
+*.bmp
+
 # Compiled Object files
 *.slo
 *.lo

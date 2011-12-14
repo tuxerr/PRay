@@ -64,5 +64,5 @@ int Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Mater
 
 Color Scene::renderPixel(int x, int y) {
   // TODO based on scene.renderRay() and scene.camera
-  return Color(0,0,0);
+  return Color(5,5,200);
 }
