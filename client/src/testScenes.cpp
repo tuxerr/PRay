@@ -1,4 +1,4 @@
-#include "testScene.h"
+#include "testScenes.h"
 #include "phongMaterial.h"
 #include "object.h"
 #include "color.h"
@@ -22,10 +22,21 @@ Scene TestScenes::getTestScene1()
             for (int z = 0 ; z < 100 ; z += 10)
                 objects.push_back(Sphere(Vec4<float>(x, y, z), 3, sphereMaterial));
   
-    // camera ??
-
+    list<DirectionalLight> lDirLights;
+    lDirLights.push_back(DirectionalLight(20, 
+					  Color(255,255,200), 
+					  Vec4<float>(1, 1, -1)));
     return Scene(objects,
-                 DirectionalLight(20, Color(255,255,200), Vec4<float>(1, 1, -1)),
-                 AmbientLight(15, Color(255, 255, 255)));
+		 lDirLights,
+                 AmbientLight(15, 
+			      Color(255, 255, 255)),
+		 Camera(Vec4<float>(-20, -20, 30),
+			Vec4<float>(2, 2, -1),
+			Vec4<float>(-1, -1, 2),
+			16,
+			9,
+			5,
+			800,
+			450));
 }
 

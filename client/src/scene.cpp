@@ -2,8 +2,14 @@
 
 #include "material.h"
 
-Scene::Scene(const list<Object> &objects, const list<DirectionalLight> &directionalLights, const AmbientLight &ambientLight, Camera & camera) :
-  objects(objects), directionalLights(directionalLights), ambientLight(ambientLight), camera(camera)
+Scene::Scene(const list<Object> &objects,
+	     const list<DirectionalLight> &directionalLights,
+	     const AmbientLight &ambientLight,
+	     Camera & camera) :
+  objects(objects),
+  directionalLights(directionalLights),
+  ambientLight(ambientLight),
+  camera(camera)
 {
 
 }
@@ -54,4 +60,9 @@ int Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Mater
     throw NO_INTERSECTION;
   }
   return 0;
+}
+
+Color Scene::renderPixel(int x, int y) {
+  // TODO based on scene.renderRay() and scene.camera
+  return Color(0,0,0);
 }

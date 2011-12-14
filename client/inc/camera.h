@@ -11,15 +11,26 @@ class Camera {
   float viewplaneWidth;
   float viewplaneHeight;
   float viewplaneDist;
+  int xResolution;
+  int yResolution;
+
  public :
-  Camera(const Vec4<float> &point, const Vec4<float> &direction, const Vec4<float> &normal, 
-	 float viewplaneWidth, float viewplaneHeight, float viewplaneDist);
+  Camera(const Vec4<float> &point, 
+	 const Vec4<float> &direction, 
+	 const Vec4<float> &normal, 
+	 float viewplaneWidth,
+	 float viewplaneHeight,
+	 float viewplaneDist,
+	 int xResolution,
+	 int yResolution);
   Vec4<float> getPoint();
   Vec4<float> getDirection();
   Vec4<float> getNormal();
   float getViewplaneWidth();
   float getViewplaneHeight();
   float getViewplaneDist();
+  int getXResolution();
+  int getYResolution();
 };
 
 #endif

@@ -1,4 +1,4 @@
-/*#include "sphere.h"
+#include "sphere.h"
 #include <math.h>
 
 Sphere::Sphere(const Vec4<float> &center, float radius, const Material &material) :
@@ -37,4 +37,4 @@ int Sphere::getIntersection(const Ray &ray, float *distance, Vec4<float> *normal
   }
   return 1;
 }
-*/
+

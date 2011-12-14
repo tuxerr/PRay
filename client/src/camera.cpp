@@ -1,11 +1,21 @@
 #include "camera.h"
 
-Camera::Camera(const Vec4<float> &point, const Vec4<float> &direction, const Vec4<float> &normal,
-	       float viewplaneWidth, float viewplaneHeight, float viewplaneDist) :
-  point(point), direction(direction), normal(normal),
+Camera::Camera(const Vec4<float> &point, 
+	       const Vec4<float> &direction, 
+	       const Vec4<float> &normal,
+	       float viewplaneWidth, 
+	       float viewplaneHeight, 
+	       float viewplaneDist,
+	       int xResolution,
+	       int yResolution) :
+  point(point), 
+  direction(direction), 
+  normal(normal),
   viewplaneWidth(viewplaneWidth), 
   viewplaneHeight(viewplaneHeight), 
-  viewplaneDist(viewplaneDist)
+  viewplaneDist(viewplaneDist),
+  xResolution(xResolution),
+  yResolution(yResolution)
 {
 
 }

@@ -24,13 +24,17 @@ class Scene {
   AmbientLight ambientLight;
   Camera camera;
  public :
-  Scene(const list<Object> &objects, const list<DirectionalLight> &directionalLights, const AmbientLight &ambientLight, Camera & camera);
+  Scene(const list<Object> &objects, 
+	const list<DirectionalLight> &directionalLights, 
+	const AmbientLight &ambientLight, 
+	Camera & camera);
   list<Object> getObjects();
   list<DirectionalLight> getDirectionalLights();
   AmbientLight getAmbientLight();
   Camera getCamera();
   Color renderRay(Ray &ray);
   int getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material);
+  Color renderPixel(int x, int y);
 };
 
 #endif
