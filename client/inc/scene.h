@@ -24,10 +24,10 @@ class Scene {
   AmbientLight ambientLight;
   Camera camera;
  public :
-  Scene(const list<Object> &objects, 
-	const list<DirectionalLight> &directionalLights, 
-	const AmbientLight &ambientLight, 
-	Camera & camera);
+  Scene(const list<Object>& objects, 
+	const list<DirectionalLight>& directionalLights, 
+	const AmbientLight& ambientLight, 
+	const Camera& camera);
   list<Object> getObjects();
   list<DirectionalLight> getDirectionalLights();
   AmbientLight getAmbientLight();

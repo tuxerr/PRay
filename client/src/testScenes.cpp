@@ -26,10 +26,10 @@ Scene TestScenes::getTestScene1()
     lDirLights.push_back(DirectionalLight(20, 
 					  Color(255,255,200), 
 					  Vec4<float>(1, 1, -1)));
+    
     return Scene(objects,
 		 lDirLights,
-                 AmbientLight(15, 
-			      Color(255, 255, 255)),
+                 AmbientLight(),
 		 Camera(Vec4<float>(-20, -20, 30),
 			Vec4<float>(2, 2, -1),
 			Vec4<float>(-1, -1, 2),

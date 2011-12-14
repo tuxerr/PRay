@@ -20,26 +20,26 @@ Camera::Camera(const Vec4<float> &point,
 
 }
 
-Vec4<float> Camera::getPoint() {
+Vec4<float> Camera::getPoint() const {
   return point;
 }
 
-Vec4<float> Camera::getDirection() {
+Vec4<float> Camera::getDirection() const {
   return direction;
 }
 
-Vec4<float> Camera::getNormal() {
+Vec4<float> Camera::getNormal() const {
   return normal;
 }
 
-float Camera::getViewplaneWidth() {
+float Camera::getViewplaneWidth() const {
   return viewplaneWidth;
 }
 
-float Camera::getViewplaneHeight() {
+float Camera::getViewplaneHeight() const {
   return viewplaneHeight;
 }
 
-float Camera::getViewplaneDist() {
+float Camera::getViewplaneDist() const {
   return viewplaneDist;
 }

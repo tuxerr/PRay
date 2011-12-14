@@ -9,15 +9,15 @@
 class Material;
 
 class Object {
- protected :
-  Material *material;
- public :
-  Object(const Material & material);
-  virtual int getIntersection(Ray &ray, 
-                              float *distance, 
-                              Vec4<float> *normal, 
-                              Material *material);
-  Material getMaterial();
+protected :
+    Material *material;
+public :
+    Object(const Material& material);
+    virtual int getIntersection(Ray& ray, 
+                                float* distance, 
+                                Vec4<float>* normal, 
+                                Material* material);
+    Material getMaterial();
 };
 
 #endif

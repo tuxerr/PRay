@@ -11,18 +11,18 @@ Sphere::Sphere(const Vec4<float> &center,
 
 }
 
-Vec4<float> Sphere::getCenter() {
+Vec4<float> Sphere::getCenter() const {
     return center;
 }
 
-float Sphere::getRadius() {
+float Sphere::getRadius() const {
     return radius;
 }
 
 int Sphere::getIntersection(const Ray &ray, 
                             float *distance, 
                             Vec4<float> *normal, 
-                            Material *material) {
+                            Material *materialIntersection) {
     Vec4<float> SC = center - ray.getOrigin();
     Vec4<float> rayDirection = ray.getDirection();
     if(SC.scalar(rayDirection) <= 0) {
@@ -38,7 +38,7 @@ int Sphere::getIntersection(const Ray &ray,
             Vec4<float> intersection = ray.getOrigin() + SB;
             *distance = (intersection - center).norm();
             *normal = SB.normalize();
-            *material = this->material;
+            *materialIntersection = *material;
             return 0;
         }
     }

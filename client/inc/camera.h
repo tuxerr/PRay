@@ -4,33 +4,33 @@
 #include "vec4.h"
 
 class Camera {
- private :
-  Vec4<float> point;
-  Vec4<float> direction;
-  Vec4<float> normal;
-  float viewplaneWidth;
-  float viewplaneHeight;
-  float viewplaneDist;
-  int xResolution;
-  int yResolution;
+private :
+    Vec4<float> point;
+    Vec4<float> direction;
+    Vec4<float> normal;
+    float viewplaneWidth;
+    float viewplaneHeight;
+    float viewplaneDist;
+    int xResolution;
+    int yResolution;
 
- public :
-  Camera(const Vec4<float> &point, 
-	 const Vec4<float> &direction, 
-	 const Vec4<float> &normal, 
-	 float viewplaneWidth,
-	 float viewplaneHeight,
-	 float viewplaneDist,
-	 int xResolution,
-	 int yResolution);
-  Vec4<float> getPoint();
-  Vec4<float> getDirection();
-  Vec4<float> getNormal();
-  float getViewplaneWidth();
-  float getViewplaneHeight();
-  float getViewplaneDist();
-  int getXResolution();
-  int getYResolution();
+public :
+    Camera(const Vec4<float> &point, 
+           const Vec4<float> &direction, 
+           const Vec4<float> &normal, 
+           float viewplaneWidth,
+           float viewplaneHeight,
+           float viewplaneDist,
+           int xResolution,
+           int yResolution);
+    Vec4<float> getPoint() const;
+    Vec4<float> getDirection() const;
+    Vec4<float> getNormal() const;
+    float getViewplaneWidth() const;
+    float getViewplaneHeight() const;
+    float getViewplaneDist() const;
+    int getXResolution() const;
+    int getYResolution() const;
 };
 
 #endif

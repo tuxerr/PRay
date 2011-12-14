@@ -6,7 +6,7 @@
 #include "material.h"
 #include "vec4.h"
 
-class PhongMaterial {
+class PhongMaterial : public Material {
  private :
   
   Color color;
