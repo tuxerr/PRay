@@ -34,9 +34,18 @@ Color Scene::renderRay(Ray &ray) {
   float distance;
   Vec4<float> normal;
   Material material;
-  getIntersection(ray, &distance, &normal, &material);
-  return material.renderRay(ray, normal, this);
+  try { 
+    getIntersection(ray, &distance, &normal, &material);
+    return material.renderRay(ray, normal, this);
+  } catch (int e) {
+      if(e != NO_INTERSECTION) {
+	throw e;
+      } else {
+	return Color(0,0,0);
+      }
+  }
 }
+
 
 int Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material) {
   list<Object>::iterator iter = objects.begin();
@@ -62,7 +71,12 @@ int Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Mater
   return 0;
 }
 
+
 Color Scene::renderPixel(int x, int y) {
-  // TODO based on scene.renderRay() and scene.camera
-  return Color(5,5,200);
+  
+  Vec4<float> vector = camera.getDirection(x, y).normalize();
+  Color color = Color(1,1,1);
+  Vec4<float> point = camera.getPoint().normalize();
+  Ray r = Ray(point, vector, color);
+  return renderRay(r);
 }

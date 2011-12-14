@@ -1,7 +1,7 @@
 #include "ray.h"
 
-Ray::Ray(const Vec4<float> &origin, const Vec4<float> &direction) :
-  origin(origin), direction(direction)
+Ray::Ray(const Vec4<float> &origin, const Vec4<float> &direction, Color &color) :
+  origin(origin), direction(direction), color(color)
 {
 
 }

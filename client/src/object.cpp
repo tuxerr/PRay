@@ -9,6 +9,8 @@ Object::Object(Material* material) :
 }
 
 // to avoid linking problem
+//
+// => But the virtual wasn't here to show off ...
 int Object::getIntersection(Ray& ray, 
                             float* distance, 
                             Vec4<float>* normal, 

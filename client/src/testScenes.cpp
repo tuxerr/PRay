@@ -1,5 +1,5 @@
 #include "testScenes.h"
-#include "phongMaterial.h"
+#include "uglyMaterial.h"
 #include "object.h"
 #include "color.h"
 #include "sphere.h"
@@ -13,7 +13,8 @@
 
 Scene TestScenes::getTestScene1()
 {
-    PhongMaterial sphereMaterial(Color(124,200,62), 0.4, 0.2, 0.6, 0.1);
+  //PhongMaterial sphereMaterial(Color(124,200,62), 0.4, 0.2, 0.6, 0.1);
+  UglyMaterial sphereMaterial(Color(124,200,62));
 
     list<Object> objects;
     

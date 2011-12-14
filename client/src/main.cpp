@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        SDL_Surface *screen = NULL;
-        const int width(800);
-        const int height(450);
+      SDL_Surface *screen = NULL;
+      const int width(800);
+      const int height(450);
         Color pixel;
 
         Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;

@@ -31,6 +31,7 @@ public :
     float getViewplaneDist() const;
     int getXResolution() const;
     int getYResolution() const;
+    Vec4<float> getDirection(int x, int y);
 };
 
 #endif
