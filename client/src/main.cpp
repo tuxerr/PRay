@@ -6,6 +6,7 @@
 #include "color.h"
 #include "testScenes.h"
 
+
 int main(int argc, char *argv[])
 {
     Logger::init("pray_client.log");
