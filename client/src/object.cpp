@@ -8,6 +8,14 @@ Object::Object(Material* material) :
 
 }
 
+// to avoid linking problem
+int Object::getIntersection(Ray& ray, 
+                            float* distance, 
+                            Vec4<float>* normal, 
+                            Material* material) {
+    return 0;
+}
+
 Material Object::getMaterial() {
   return *material;
 }

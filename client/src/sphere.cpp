@@ -19,7 +19,7 @@ float Sphere::getRadius() const {
     return radius;
 }
 
-int Sphere::getIntersection(const Ray &ray, 
+int Sphere::getIntersection(Ray &ray, 
                             float *distance, 
                             Vec4<float> *normal, 
                             Material *materialIntersection) {

@@ -4,9 +4,8 @@
 #define NO_INTERSECTION 3
 
 #include "ray.h"
-//#include "material.h"
-
-class Material;
+#include "material.h"
+#include "vec4.h"
 
 class Object {
 protected :
