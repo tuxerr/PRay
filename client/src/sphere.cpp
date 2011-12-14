@@ -3,8 +3,8 @@
 
 Sphere::Sphere(const Vec4<float> &center, 
                float radius, 
-               const Material &material) :
-    Object(material), 
+               Material &material) :
+    Object(&material), 
     center(center), 
     radius(radius)
 {

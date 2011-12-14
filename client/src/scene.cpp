@@ -5,7 +5,7 @@
 Scene::Scene(const list<Object> &objects,
 	     const list<DirectionalLight> &directionalLights,
 	     const AmbientLight &ambientLight,
-	     Camera & camera) :
+	     const Camera &camera) :
   objects(objects),
   directionalLights(directionalLights),
   ambientLight(ambientLight),

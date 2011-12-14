@@ -27,16 +27,16 @@ Scene TestScenes::getTestScene1()
 					  Color(255,255,200), 
 					  Vec4<float>(1, 1, -1)));
     
+    Camera camera(Vec4<float>(-20, -20, 30),
+                  Vec4<float>(2, 2, -1),
+                  Vec4<float>(-1, -1, 2),
+                  16,9,
+                  5,
+                  800,450);
+
     return Scene(objects,
 		 lDirLights,
                  AmbientLight(),
-		 Camera(Vec4<float>(-20, -20, 30),
-			Vec4<float>(2, 2, -1),
-			Vec4<float>(-1, -1, 2),
-			16,
-			9,
-			5,
-			800,
-			450));
+                 camera);
 }
 

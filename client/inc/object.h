@@ -12,7 +12,7 @@ class Object {
 protected :
     Material *material;
 public :
-    Object(const Material& material);
+    Object(Material* material);
     virtual int getIntersection(Ray& ray, 
                                 float* distance, 
                                 Vec4<float>* normal, 

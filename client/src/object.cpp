@@ -2,8 +2,8 @@
 
 #include "material.h"
 
-Object::Object(const Material & material) :
-  material(&material)
+Object::Object(Material* material) :
+  material(material)
 {
 
 }

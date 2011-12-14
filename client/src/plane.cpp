@@ -1,7 +1,7 @@
 #include "plane.h"
 
 Plane::Plane(const Vec4<float> &normal, float originDistance, Material &material) :
-  Object(material), normal(normal), originDistance(originDistance)
+  Object(&material), normal(normal), originDistance(originDistance)
 {
 
 }

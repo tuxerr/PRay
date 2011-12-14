@@ -15,7 +15,7 @@ private :
 public :
     Sphere(const Vec4<float>& center, 
            float radius, 
-           const Material& material);
+           Material& material);
     int getIntersection(const Ray& ray, 
                         float* distance,
                         Vec4<float>* normal,
