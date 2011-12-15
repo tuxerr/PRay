@@ -56,9 +56,10 @@ void Network::tcp_accept_loop() {
             Logger::log(LOG_ERROR)<<"Main network thread TCP error"<<std::endl;
             continue_loop=false;
             
-        } else {
+        } else if(sel_res>0) {
 
             // listening to new connections on the accept_sock socket.
+            Logger::log()<<"Accepting new connections on the TCP socket"<<std::endl;
             SOCKET new_socket=accept(accept_sock.sock,(sockaddr*)&info,&info_size); 
 
             if(new_socket>0) { 	// a new client has been found

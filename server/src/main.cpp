@@ -10,7 +10,7 @@ int main(int argv, char *argc[])
     Logger::init("pray_server.log");
     Logger::log()<<"salut"<<endl;
     Network network;
-//    network.launch();
+    network.launch();
 
     NcursesUI ui;
 
@@ -18,7 +18,7 @@ int main(int argv, char *argc[])
 
     ui.run();
 
-//    network.stop();
+    network.stop();
 
     return 0;
 }
