@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <pthread.h>
+#include <vector>
+#include <string>
+#include "client.h"
 #include "logger.h"
 #include "tcpsock.h"
 
@@ -13,14 +16,21 @@ class Network {
 public:
     Network(int port=DEFAULT_LISTENING_PORT);
     ~Network();
+    int launch(pthread_t *thread);
+    int get_client_number();
+    void stop();
+    void send_to_all(string message);
 
 private:
-    void tcp_accept_thread();
+    void tcp_accept_loop();
 
+    pthread_t thread;
     TCPSocket accept_sock;
-    int client_number;
     int max_clients;
     int listening_port;
+    std::vector<Client> connected_clients;
+    bool continue_loop;
+    Mutex client_list_mutex;
     
 };
 

@@ -2,7 +2,7 @@
 #define DEF_CLIENT
 
 #include <string>
-#include <vector>
+#include <list>
 #include "tcpsock.h"
 #include "logger.h"
 #include <pthread.h>
@@ -16,6 +16,9 @@ class Client {
     ~Client();
     int send_message(string mes);
     void launch_thread();
+    bool has_messages();
+    string unstack_message();
+    void stop();
 
  private:
     void main_loop();
@@ -23,7 +26,11 @@ class Client {
     SOCKET sock; 
     sockaddr_in addr_info;
     string ip_addr;
-    std::vector<std::string> received_messages;
-}
+    pthread_t thread;
+    std::list<std::string> received_messages;
+    Mutex socket_mutex;
+    Mutex received_messages_mutex;
+    bool continue_loop;
+};
 
 #endif
