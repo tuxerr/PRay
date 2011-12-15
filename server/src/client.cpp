@@ -26,7 +26,7 @@ int Client::send_message(string mes) {
 void Client::launch_thread() {
     Logger::log()<<"Launching TCP client "<<ip_addr<<" thread"<<std::endl;
     Client* ptr=this;
-    if(pthread_create(&thread,NULL,main_loop(),(void*)&ptr)!=0) {
+    if(pthread_create(&thread,NULL,main_loop_thread,(void*)ptr)!=0) {
         Logger::log(LOG_ERROR)<<"Error while launching client "<<ip_addr<<" thread"<<std::endl;
     }
 }
@@ -80,7 +80,13 @@ void Client::main_loop() {
     }
 }
 
+void* Client::main_loop_thread(void *This) {
+    Client* cli_ptr=(Client*)This;
+    cli_ptr->main_loop();
+    return NULL;
+}
+
 void Client::stop() {
     continue_loop=false;
-    pthread_join(thread);
+    pthread_join(thread,NULL);
 }

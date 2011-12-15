@@ -16,13 +16,13 @@ class Client {
     ~Client();
     int send_message(string mes);
     void launch_thread();
+    void main_loop();
     bool has_messages();
     string unstack_message();
     void stop();
+    static void * main_loop_thread(void *This);
 
  private:
-    void main_loop();
-
     SOCKET sock; 
     sockaddr_in addr_info;
     string ip_addr;

@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <vector>
 #include <string>
+#include <errno.h>
 #include "client.h"
 #include "logger.h"
 #include "tcpsock.h"
@@ -16,13 +17,14 @@ class Network {
 public:
     Network(int port=DEFAULT_LISTENING_PORT);
     ~Network();
-    int launch(pthread_t *thread);
+    int launch();
     int get_client_number();
     void stop();
     void send_to_all(string message);
+    void tcp_accept_loop();
+    static void* tcp_accept_loop_thread(void *This);
 
 private:
-    void tcp_accept_loop();
 
     pthread_t thread;
     TCPSocket accept_sock;

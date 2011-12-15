@@ -14,7 +14,7 @@ Network::~Network() {
 
 int Network::launch() {
     Network* ptr=this;
-    if(pthread_create(&thread,NULL,tcp_accept_loop,&ptr)!=0) {
+    if(pthread_create(&thread,NULL,tcp_accept_loop_thread,(void*)ptr)!=0) {
         Logger::log(LOG_ERROR)<<"Error while launching general network thread"<<std::endl;
         return 0;
     }
@@ -35,7 +35,7 @@ void Network::tcp_accept_loop() {
 				<<" to "<<SOMAXCONN<<std::endl;
     }
 
-    if(listen(accept_sock.sock,MAX_CLIENTS)==-1) {
+    if(listen(accept_sock.sock,NETWORK_MAX_CLIENTS)==-1) {
 	Logger::log(LOG_ERROR)<<"Unable to enable TCP listen mode : error "<<errno<<std::endl;
         continue_loop=false;
     }
@@ -75,19 +75,25 @@ void Network::tcp_accept_loop() {
     Logger::log()<<"Exiting TCP general listening thread"<<std::endl;
 }
 
+void* Network::tcp_accept_loop_thread(void *This) {
+    Network* netptr=(Network*)This;
+    netptr->tcp_accept_loop();
+    return NULL;
+}
+
 void Network::stop() {
     client_list_mutex.lock();
-    for(std::list<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
-        it->stop();
+    for(std::vector<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
+        (*it).stop();
     }
     client_list_mutex.unlock();
     continue_loop=false;
-    pthread_join(thread);
+    pthread_join(thread,NULL);
 }
 
 void Network::send_to_all(string message) {
     client_list_mutex.lock();
-    for(std::list<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
+    for(std::vector<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
         it->send_message(message);
     }
     client_list_mutex.unlock();
