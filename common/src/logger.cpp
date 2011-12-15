@@ -11,9 +11,11 @@ int LoggerStreambuf::flushBuffer () {
         write_mut.lock();
         file<<prefix;
         firstflush=false;
+    } 
+    if(num!=0) {
+        file.write(buffer,num);
+        pbump(-num); // reset put pointer accordingly
     }
-    file.write(buffer,num);
-    pbump(-num); // reset put pointer accordingly
     return num;
 }
 
@@ -31,6 +33,7 @@ int LoggerStreambuf::sync() {
     if (flushBuffer() == EOF)
         return -1;    // ERROR
     firstflush=true;
+
     write_mut.unlock();
     return 0;
 }

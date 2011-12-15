@@ -1,6 +1,7 @@
 #ifndef DEF_NCURSESUI
 #define DEF_NCURSESUI
 
+#include <iostream>
 #include <ncurses.h>
 #include "logger.h"
 

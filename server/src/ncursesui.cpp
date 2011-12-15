@@ -20,7 +20,7 @@ void NcursesUI::init()
     keypad(stdscr, TRUE); // reading keys like F1, F2, arrows keys
     noecho(); // no echo() while getch()
     getmaxyx(stdscr,row,col);
-    Logger::log()<<"Starting ncurses server UI"<<endl;
+    Logger::log()<<"Starting ncurses server UI"<<std::endl;
 }
 
 void NcursesUI::run()
