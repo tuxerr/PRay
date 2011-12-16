@@ -12,10 +12,10 @@ protected :
     Material *material;
 public :
     Object(Material* material);
-    virtual int getIntersection(Ray& ray, 
-                                float* distance, 
-                                Vec4<float>* normal, 
-                                Material* material);
+    virtual void getIntersection(Ray& ray, 
+                                 float* distance, 
+                                 Vec4<float>* normal, 
+                                 Material* material);
     Material getMaterial();
 };
 

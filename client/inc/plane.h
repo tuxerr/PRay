@@ -12,8 +12,8 @@ private :
     float originDistance;
 public :
     Plane(const Vec4<float> &normal, float originDistance, Material &material);
-    virtual int getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
-                                Material *material);
+    void getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
+                         Material *material);
     Vec4<float> getNormal();
     float getOriginDistance();
 };

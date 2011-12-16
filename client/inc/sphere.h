@@ -15,11 +15,11 @@ private :
 public :
     Sphere(const Vec4<float>& center, 
            float radius, 
-           Material& material);
-    virtual int getIntersection(Ray& ray, 
-                        float* distance,
-                        Vec4<float>* normal,
-                        Material* material);
+           Material* material);
+    void getIntersection(Ray& ray, 
+                         float* distance,
+                         Vec4<float>* normal,
+                         Material* material);
     Vec4<float> getCenter() const;
     float getRadius() const;
 };

@@ -16,7 +16,7 @@ Scene TestScenes::getTestScene1()
     UglyMaterial sphereMaterial(Color(200,0,0));
 
     list<Object> objects;
-    objects.push_back(Sphere(Vec4<float>(10,0,0), 3, sphereMaterial));
+    objects.push_back(Sphere(Vec4<float>(10,0,0), 3, &sphereMaterial));
  
     list<DirectionalLight> lDirLights;
     
@@ -40,7 +40,7 @@ Scene TestScenes::getTestScene2()
     for (int x = 0 ; x < 100 ; x += 10)
         for (int y = 0 ; y < 100 ; y += 10)
             for (int z = 0 ; z < 100 ; z += 10)
-                objects.push_back(Sphere(Vec4<float>(x, y, z), 3, sphereMaterial));
+                objects.push_back(Sphere(Vec4<float>(x, y, z), 3, &sphereMaterial));
   
     list<DirectionalLight> lDirLights;
     lDirLights.push_back(DirectionalLight(20, 

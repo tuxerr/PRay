@@ -45,7 +45,7 @@ Color Scene::renderRay(Ray &ray) {
 }
 
 /**
- * distance < 0 if no intersection was found
+ * *distance < 0 if no intersection was found
  */
 void Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
                             Material *material) {
@@ -53,8 +53,10 @@ void Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal,
     *distance = -1;
     float tempDistance = -1;
     int res;
+    list<Object>::iterator iter;
+    /* it seems that the list prevent us from using polymorphism */
 
-    for (list<Object>::iterator iter = objects.begin(); iter != objects.end(); iter++) {
+    for (iter = objects.begin(); iter != objects.end(); iter++) {
         iter->getIntersection(ray, &tempDistance, normal, material);
         if (0 <= tempDistance && tempDistance < *distance) 
             *distance = tempDistance;
