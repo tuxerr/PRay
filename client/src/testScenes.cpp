@@ -13,8 +13,27 @@
 
 Scene TestScenes::getTestScene1()
 {
-  //PhongMaterial sphereMaterial(Color(124,200,62), 0.4, 0.2, 0.6, 0.1);
-  UglyMaterial sphereMaterial(Color(124,200,62));
+    UglyMaterial sphereMaterial(Color(200,0,0));
+
+    list<Object> objects;
+    objects.push_back(Sphere(Vec4<float>(10,0,0), 3, sphereMaterial));
+ 
+    list<DirectionalLight> lDirLights;
+    
+    Camera camera(Vec4<float>(0,0,0), // center
+                  Vec4<float>(1,0,0), // direction
+                  Vec4<float>(0,0,1), // normal
+                  16/2, 9/2,
+                  5,
+                  800, 450);
+
+    return Scene(objects,lDirLights,AmbientLight(),camera);
+}
+
+Scene TestScenes::getTestScene2()
+{
+    //PhongMaterial sphereMaterial(Color(124,200,62), 0.4, 0.2, 0.6, 0.1);
+    UglyMaterial sphereMaterial(Color(124,200,62));
 
     list<Object> objects;
     

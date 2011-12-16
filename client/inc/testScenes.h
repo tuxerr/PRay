@@ -6,6 +6,7 @@
 class TestScenes {
 public:
     Scene getTestScene1();
+    Scene getTestScene2();
 };
 
 #endif // ifndef DEF_TESTSCENES
