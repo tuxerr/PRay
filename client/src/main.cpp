@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
             SDL_Flip(screen);
 
-            Logger::log(LOG_INFO)<<"Line #"<<y<<" rendered"<<endl;
+            // Logger::log(LOG_INFO)<<"Line #"<<y<<" rendered"<<endl;
         }
 
         SDL_Delay(1000);

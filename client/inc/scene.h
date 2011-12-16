@@ -33,7 +33,7 @@ class Scene {
   AmbientLight getAmbientLight();
   Camera getCamera();
   Color renderRay(Ray &ray);
-  int getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material);
+  void getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material);
   Color renderPixel(int x, int y);
 };
 

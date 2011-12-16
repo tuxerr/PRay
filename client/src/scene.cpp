@@ -1,5 +1,5 @@
+#include "logger.h"
 #include "scene.h"
-
 #include "material.h"
 
 Scene::Scene(const list<Object> &objects,
@@ -34,49 +34,39 @@ Color Scene::renderRay(Ray &ray) {
   float distance;
   Vec4<float> normal;
   Material material;
-  try { 
-    getIntersection(ray, &distance, &normal, &material);
-    return material.renderRay(ray, normal, this);
-  } catch (int e) {
-      if(e != NO_INTERSECTION) {
-	throw e;
-      } else {
-	return Color(0,0,0);
-      }
+
+  getIntersection(ray, &distance, &normal, &material);
+  
+  if (distance < 0) {
+      return Color(0,0,0);
+  } else {
+      return material.renderRay(ray, normal, this);
   }
 }
 
+/**
+ * distance < 0 if no intersection was found
+ */
+void Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
+                            Material *material) {
+    
+    *distance = -1;
+    float tempDistance = -1;
+    int res;
 
-int Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material) {
-  list<Object>::iterator iter = objects.begin();
-
-  *distance = -1;
-  float tempDistance = -1;
-
-  for(iter = objects.begin(); iter != objects.end(); iter++) {
-    try {
-      (* iter).getIntersection(ray, &tempDistance, normal, material);
-      if(tempDistance < *distance || *distance < 0) {
-	*distance = tempDistance;
-      }
-    } catch(int e) {
-      if(e != NO_INTERSECTION) {
-	throw e;
-      }
+    for (list<Object>::iterator iter = objects.begin(); iter != objects.end(); iter++) {
+        iter->getIntersection(ray, &tempDistance, normal, material);
+        if (0 <= tempDistance && tempDistance < *distance) 
+            *distance = tempDistance;
     }
-  }
-  if(*distance < 0) {
-    throw NO_INTERSECTION;
-  }
-  return 0;
 }
 
 
 Color Scene::renderPixel(int x, int y) {
   
-  Vec4<float> vector = camera.getDirection(x, y).normalize();
-  Color color = Color(1,1,1);
-  Vec4<float> point = camera.getPoint().normalize();
-  Ray r = Ray(point, vector, color);
-  return renderRay(r);
+    Vec4<float> direction  = camera.getDirection(x, y).normalize();
+    Color color = Color(0,0,0);
+    Vec4<float> origin = camera.getPoint();
+    Ray r = Ray(origin, direction, color);
+    return renderRay(r);
 }

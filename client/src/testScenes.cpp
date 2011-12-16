@@ -24,7 +24,7 @@ Scene TestScenes::getTestScene1()
                   Vec4<float>(1,0,0), // direction
                   Vec4<float>(0,0,1), // normal
                   16/2, 9/2,
-                  5,
+                  2,
                   800, 450);
 
     return Scene(objects,lDirLights,AmbientLight(),camera);

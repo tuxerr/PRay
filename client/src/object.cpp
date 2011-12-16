@@ -1,5 +1,5 @@
 #include "object.h"
-
+#include "logger.h"
 #include "material.h"
 
 Object::Object(Material* material) :
@@ -9,12 +9,13 @@ Object::Object(Material* material) :
 }
 
 // to avoid linking problem
-//
-// => But the virtual wasn't here to show off ...
 int Object::getIntersection(Ray& ray, 
                             float* distance, 
                             Vec4<float>* normal, 
                             Material* material) {
+    
+    Logger::log(LOG_ERROR)<<"Object::getIntersection(...) should not be called"<<endl;
+
     return 0;
 }
 

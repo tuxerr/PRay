@@ -1,4 +1,5 @@
-/*#ifndef DEF_INTERSECTION
+/*
+#ifndef DEF_INTERSECTION
 #define DEF_INTERSECTION
 
 #include "vec4.h"

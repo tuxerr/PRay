@@ -77,13 +77,13 @@ string Logger::logtype_to_prefix(Log_Type type) {
     string prefix="";
     switch (type) {
     case LOG_INFO:
-        prefix="[INF]";
+        prefix="[INF] ";
         break;
     case LOG_WARNING:
-        prefix="[WAR]";
+        prefix="[WAR] ";
         break;
     case LOG_ERROR:
-        prefix="[ERR]";
+        prefix="[ERR] ";
         break;
     }
     return prefix;

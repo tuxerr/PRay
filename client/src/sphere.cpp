@@ -1,3 +1,4 @@
+#include "logger.h"
 #include "sphere.h"
 #include <math.h>
 
@@ -23,6 +24,9 @@ int Sphere::getIntersection(Ray &ray,
                             float *distance, 
                             Vec4<float> *normal, 
                             Material *materialIntersection) {
+
+    Logger::log(LOG_INFO)<<"Intersection sphere/ray"<<endl;
+
     Vec4<float> SC = center - ray.getOrigin();
     Vec4<float> rayDirection = ray.getDirection();
     if(SC.scalar(rayDirection) <= 0) {
