@@ -11,12 +11,12 @@
  * Create a scene with a 3D grid of spheres
  */
 
-Scene TestScenes::getTestScene1()
+Scene TestScenes::createTestScene1()
 {
     UglyMaterial sphereMaterial(Color(200,0,0));
 
-    list<Object> objects;
-    objects.push_back(Sphere(Vec4<float>(10,0,0), 3, &sphereMaterial));
+    list<Object*> objects;
+    objects.push_back(new Sphere(Vec4<float>(10,0,0), 3, &sphereMaterial));
  
     list<DirectionalLight> lDirLights;
     
@@ -30,6 +30,18 @@ Scene TestScenes::getTestScene1()
     return Scene(objects,lDirLights,AmbientLight(),camera);
 }
 
+void TestScenes::destroyTestScene1(Scene scene)
+{
+    list<Object*> objects = scene.getObjects();
+
+    list<Object*>::iterator iter;
+
+    for (iter = objects.begin() ; iter != objects.end() ; iter++) {
+        delete *iter;
+    }
+}
+
+/*
 Scene TestScenes::getTestScene2()
 {
     //PhongMaterial sphereMaterial(Color(124,200,62), 0.4, 0.2, 0.6, 0.1);
@@ -59,4 +71,4 @@ Scene TestScenes::getTestScene2()
                  AmbientLight(),
                  camera);
 }
-
+*/

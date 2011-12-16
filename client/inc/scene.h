@@ -19,21 +19,22 @@ class Material;
 
 class Scene {
  private :
-  list<Object> objects;
+  list<Object*> objects;
   list<DirectionalLight> directionalLights;
   AmbientLight ambientLight;
   Camera camera;
  public :
-  Scene(const list<Object>& objects, 
+  Scene(const list<Object*> objects, 
 	const list<DirectionalLight>& directionalLights, 
 	const AmbientLight& ambientLight, 
 	const Camera& camera);
-  list<Object> getObjects();
+  list<Object*> getObjects();
   list<DirectionalLight> getDirectionalLights();
   AmbientLight getAmbientLight();
   Camera getCamera();
   Color renderRay(Ray &ray);
-  void getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material *material);
+  void getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
+                       Material *material);
   Color renderPixel(int x, int y);
 };
 

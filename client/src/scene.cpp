@@ -2,7 +2,7 @@
 #include "scene.h"
 #include "material.h"
 
-Scene::Scene(const list<Object> &objects,
+Scene::Scene(const list<Object*> objects,
 	     const list<DirectionalLight> &directionalLights,
 	     const AmbientLight &ambientLight,
 	     const Camera &camera) :
@@ -14,7 +14,7 @@ Scene::Scene(const list<Object> &objects,
 
 }
 
-list<Object> Scene::getObjects() {
+list<Object*> Scene::getObjects() {
   return objects;
 }
 
@@ -53,11 +53,11 @@ void Scene::getIntersection(Ray &ray, float *distance, Vec4<float> *normal,
     *distance = -1;
     float tempDistance = -1;
     int res;
-    list<Object>::iterator iter;
+    list<Object*>::iterator iter;
     /* it seems that the list prevent us from using polymorphism */
 
     for (iter = objects.begin(); iter != objects.end(); iter++) {
-        iter->getIntersection(ray, &tempDistance, normal, material);
+        (*iter)->getIntersection(ray, &tempDistance, normal, material);
         if (0 <= tempDistance && tempDistance < *distance) 
             *distance = tempDistance;
     }

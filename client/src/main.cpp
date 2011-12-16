@@ -15,16 +15,16 @@ int main(int argc, char *argv[])
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-      SDL_Surface *screen = NULL;
-      const int width(800);
-      const int height(450);
+        SDL_Surface *screen = NULL;
+        const int width(800);
+        const int height(450);
         Color pixel;
 
         Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
         
         // scene loading
         TestScenes testScenes;
-        Scene scene = testScenes.getTestScene1();
+        Scene scene = testScenes.createTestScene1();
 
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
@@ -62,6 +62,8 @@ int main(int argc, char *argv[])
 
             // Logger::log(LOG_INFO)<<"Line #"<<y<<" rendered"<<endl;
         }
+
+        testScenes.destroyTestScene1(scene);
 
         SDL_Delay(1000);
 
