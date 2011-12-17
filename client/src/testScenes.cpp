@@ -13,14 +13,14 @@
 
 Scene TestScenes::createTestScene1()
 {
-    UglyMaterial redMaterial(Color(255,0,0));
-    UglyMaterial greenMaterial(Color(0,255,0));
-    UglyMaterial blueMaterial(Color(0,0,255));
+  //  UglyMaterial redMaterial(Color(255,0,0));
+  //  UglyMaterial greenMaterial(Color(0,255,0));
+  //  UglyMaterial blueMaterial(Color(0,0,255));
 
     list<Object*> objects;
-    objects.push_back(new Sphere(Vec4<float>(10, -5, 0), 3, &redMaterial));
-    objects.push_back(new Sphere(Vec4<float>(10,  0, 0), 3, &greenMaterial));
-    objects.push_back(new Sphere(Vec4<float>(10,  5, 0), 3, &blueMaterial));
+    objects.push_back(new Sphere(Vec4<float>(10, -5, 0), 3, new UglyMaterial(Color(255,0,0))));
+    objects.push_back(new Sphere(Vec4<float>(10,  0, 0), 3, new UglyMaterial(Color(0,255,0))));
+    objects.push_back(new Sphere(Vec4<float>(10,  5, 0), 3, new UglyMaterial(Color(0,0,255))));
  
     list<DirectionalLight> lDirLights;
     
