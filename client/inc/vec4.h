@@ -19,6 +19,7 @@ public:
     Vec4<number> operator-(Vec4<number> n);
     Vec4<number> operator*(Vec4<number> n);
     Vec4<number> operator*(number n);
+    Vec4<number> operator/(number n);
 private:
 };
 
@@ -78,7 +79,17 @@ Vec4<number> Vec4<number>::operator*(number n) {
     return res;
 }
 
-//cross product
+template <class number>
+Vec4<number> Vec4<number>::operator/(number n) {
+    Vec4<number> res;
+    res.x=x/n;
+    res.y=y/n;
+    res.z=z/n;    
+    res.t=t/n;
+    return res;
+}
+
+//cross product (vector product)
 template <class number>
 Vec4<number> Vec4<number>::cross(Vec4<number> n) {
     Vec4<number> res;
@@ -89,7 +100,7 @@ Vec4<number> Vec4<number>::cross(Vec4<number> n) {
     return res;
 }
 
-//cross product
+//scalar product (dot product)
 template <class number>
 number Vec4<number>::scalar(Vec4<number> n) {
     return n.x*x+n.y*y+n.z*z+n.t*t;
