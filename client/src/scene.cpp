@@ -40,13 +40,13 @@ Color Scene::renderRay(Ray &ray) {
   if (distance < 0) {
     return Color(0,0,0);
   } else {
-    //return Color(100,40,200);
+    return Color(100,40,200); // to prevent from the following segmentation fault
     Color color = material->renderRay(ray, normal, this); 
     // Segmentation fault
-    // - Jump to the invalid address
+    // - Jump to the an invalid address
     //   Address is not stack'd, malloc'd or (recently) free'd
     // - Use of uninitialised value of size 4
-    //   Uninitialised value was created by a stack allocation (L70)
+    //   Uninitialised value was created by a stack allocation in Scene::renderPixel
     return color;
   }
 }
