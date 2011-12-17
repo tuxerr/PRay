@@ -33,11 +33,11 @@ Camera Scene::getCamera() {
 Color Scene::renderRay(Ray &ray) {
   float distance;
   Vec4<float> normal;
-  Material* material = 0;
+  Material* material;
 
   computeDistance(ray, &distance, &normal, &material);
 
-  if (distance < 0) {
+  if (distance < 0) { // no intersection was found
     return Color(0,0,0);
   } else {
     return Color(100,40,200); // to prevent from the following segmentation fault

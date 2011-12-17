@@ -16,7 +16,9 @@ Scene TestScenes::createTestScene1()
     UglyMaterial sphereMaterial(Color(200,0,0));
 
     list<Object*> objects;
-    objects.push_back(new Sphere(Vec4<float>(10,0,0), 3, &sphereMaterial));
+    objects.push_back(new Sphere(Vec4<float>(10,  0, 0), 3, &sphereMaterial));
+    objects.push_back(new Sphere(Vec4<float>(10, -5, 0), 3, &sphereMaterial));
+    objects.push_back(new Sphere(Vec4<float>(10,  5, 0), 3, &sphereMaterial));
  
     list<DirectionalLight> lDirLights;
     
