@@ -18,8 +18,8 @@ Scene TestScenes::createTestScene1()
     UglyMaterial blueMaterial(Color(0,0,255));
 
     list<Object*> objects;
-    objects.push_back(new Sphere(Vec4<float>(10,  0, 0), 3, &redMaterial));
-    objects.push_back(new Sphere(Vec4<float>(10, -5, 0), 3, &greenMaterial));
+    objects.push_back(new Sphere(Vec4<float>(10, -5, 0), 3, &redMaterial));
+    objects.push_back(new Sphere(Vec4<float>(10,  0, 0), 3, &greenMaterial));
     objects.push_back(new Sphere(Vec4<float>(10,  5, 0), 3, &blueMaterial));
  
     list<DirectionalLight> lDirLights;
