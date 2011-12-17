@@ -34,7 +34,7 @@ class Scene {
   Camera getCamera();
   Color renderRay(Ray &ray);
   void computeDistance(Ray &ray, float *distance, Vec4<float> *normal, 
-                       Material *material);
+                       Material **material);
   Color renderPixel(int x, int y);
 };
 

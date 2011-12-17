@@ -19,7 +19,7 @@ public :
     void getIntersection(Ray& ray, 
                          float* distance,
                          Vec4<float>* normal,
-                         Material* material);
+                         Material** material);
     Vec4<float> getCenter() const;
     float getRadius() const;
 };

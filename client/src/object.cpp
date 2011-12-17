@@ -8,15 +8,18 @@ Object::Object(Material* material) :
 
 }
 
+/*
 // to avoid linking problem
 void Object::getIntersection(Ray& ray, 
                              float* distance, 
                              Vec4<float>* normal, 
-                             Material* material) {
+                             Material** material) {
     
-    Logger::log(LOG_ERROR)<<"Object::getIntersection(...) should not be called"<<endl;
+      Logger::log(LOG_ERROR)<<"Object::getIntersection(...) should not be called"<<endl;
+}
+*/
+
+Material* Object::getMaterial() {
+  return material;
 }
 
-Material Object::getMaterial() {
-  return *material;
-}

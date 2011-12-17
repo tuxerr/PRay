@@ -26,9 +26,7 @@ float Sphere::getRadius() const {
 void Sphere::getIntersection(Ray& ray, 
                              float* distance, 
                              Vec4<float>* normal, 
-                             Material* materialIntersection) {
-
-  // Logger::log(LOG_INFO)<<"Sphere::getIntersection(...)"<<endl;
+                             Material** materialIntersection) {
 
     Vec4<float> SC = center - ray.getOrigin();
     Vec4<float> rayDirection = ray.getDirection();
@@ -45,10 +43,8 @@ void Sphere::getIntersection(Ray& ray,
             Vec4<float> intersection = ray.getOrigin() + SB;
             *distance = (intersection - center).norm();
             *normal = SB.normalize();
-            *materialIntersection = *material;
+            *materialIntersection = material;
         }
     }
-
-    //*distance = 10; // debug
 }
 

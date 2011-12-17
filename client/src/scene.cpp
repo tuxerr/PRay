@@ -33,17 +33,16 @@ Camera Scene::getCamera() {
 Color Scene::renderRay(Ray &ray) {
   float distance;
   Vec4<float> normal;
-  Material material;
+  Material* material = 0;
 
   computeDistance(ray, &distance, &normal, &material);
 
-  Logger::log()<<"distance="<<distance<<endl;
-  
   if (distance < 0) {
     return Color(0,0,0);
   } else {
-    Logger::log()<<"Rendering material"<<endl;
-    return material.renderRay(ray, normal, this);
+    //Logger::log()<<"material="<<material<<endl;
+    //return Color(2,2,2);
+    return material->renderRay(ray, normal, this);
   }
 }
 
@@ -51,18 +50,17 @@ Color Scene::renderRay(Ray &ray) {
  * *distance < 0 if no intersection was found
  */
 void Scene::computeDistance(Ray &ray, float *distance, Vec4<float> *normal, 
-                            Material *material) {
+                            Material **material) {
     
     *distance = -2;
     float tempDistance = -1;
-    int res;
     list<Object*>::iterator iter;
-    /* it seems that the list prevent us from using polymorphism */
 
     for (iter = objects.begin(); iter != objects.end(); iter++) {
         (*iter)->getIntersection(ray, &tempDistance, normal, material);
-        if ((*distance >= 0 && tempDistance >= 0 && tempDistance < *distance) 
-	    || tempDistance >= 0)
+        if (tempDistance >= 0 
+	    && ((*distance >= 0 && tempDistance < *distance) 
+		|| *distance < 0 ))
 	  *distance = tempDistance;
     }
 }

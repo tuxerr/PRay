@@ -13,7 +13,7 @@ private :
 public :
     Plane(const Vec4<float> &normal, float originDistance, Material &material);
     void getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
-                         Material *material);
+                         Material **material);
     Vec4<float> getNormal();
     float getOriginDistance();
 };

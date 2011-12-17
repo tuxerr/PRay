@@ -1,8 +1,6 @@
 #ifndef DEF_OBJECT
 #define DEF_OBJECT
 
-#define NO_INTERSECTION 3
-
 #include "ray.h"
 #include "material.h"
 #include "vec4.h"
@@ -15,8 +13,8 @@ public :
     virtual void getIntersection(Ray& ray, 
                                  float* distance, 
                                  Vec4<float>* normal, 
-                                 Material* material);
-    Material getMaterial();
+                                 Material** material) = 0;
+    Material* getMaterial();
 };
 
 #endif
