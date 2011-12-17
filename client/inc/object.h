@@ -10,6 +10,7 @@ protected :
     Material *material;
 public :
     Object(Material* material);
+    virtual ~Object();
     virtual void getIntersection(Ray& ray, 
                                  float* distance, 
                                  Vec4<float>* normal, 
