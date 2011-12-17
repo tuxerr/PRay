@@ -28,7 +28,7 @@ void Sphere::getIntersection(Ray& ray,
                              Vec4<float>* normal, 
                              Material* materialIntersection) {
 
-    Logger::log(LOG_INFO)<<"Sphere::getIntersection(...)"<<endl;
+  // Logger::log(LOG_INFO)<<"Sphere::getIntersection(...)"<<endl;
 
     Vec4<float> SC = center - ray.getOrigin();
     Vec4<float> rayDirection = ray.getDirection();
@@ -48,5 +48,7 @@ void Sphere::getIntersection(Ray& ray,
             *materialIntersection = *material;
         }
     }
+
+    //*distance = 10; // debug
 }
 

@@ -2,5 +2,5 @@
 
 // to avoid linking problem
 Color Material::renderRay(const Ray &ray, const Vec4<float> &normal, Scene *scene) {
-    return Color(0,0,0);
+    return Color(0,255,0);
 }
