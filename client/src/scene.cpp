@@ -40,9 +40,14 @@ Color Scene::renderRay(Ray &ray) {
   if (distance < 0) {
     return Color(0,0,0);
   } else {
-    //Logger::log()<<"material="<<material<<endl;
-    //return Color(2,2,2);
-    return material->renderRay(ray, normal, this);
+    //return Color(100,40,200);
+    Color color = material->renderRay(ray, normal, this); 
+    // Segmentation fault
+    // - Jump to the invalid address
+    //   Address is not stack'd, malloc'd or (recently) free'd
+    // - Use of uninitialised value of size 4
+    //   Uninitialised value was created by a stack allocation (L70)
+    return color;
   }
 }
 
@@ -69,7 +74,7 @@ void Scene::computeDistance(Ray &ray, float *distance, Vec4<float> *normal,
 Color Scene::renderPixel(int x, int y) {
   
     Vec4<float> direction  = camera.getDirection(x, y).normalize();
-    Color color = Color();
+    Color color = Color(0,0,0);
     Vec4<float> origin = camera.getPoint();
     Ray r = Ray(origin, direction, color);
     return renderRay(r);
