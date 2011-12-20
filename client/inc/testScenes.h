@@ -5,7 +5,7 @@
 
 class TestScenes {
 public:
-    Scene createTestScene1();
+    Scene createTestScene1(int xRes, int yRes);
     void destroyTestScene1(Scene scene);
     /*Scene getTestScene2();*/
 };

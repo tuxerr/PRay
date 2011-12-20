@@ -6,6 +6,9 @@
 #include "color.h"
 #include "testScenes.h"
 
+#define WIDTH  1280
+#define HEIGHT  720
+
 
 int main(int argc, char *argv[])
 {
@@ -16,15 +19,11 @@ int main(int argc, char *argv[])
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
         SDL_Surface *screen = NULL;
-        const int width(800);
-        const int height(450);
         Color pixel;
+        int width = WIDTH;
+        int height = HEIGHT;
 
         Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
-        
-        // scene loading
-        TestScenes testScenes;
-        Scene scene = testScenes.createTestScene1();
 
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
@@ -33,9 +32,20 @@ int main(int argc, char *argv[])
         }
 
         Logger::log(LOG_INFO)<<"SDL initialised"<<endl;
-        
+
+        const SDL_VideoInfo* videoInfos = SDL_GetVideoInfo();
+
+        if (0.9*videoInfos->current_w < WIDTH) { // the screen is too small for the predifined resolution
+            width = 0.9*videoInfos->current_w;
+            height = width * HEIGHT / WIDTH; // to keep the screen ratio
+        }
+
         screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
-        
+
+        // scene loading
+        TestScenes testScenes;
+        Scene scene = testScenes.createTestScene1(width, height);
+
         if (screen == NULL)
         {
             Logger::log(LOG_ERROR)<<"Problem during screen initialisation: "<<SDL_GetError()<<endl;
@@ -54,18 +64,36 @@ int main(int argc, char *argv[])
             for (int x=0 ; x < width ; x++)
             {
                 pixel = scene.renderPixel(x,y);
-                
-                pixelRGBA(screen, x, y, pixel.getR(), pixel.getG(), pixel.getB(), 255);               
+
+                pixelRGBA(screen, x, y, pixel.getR(), pixel.getG(), pixel.getB(), 255);
             }
 
-            SDL_Flip(screen);
+            if (y%4)
+                SDL_Flip(screen);
 
             // Logger::log(LOG_INFO)<<"Line #"<<y<<" rendered"<<endl;
         }
 
+        SDL_Flip(screen);
+
         testScenes.destroyTestScene1(scene);
 
-        SDL_Delay(1000);
+        SDL_Event event;
+        bool waiting = true;
+        while ( waiting )
+        {
+            SDL_WaitEvent(&event);
+
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                case SDL_KEYDOWN:
+                    waiting = false;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         Logger::log(LOG_INFO)<<"Rendering complete"<<endl;
 

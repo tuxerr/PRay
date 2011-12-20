@@ -27,4 +27,4 @@ pray_client
 # Code Blocks files
 *.cbp
 *.workspace
-
+*.layout

@@ -7,13 +7,14 @@
 #include "ambientLight.h"
 #include "vec4.h"
 
-Scene TestScenes::createTestScene1()
+Scene TestScenes::createTestScene1(int xRes, int yRes)
 {
     list<Object*> objects;
-    objects.push_back(new Sphere(Vec4<float>(12,-6, 0), 3, new UglyMaterial(Color(255,   0,   0))));
-    objects.push_back(new Sphere(Vec4<float>(12, 0,-1), 4, new UglyMaterial(Color(  0, 255,   0))));
-    objects.push_back(new Sphere(Vec4<float>(12, 6, 0), 3, new UglyMaterial(Color(  0,   0, 255))));
-    objects.push_back(new Sphere(Vec4<float>(12, 0, 4), 1, new UglyMaterial(Color(255,   0, 255))));
+    objects.push_back(new Sphere(Vec4<float>(100,-6, 0), 3, new UglyMaterial(Color(255,   0,   0)))); // red
+    objects.push_back(new Sphere(Vec4<float>(100, 0, 0), 3, new UglyMaterial(Color(  0, 255,   0)))); // green
+    objects.push_back(new Sphere(Vec4<float>(100, 6, 0), 4, new UglyMaterial(Color(  0,   0, 255)))); // blue
+    objects.push_back(new Sphere(Vec4<float>( 90,-1, 0), 1, new UglyMaterial(Color(255,   0, 255)))); // violet
+    objects.push_back(new Sphere(Vec4<float>(100, 3, 3), 3, new UglyMaterial(Color(255, 127,   0)))); // orange
 
     list<DirectionalLight> lDirLights;
 
@@ -21,8 +22,8 @@ Scene TestScenes::createTestScene1()
                   Vec4<float>(1,0,0), // direction
                   Vec4<float>(0,1,0), // normal
                   16/2, 9/2,
-                  2,
-                  800, 450);
+                  35,
+                  xRes, yRes);
 
     return Scene(objects,lDirLights,AmbientLight(),camera);
 }
