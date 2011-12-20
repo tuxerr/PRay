@@ -11,10 +11,10 @@ public:
     number y;
     number z;
     number t;
-    number norm();
+    number norm() const;
     Vec4<number> normalize();
     Vec4<number> cross(Vec4<number> n);
-    number scalar(Vec4<number> n);
+    number scalar(Vec4<number> n) const;
     Vec4<number> operator+(Vec4<number> n);
     Vec4<number> operator-(Vec4<number> n);
     Vec4<number> operator*(Vec4<number> n);
@@ -28,7 +28,7 @@ Vec4<number>::Vec4(number x,number y,number z,number t) : x(x), y(y), z(z), t(t)
 }
 
 template <class number>
-number Vec4<number>::norm() {
+number Vec4<number>::norm() const {
     return sqrt(x*x+y*y+z*z+t*t);
 }
 
@@ -74,7 +74,7 @@ Vec4<number> Vec4<number>::operator*(number n) {
     Vec4<number> res;
     res.x=x*n;
     res.y=y*n;
-    res.z=z*n;    
+    res.z=z*n;
     res.t=t*n;
     return res;
 }
@@ -84,7 +84,7 @@ Vec4<number> Vec4<number>::operator/(number n) {
     Vec4<number> res;
     res.x=x/n;
     res.y=y/n;
-    res.z=z/n;    
+    res.z=z/n;
     res.t=t/n;
     return res;
 }
@@ -102,7 +102,7 @@ Vec4<number> Vec4<number>::cross(Vec4<number> n) {
 
 //scalar product (dot product)
 template <class number>
-number Vec4<number>::scalar(Vec4<number> n) {
+number Vec4<number>::scalar(Vec4<number> n) const {
     return n.x*x+n.y*y+n.z*z+n.t*t;
 }
 

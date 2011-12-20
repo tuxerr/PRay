@@ -23,3 +23,8 @@ pray_client
 
 # Precompiled headers
 *.h.gch
+
+# Code Blocks files
+*.cbp
+*.workspace
+
