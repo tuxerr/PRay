@@ -2,11 +2,11 @@
 #include "sphere.h"
 #include <math.h>
 
-Sphere::Sphere(const Vec4<float> &center, 
-               float radius, 
+Sphere::Sphere(const Vec4<float> &center,
+               float radius,
                Material* material) :
-    Object(material), 
-    center(center), 
+    Object(material),
+    center(center),
     radius(radius)
 {
 
@@ -23,26 +23,31 @@ float Sphere::getRadius() const {
 /**
  * *distance < 0 if no intersection was found
  */
-void Sphere::getIntersection(Ray& ray, 
-                             float* distance, 
-                             Vec4<float>* normal, 
+void Sphere::getIntersection(Ray& ray,
+                             float* distance,
+                             Vec4<float>* normal,
                              Material** materialIntersection) {
 
-    Vec4<float> SC = center - ray.getOrigin();
-    Vec4<float> rayDirection = ray.getDirection().normalize();
-    if(SC.scalar(rayDirection) <= 0) {
+    // http://www.cs.princeton.edu/courses/archive/fall00/
+    //                                 cs426/lectures/raycast/sld013.htm
+
+    Vec4<float> L = center - ray.getOrigin();
+    Vec4<float> V = ray.getDirection().normalize();
+    float t_ca = L.scalar(V);
+    if (t_ca < 0) {
         *distance = -1;
     } else {
-        Vec4<float> SA = rayDirection*SC.scalar(rayDirection);
-        float nAC2 = pow(SC.norm(), 2) - pow(SA.norm(), 2); // AC² = SC² - SA²
-        if(nAC2 >= pow(radius, 2)) {
+        float d2 = L.scalar(L) - t_ca * t_ca;
+        float r2 = radius * radius;
+        if (d2 > r2) {
             *distance = -1;
         } else {
-	    float nAB = sqrt(pow(radius, 2) - nAC2 ); // AB = sqrt( r² - AC² ) 
-            Vec4<float> SB = SA - rayDirection*nAB;
-            Vec4<float> intersection = ray.getOrigin() + SB;
-            *distance = (intersection - center).norm();
-            *normal = SB.normalize();
+            float t_hc = sqrt(r2 - d2);
+            float t1 = t_ca - t_hc;
+            float t2 = t_ca + t_hc;
+            *distance = (t1<t2) ? t1 : t2;
+            Vec4<float> OP = ray.getOrigin() + V*(*distance) - center;
+            *normal = OP.normalize();
             *materialIntersection = material;
         }
     }
