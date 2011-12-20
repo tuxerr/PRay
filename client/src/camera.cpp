@@ -1,22 +1,18 @@
 #include "camera.h"
 
-/**
- * direction and normal vectors should be given 
- * normalized to the constructor
- */
-Camera::Camera(const Vec4<float> &point, 
-	       const Vec4<float> &direction, 
-	       const Vec4<float> &normal,
-	       float viewplaneWidth, 
-	       float viewplaneHeight, 
-	       float viewplaneDist,
-	       int xResolution,
-	       int yResolution) :
-  point(point), 
-  direction(direction), 
-  normal(normal),
-  viewplaneWidth(viewplaneWidth), 
-  viewplaneHeight(viewplaneHeight), 
+Camera::Camera(Vec4<float> point,
+               Vec4<float> direction,
+               Vec4<float> normal,
+               float viewplaneWidth,
+               float viewplaneHeight,
+               float viewplaneDist,
+               int xResolution,
+               int yResolution) :
+  point(point),
+  direction(direction.normalize()),
+  normal(normal.normalize()),
+  viewplaneWidth(viewplaneWidth),
+  viewplaneHeight(viewplaneHeight),
   viewplaneDist(viewplaneDist),
   xResolution(xResolution),
   yResolution(yResolution)
@@ -49,7 +45,7 @@ float Camera::getViewplaneDist() const {
 }
 
 Vec4<float> Camera::getDirection(int x, int y) {
-    return direction*viewplaneDist + 
-        normal*(x*(viewplaneHeight/xResolution) - viewplaneHeight/2) + 
-        direction*normal*(y*(viewplaneWidth/yResolution) - viewplaneWidth/2);
+  return direction*viewplaneDist
+         + normal*(x*(viewplaneWidth/xResolution) - viewplaneWidth/2)
+         + direction*normal*(y*(viewplaneHeight/yResolution) - viewplaneHeight/2);
 }

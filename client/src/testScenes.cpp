@@ -10,10 +10,10 @@
 Scene TestScenes::createTestScene1()
 {
     list<Object*> objects;
-    objects.push_back(new Sphere(Vec4<float>(10, -5, 0), 3, new UglyMaterial(Color(255,   0,   0))));
-    objects.push_back(new Sphere(Vec4<float>(10,  0, 0), 3, new UglyMaterial(Color(  0, 255,   0))));
-    objects.push_back(new Sphere(Vec4<float>(10,  5, 0), 3, new UglyMaterial(Color(  0,   0, 255))));
-    objects.push_back(new Sphere(Vec4<float>( 8,  0, 0), 1, new UglyMaterial(Color(255,   0, 255))));
+    objects.push_back(new Sphere(Vec4<float>(12,-6, 0), 3, new UglyMaterial(Color(255,   0,   0))));
+    objects.push_back(new Sphere(Vec4<float>(12, 0,-1), 4, new UglyMaterial(Color(  0, 255,   0))));
+    objects.push_back(new Sphere(Vec4<float>(12, 6, 0), 3, new UglyMaterial(Color(  0,   0, 255))));
+    objects.push_back(new Sphere(Vec4<float>(12, 0, 4), 1, new UglyMaterial(Color(255,   0, 255))));
 
     list<DirectionalLight> lDirLights;
 
