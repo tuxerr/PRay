@@ -1,7 +1,8 @@
 #include "triangle.h"
+#include "logger.h"
 
 Triangle::Triangle(Vec4<float> &a, Vec4<float> &b, Vec4<float> &c, Material *material) :
-  Object(material), a(a), b(b), c(c), normal((b - a) * (b - c))
+  Object(material), a(a), b(b), c(c), normal(((b - a) * (b - c)).normalize())
 {
 
 }
@@ -25,8 +26,23 @@ Vec4<float> Triangle::getNormal() {
 void Triangle::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, 
 		     Material **material) {
   float nv = (this->normal).scalar(ray.getDirection());
+  /*  Logger::log(LOG_INFO)<<"normal"<<endl;
+  Logger::log(LOG_INFO)<<(this->normal).x<<endl;  
+  Logger::log(LOG_INFO)<<(this->normal).y<<endl;  
+  Logger::log(LOG_INFO)<<(this->normal).z<<endl;  
+  Logger::log(LOG_INFO)<<(this->normal).t<<endl;  
+
+  Logger::log(LOG_INFO)<<"direction"<<endl;
+  Logger::log(LOG_INFO)<<ray.getDirection().x<<endl;
+  Logger::log(LOG_INFO)<<ray.getDirection().y<<endl;
+  Logger::log(LOG_INFO)<<ray.getDirection().z<<endl;
+  Logger::log(LOG_INFO)<<ray.getDirection().t<<endl;
+  */
   if(nv != 0) { // the ray is not orthogonal to the normal
     float t = (this->normal).scalar(ray.getOrigin() - b) / nv;
+    /*Logger::log(LOG_INFO)<<"t"<<endl;
+      Logger::log(LOG_INFO)<<t<<endl;*/
+
     if(t > 0) { // the ray is going to the plane
       Vec4<float> p = ray.getOrigin() + ray.getDirection()*t;
       float c1 = ((b - a) * (p - a)).scalar(this->normal);
@@ -36,6 +52,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, Vec4<float> *normal,
 	*distance = t;
 	*normal = this->normal;
 	*material = &(*(this->material)); // double * are generaly a bad idea, I don't know why it is used.
+	Logger::log(LOG_INFO)<<"Intersection with a triangle"<<endl;
       } else {
 	*distance = -1;
       }

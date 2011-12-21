@@ -47,5 +47,5 @@ float Camera::getViewplaneDist() const {
 Vec4<float> Camera::getDirection(int x, int y) {
   return direction*viewplaneDist
          + normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))
-         + direction*normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution));
+	  + direction*normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution));
 }

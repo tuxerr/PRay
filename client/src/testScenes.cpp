@@ -3,6 +3,7 @@
 #include "object.h"
 #include "color.h"
 #include "sphere.h"
+#include "triangle.h"
 #include "directionalLight.h"
 #include "ambientLight.h"
 #include "vec4.h"
@@ -15,6 +16,13 @@ Scene TestScenes::createTestScene1(int xRes, int yRes)
     objects.push_back(new Sphere(Vec4<float>(100, 6, 0), 4, new UglyMaterial(Color(  0,   0, 255)))); // blue
     objects.push_back(new Sphere(Vec4<float>( 90,-1, 0), 1, new UglyMaterial(Color(255,   0, 255)))); // violet
     objects.push_back(new Sphere(Vec4<float>(100, 3, 3), 3, new UglyMaterial(Color(255, 127,   0)))); // orange
+
+
+    Vec4<float> a = Vec4<float>(10, 0, 3);
+    Vec4<float> b = Vec4<float>(10, 5, 2);
+    Vec4<float> c = Vec4<float>(10, 2, 5);
+
+    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 127, 0)))); // orange
 
     list<DirectionalLight> lDirLights;
 
