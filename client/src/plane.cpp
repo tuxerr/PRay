@@ -15,8 +15,8 @@ float Plane::getOriginDistance() {
 }
 
 void Plane::getIntersection(Ray &ray, float *distance, Vec4<float> *normal, Material **material) {
-  float PS = normal->scalar(ray.getOrigin());
-  float PD = normal->scalar(ray.getDirection());
+  float PS = (this->normal).scalar(ray.getOrigin());
+  float PD = (this->normal).scalar(ray.getDirection());
   if( PS <= originDistance || PD == 0 ) {
     *distance = -1;
   } else {
