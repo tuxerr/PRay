@@ -18,12 +18,12 @@ Scene TestScenes::createTestScene1(int xRes, int yRes)
 
     list<DirectionalLight> lDirLights;
 
-    Camera camera(Vec4<float>(0,0,0), // center
-                  Vec4<float>(1,0,0), // direction
-                  Vec4<float>(0,1,0), // normal
-                  16/2, 9/2,
-                  35,
-                  xRes, yRes);
+    Camera* camera = new Camera(Vec4<float>(0,0,0), // center
+                                Vec4<float>(1,0,0), // direction
+                                Vec4<float>(0,1,0), // normal
+                                16/2, 9/2,
+                                35,
+                                xRes, yRes);
 
     return Scene(objects,lDirLights,AmbientLight(),camera);
 }

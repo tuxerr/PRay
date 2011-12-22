@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
             exit(EXIT_FAILURE);
         }
 
+        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
         Logger::log(LOG_INFO)<<"SDL initialised"<<endl;
 
         const SDL_VideoInfo* videoInfos = SDL_GetVideoInfo();
@@ -59,39 +61,77 @@ int main(int argc, char *argv[])
 
         Logger::log(LOG_INFO)<<"Rendering started"<<endl;
 
-        for (int y=0 ; y < height ; y++)
-        {
-            for (int x=0 ; x < width ; x++)
-            {
-                pixel = scene.renderPixel(x,y);
+        SDL_Event event;
+        bool rendering = true;
 
-                pixelRGBA(screen, x, y, pixel.getR(), pixel.getG(), pixel.getB(), 255);
+        while ( rendering )
+        {
+            std::cout << "camera.point = " << scene.getCamera()->getPoint().x << " , "
+                                           << scene.getCamera()->getPoint().y << " , "
+                                           << scene.getCamera()->getPoint().z << endl;
+
+            for (int y=0 ; y < height ; y++)
+            {
+                for (int x=0 ; x < width ; x++)
+                {
+                    pixel = scene.renderPixel(x,y);
+
+                    pixelRGBA(screen, x, y, pixel.getR(), pixel.getG(), pixel.getB(), 255);
+                }
             }
 
-            if (y%4)
-                SDL_Flip(screen);
+            SDL_Flip(screen);
 
-            // Logger::log(LOG_INFO)<<"Line #"<<y<<" rendered"<<endl;
-        }
+            bool waiting = true;
 
-        SDL_Flip(screen);
-
-        testScenes.destroyTestScene1(scene);
-
-        SDL_Event event;
-        bool waiting = true;
-        while ( waiting )
-        {
-            SDL_WaitEvent(&event);
-
-            switch (event.type)
+            while (waiting)
             {
+                waiting = false;
+
+                SDL_WaitEvent(&event);
+
+                switch (event.type)
+                {
                 case SDL_QUIT:
+                    rendering = false;
+                    break;
                 case SDL_KEYDOWN:
-                    waiting = false;
+                    switch(event.key.keysym.sym)
+                    {
+                    case SDLK_RETURN:
+                    case SDLK_SPACE:
+                    case SDLK_ESCAPE:
+                        rendering = false;
+                        break;
+                    case SDLK_UP:
+                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x + 5,
+                                                                scene.getCamera()->getPoint().y,
+                                                                scene.getCamera()->getPoint().z));
+                        break;
+                    case SDLK_DOWN:
+                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x - 5,
+                                                                scene.getCamera()->getPoint().y,
+                                                                scene.getCamera()->getPoint().z));
+                        break;
+                    case SDLK_LEFT:
+                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x,
+                                                                scene.getCamera()->getPoint().y + 5,
+                                                                scene.getCamera()->getPoint().z));
+                        break;
+                    case SDLK_RIGHT:
+                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x,
+                                                                scene.getCamera()->getPoint().y - 5,
+                                                                scene.getCamera()->getPoint().z));
+                        break;
+                    default:
+                        waiting = true;
+                        break;
+                    }
                     break;
                 default:
+                    waiting = true;
                     break;
+                }
             }
         }
 
@@ -101,6 +141,7 @@ int main(int argc, char *argv[])
 
         Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
 
+        testScenes.destroyTestScene1(scene);
         SDL_FreeSurface(screen);
         SDL_Quit();
 

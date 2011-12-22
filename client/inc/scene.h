@@ -22,16 +22,17 @@ class Scene {
   list<Object*> objects;
   list<DirectionalLight> directionalLights;
   AmbientLight ambientLight;
-  Camera camera;
+  Camera* camera;
  public :
   Scene(const list<Object*> objects,
 	const list<DirectionalLight>& directionalLights,
 	const AmbientLight& ambientLight,
-	const Camera& camera);
+	Camera* camera);
+  ~Scene();
   list<Object*> getObjects();
   list<DirectionalLight> getDirectionalLights();
   AmbientLight getAmbientLight();
-  Camera getCamera();
+  Camera* getCamera();
   Color renderRay(Ray &ray);
   void computeIntersection(Ray &ray, float *distance, Vec4<float> *normal,
                            Material **material);
