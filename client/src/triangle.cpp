@@ -52,7 +52,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, Vec4<float> *normal,
 	*distance = t;
 	*normal = this->normal;
 	*material = &(*(this->material)); // double * are generaly a bad idea, I don't know why it is used.
-	Logger::log(LOG_INFO)<<"Intersection with a triangle"<<endl;
+	//	Logger::log(LOG_INFO)<<"Intersection with a triangle"<<endl;
       } else {
 	*distance = -1;
       }

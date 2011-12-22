@@ -22,16 +22,25 @@ Scene TestScenes::createTestScene1(int xRes, int yRes)
     Vec4<float> b = Vec4<float>(10, 5, 2);
     Vec4<float> c = Vec4<float>(10, 2, 5);
 
-    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 127, 0)))); // orange
+    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 255, 255)))); // orange
 
     list<DirectionalLight> lDirLights;
 
+    Camera* camera = new Camera(Vec4<float>(61,0,2), // center
+                                Vec4<float>(1,0,0), // direction
+                                Vec4<float>(0,1,0), // normal
+                                16/2, 9/2,
+                                35,
+                                xRes, yRes);
+
+    /*
     Camera* camera = new Camera(Vec4<float>(0,0,0), // center
                                 Vec4<float>(1,0,0), // direction
                                 Vec4<float>(0,1,0), // normal
                                 16/2, 9/2,
                                 35,
                                 xRes, yRes);
+    */
 
     return Scene(objects,lDirLights,AmbientLight(),camera);
 }
