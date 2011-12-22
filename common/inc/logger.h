@@ -16,7 +16,8 @@ using namespace std;
  * The different log types (used with the write function to affect output).
  */
 enum Log_Type {
-    LOG_INFO, 
+    LOG_DEBUG,
+    LOG_INFO,
     LOG_WARNING,
     LOG_ERROR
 };
@@ -36,25 +37,25 @@ protected:
 
 public:
     LoggerStreambuf(string &prefix,fstream &file);
-    
+
     virtual ~LoggerStreambuf() { sync(); }
 
 protected:
     int flushBuffer();
     virtual int overflow(int c=EOF);
     virtual int sync();
-    
+
 };
 
 //main logger class
 class Logger : public ostream
 {
 public:
-    static void init(string file_path=DEFAULT_LOG_PATH); 
+    static void init(string file_path=DEFAULT_LOG_PATH);
     ~Logger();
     static Logger& log(Log_Type type=LOG_INFO);
     void set_logtype(Log_Type type);
-    
+
 private:
     Logger(string file_path);
     Logger(Logger const&);         // Don't Implement.
