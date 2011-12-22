@@ -36,6 +36,14 @@ void Camera::setPoint(Vec4<float> point_) {
   point = point_;
 }
 
+void Camera::setDirection(Vec4<float> direction_) {
+  direction = direction_;
+}
+
+void Camera::setNormal(Vec4<float> normal_) {
+  normal = normal_;
+}
+
 float Camera::getViewplaneWidth() const {
   return viewplaneWidth;
 }

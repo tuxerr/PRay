@@ -1,1 +1,9 @@
 PRay is a parallelized Raytracer that is supposed to run in a client-server mode via TCP sockets.
+
+Camera control keys : (AZERTY keyboard)
+ - tranlsations :
+    forward / backward : z/s
+    left / right : q/s
+    up / down : e/a
+ - rotations :
+    arrow keys

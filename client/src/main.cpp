@@ -10,7 +10,7 @@
 #define HEIGHT  720
 
 
-int main(int argc, char *argv[])
+int main()
 {
     Logger::init("pray_client.log");
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
                 case SDL_QUIT:
                     rendering = false;
                     break;
-                case SDL_KEYDOWN:
+                case SDL_KEYDOWN: // see the README for keys
                     switch(event.key.keysym.sym)
                     {
                     case SDLK_RETURN:
@@ -103,25 +103,73 @@ int main(int argc, char *argv[])
                     case SDLK_ESCAPE:
                         rendering = false;
                         break;
-                    case SDLK_UP:
-                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x + 5,
-                                                                scene.getCamera()->getPoint().y,
-                                                                scene.getCamera()->getPoint().z));
+                    case SDLK_z:
+                        {
+                            Camera* cam = scene.getCamera();
+                            cam->setPoint(cam->getPoint() + cam->getDirection());
+                        }
                         break;
-                    case SDLK_DOWN:
-                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x - 5,
-                                                                scene.getCamera()->getPoint().y,
-                                                                scene.getCamera()->getPoint().z));
+                    case SDLK_s:
+                        {
+                            Camera* cam = scene.getCamera();
+                            cam->setPoint(cam->getPoint() - cam->getDirection());
+                        }
+                        break;
+                    case SDLK_q:
+                        {
+                            Camera* cam = scene.getCamera();
+                            cam->setPoint(cam->getPoint() - cam->getDirection().cross(cam->getNormal()));
+                        }
+                        break;
+                    case SDLK_d:
+                        {
+                            Camera* cam = scene.getCamera();
+                            cam->setPoint(cam->getPoint() + cam->getDirection().cross(cam->getNormal()));
+                        }
+                        break;
+                    case SDLK_a:
+                        {
+                            Camera* cam = scene.getCamera();
+                            cam->setPoint(cam->getPoint() - Vec4<float>(0,0,1));
+                        }
+                        break;
+                    case SDLK_e:
+                        {
+                            Camera* cam = scene.getCamera();
+                            cam->setPoint(cam->getPoint() + Vec4<float>(0,0,1));
+                        }
                         break;
                     case SDLK_LEFT:
-                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x,
-                                                                scene.getCamera()->getPoint().y + 5,
-                                                                scene.getCamera()->getPoint().z));
+                        {
+                            Camera* cam = scene.getCamera();
+                            Vec4<float> axis = Vec4<float>(0,0,1);
+                            cam->setDirection(cam->getDirection().rotate(1, axis));
+                            cam->setNormal(cam->getNormal().rotate(1, axis));
+                        }
                         break;
                     case SDLK_RIGHT:
-                        scene.getCamera()->setPoint(Vec4<float>(scene.getCamera()->getPoint().x,
-                                                                scene.getCamera()->getPoint().y - 5,
-                                                                scene.getCamera()->getPoint().z));
+                        {
+                            Camera* cam = scene.getCamera();
+                            Vec4<float> axis = Vec4<float>(0,0,1);
+                            cam->setDirection(cam->getDirection().rotate(-1, axis));
+                            cam->setNormal(cam->getNormal().rotate(-1, axis));
+                        }
+                        break;
+                    case SDLK_UP:
+                        {
+                            Camera* cam = scene.getCamera();
+                            Vec4<float> axis = cam->getDirection().cross(cam->getNormal());
+                            cam->setDirection(cam->getDirection().rotate(1, axis));
+                            cam->setNormal(cam->getNormal().rotate(1, axis));
+                        }
+                        break;
+                    case SDLK_DOWN:
+                        {
+                            Camera* cam = scene.getCamera();
+                            Vec4<float> axis = cam->getDirection().cross(cam->getNormal());
+                            cam->setDirection(cam->getDirection().rotate(-1, axis));
+                            cam->setNormal(cam->getNormal().rotate(-1, axis));
+                        }
                         break;
                     default:
                         waiting = true;
