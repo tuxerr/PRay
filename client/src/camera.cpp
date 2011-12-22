@@ -32,6 +32,10 @@ Vec4<float> Camera::getNormal() const {
   return normal;
 }
 
+void Camera::setPoint(Vec4<float> point_) {
+  point = point_;
+}
+
 float Camera::getViewplaneWidth() const {
   return viewplaneWidth;
 }

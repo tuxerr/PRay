@@ -5,13 +5,18 @@
 Scene::Scene(const list<Object*> objects,
 	     const list<DirectionalLight> &directionalLights,
 	     const AmbientLight &ambientLight,
-	     const Camera &camera) :
+	     Camera* camera) :
   objects(objects),
   directionalLights(directionalLights),
   ambientLight(ambientLight),
   camera(camera)
 {
 
+}
+
+Scene::~Scene()
+{
+    //delete camera;
 }
 
 list<Object*> Scene::getObjects() {
@@ -26,7 +31,7 @@ AmbientLight Scene::getAmbientLight() {
   return ambientLight;
 }
 
-Camera Scene::getCamera() {
+Camera* Scene::getCamera() {
   return camera;
 }
 
@@ -76,9 +81,9 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec4<float> *normal,
 
 Color Scene::renderPixel(int x, int y) {
 
-    Vec4<float> direction  = camera.getDirection(x, y); //.normalize();
+    Vec4<float> direction  = camera->getDirection(x, y); //.normalize();
     Color color = Color(0,0,0);
-    Vec4<float> origin = camera.getPoint();
+    Vec4<float> origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
     return renderRay(r);
 }

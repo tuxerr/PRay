@@ -26,6 +26,7 @@ public :
     Vec4<float> getPoint() const;
     Vec4<float> getDirection() const;
     Vec4<float> getNormal() const;
+    void setPoint(Vec4<float> point_);
     float getViewplaneWidth() const;
     float getViewplaneHeight() const;
     float getViewplaneDist() const;
