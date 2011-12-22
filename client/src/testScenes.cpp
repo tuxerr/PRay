@@ -22,7 +22,7 @@ Scene TestScenes::createTestScene1(int xRes, int yRes)
     Vec4<float> b = Vec4<float>(10, 5, 2);
     Vec4<float> c = Vec4<float>(10, 2, 5);
 
-    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 255, 255)))); // orange
+    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 255, 255)))); // white
 
     list<DirectionalLight> lDirLights;
 
