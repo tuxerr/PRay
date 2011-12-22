@@ -6,8 +6,8 @@
 #include "color.h"
 #include "testScenes.h"
 
-#define WIDTH  1280/3
-#define HEIGHT  720/3
+#define WIDTH  1280
+#define HEIGHT  720
 
 
 int main()
