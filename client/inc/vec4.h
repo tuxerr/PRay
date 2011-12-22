@@ -20,6 +20,7 @@ public:
     Vec4<number> operator*(Vec4<number> n);
     Vec4<number> operator*(number n);
     Vec4<number> operator/(number n);
+    Vec4<number> rotate(float angle, Vec4<number> axis);
 private:
 };
 
@@ -104,6 +105,13 @@ Vec4<number> Vec4<number>::cross(Vec4<number> n) {
 template <class number>
 number Vec4<number>::scalar(Vec4<number> n) const {
     return n.x*x+n.y*y+n.z*z+n.t*t;
+}
+
+// phi : angle in degrees
+template <class number>
+Vec4<number> Vec4<number>::rotate(float phi, Vec4<number> axis) {
+    phi = phi * 3.14159265  / 180; // angle in radians
+    return (*this) * (float)(cos(phi)) + (float)(1-cos(phi)) * this->scalar(axis) + axis.cross(*this) * (float)(sin(phi));
 }
 
 #endif
