@@ -66,9 +66,10 @@ int main()
 
         while ( rendering )
         {
-            std::cout << "camera.point = " << scene.getCamera()->getPoint().x << " , "
-                                           << scene.getCamera()->getPoint().y << " , "
-                                           << scene.getCamera()->getPoint().z << endl;
+            Logger::log(LOG_DEBUG) << "camera.point = "
+                                   << scene.getCamera()->getPoint().x << " , "
+                                   << scene.getCamera()->getPoint().y << " , "
+                                   << scene.getCamera()->getPoint().z << endl;
 
             for (int y=0 ; y < height ; y++)
             {

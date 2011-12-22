@@ -1,6 +1,6 @@
 #include "logger.h"
 
-LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) : 
+LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
     prefix(prefix), file(file), firstflush(true) {
     setp (buffer, buffer+(bufferSize-1));
 }
@@ -10,10 +10,12 @@ int LoggerStreambuf::flushBuffer () {
     if(firstflush && num!=0) {
         write_mut.lock();
         file<<prefix;
+        std::cout<<prefix;
         firstflush=false;
-    } 
+    }
     if(num!=0) {
         file.write(buffer,num);
+        std::cout.write(buffer,num);
         pbump(-num); // reset put pointer accordingly
     }
     return num;
@@ -53,7 +55,7 @@ Logger& Logger::log(Log_Type type) {
     }
 }
 
-Logger::Logger(string file_path) : 
+Logger::Logger(string file_path) :
     ostream(new LoggerStreambuf(current_prefix,m_file)), ios(0), current_prefix("[INF]")
 {
     m_file.open(file_path.c_str(),ios::out|ios::trunc);
@@ -76,6 +78,9 @@ void Logger::set_logtype(Log_Type type) {
 string Logger::logtype_to_prefix(Log_Type type) {
     string prefix="";
     switch (type) {
+    case LOG_DEBUG:
+        prefix="[DBG] ";
+        break;
     case LOG_INFO:
         prefix="[INF] ";
         break;
