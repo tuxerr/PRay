@@ -30,13 +30,11 @@ void Triangle::getIntersection(Ray &ray, float *distance, Vec3<float> *normal,
         Logger::log(LOG_INFO)<<(this->normal).x<<endl;
         Logger::log(LOG_INFO)<<(this->normal).y<<endl;
         Logger::log(LOG_INFO)<<(this->normal).z<<endl;
-        Logger::log(LOG_INFO)<<(this->normal).t<<endl;
 
         Logger::log(LOG_INFO)<<"direction"<<endl;
         Logger::log(LOG_INFO)<<ray.getDirection().x<<endl;
         Logger::log(LOG_INFO)<<ray.getDirection().y<<endl;
         Logger::log(LOG_INFO)<<ray.getDirection().z<<endl;
-        Logger::log(LOG_INFO)<<ray.getDirection().t<<endl;
     */
     if(nv != 0) { // the ray is not orthogonal to the normal
         float t = (this->normal).scalar(ray.getOrigin() - b) / nv;
