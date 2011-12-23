@@ -1,29 +1,29 @@
 #include "triangle.h"
 #include "logger.h"
 
-Triangle::Triangle(Vec4<float> &a, Vec4<float> &b, Vec4<float> &c, Material *material) :
+Triangle::Triangle(Vec3<float> &a, Vec3<float> &b, Vec3<float> &c, Material *material) :
     Object(material), a(a), b(b), c(c), normal(((b - a) * (b - c)).normalize())
 {
 
 }
 
-Vec4<float> Triangle::getA() {
+Vec3<float> Triangle::getA() {
     return a;
 }
 
-Vec4<float> Triangle::getB() {
+Vec3<float> Triangle::getB() {
     return b;
 }
 
-Vec4<float> Triangle::getC() {
+Vec3<float> Triangle::getC() {
     return c;
 }
 
-Vec4<float> Triangle::getNormal() {
+Vec3<float> Triangle::getNormal() {
     return normal;
 }
 
-void Triangle::getIntersection(Ray &ray, float *distance, Vec4<float> *normal,
+void Triangle::getIntersection(Ray &ray, float *distance, Vec3<float> *normal,
                                Material **material) {
     float nv = (this->normal).scalar(ray.getDirection());
     /*  Logger::log(LOG_INFO)<<"normal"<<endl;
@@ -44,7 +44,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, Vec4<float> *normal,
           Logger::log(LOG_INFO)<<t<<endl;*/
 
         if(t > 0) { // the ray is going to the plane
-            Vec4<float> p = ray.getOrigin() + ray.getDirection()*t;
+            Vec3<float> p = ray.getOrigin() + ray.getDirection()*t;
             float c1 = ((b - a) * (p - a)).scalar(this->normal);
             float c2 = ((c - b) * (p - b)).scalar(this->normal);
             float c3 = ((a - c) * (p - c)).scalar(this->normal);

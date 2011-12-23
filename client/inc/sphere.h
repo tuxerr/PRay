@@ -1,7 +1,7 @@
 #ifndef DEF_SPHERE
 #define DEF_SPHERE
 
-#include "vec4.h"
+#include "vec3.h"
 #include "material.h"
 #include "ray.h"
 #include "object.h"
@@ -10,17 +10,17 @@ using namespace std;
 
 class Sphere : public Object {
 private :
-    Vec4<float> center;
+    Vec3<float> center;
     float radius;
 public :
-    Sphere(const Vec4<float>& center, 
-           float radius, 
+    Sphere(const Vec3<float>& center,
+           float radius,
            Material* material);
-    void getIntersection(Ray& ray, 
+    void getIntersection(Ray& ray,
                          float* distance,
-                         Vec4<float>* normal,
+                         Vec3<float>* normal,
                          Material** material);
-    Vec4<float> getCenter() const;
+    Vec3<float> getCenter() const;
     float getRadius() const;
 };
 

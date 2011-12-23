@@ -4,11 +4,11 @@
 #include "color.h"
 #include "ray.h"
 #include "material.h"
-#include "vec4.h"
+#include "vec3.h"
 
 class PhongMaterial : public Material {
  private :
-  
+
   Color color;
 
   /**
@@ -39,7 +39,7 @@ class PhongMaterial : public Material {
   float getDiffuseReflection();
   float getAmbiantReflection();
   float getShininess();
-  Color renderRay(const Ray &ray, const Vec4<float> &normal, Scene *scene);  
+  Color renderRay(const Ray &ray, const Vec3<float> &normal, Scene *scene);
 };
 
 #endif

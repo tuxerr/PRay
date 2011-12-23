@@ -6,37 +6,37 @@
 #include "triangle.h"
 #include "directionalLight.h"
 #include "ambientLight.h"
-#include "vec4.h"
+#include "vec3.h"
 
 Scene TestScenes::createTestScene1(int xRes, int yRes)
 {
     list<Object*> objects;
-    objects.push_back(new Sphere(Vec4<float>(100,-6, 0), 3, new UglyMaterial(Color(255,   0,   0)))); // red
-    objects.push_back(new Sphere(Vec4<float>(100, 0, 0), 3, new UglyMaterial(Color(  0, 255,   0)))); // green
-    objects.push_back(new Sphere(Vec4<float>(100, 6, 0), 4, new UglyMaterial(Color(  0,   0, 255)))); // blue
-    objects.push_back(new Sphere(Vec4<float>( 90,-1, 0), 1, new UglyMaterial(Color(255,   0, 255)))); // violet
-    objects.push_back(new Sphere(Vec4<float>(100, 3, 3), 3, new UglyMaterial(Color(255, 127,   0)))); // orange
+    objects.push_back(new Sphere(Vec3<float>(100,-6, 0), 3, new UglyMaterial(Color(255,   0,   0)))); // red
+    objects.push_back(new Sphere(Vec3<float>(100, 0, 0), 3, new UglyMaterial(Color(  0, 255,   0)))); // green
+    objects.push_back(new Sphere(Vec3<float>(100, 6, 0), 4, new UglyMaterial(Color(  0,   0, 255)))); // blue
+    objects.push_back(new Sphere(Vec3<float>( 90,-1, 0), 1, new UglyMaterial(Color(255,   0, 255)))); // violet
+    objects.push_back(new Sphere(Vec3<float>(100, 3, 3), 3, new UglyMaterial(Color(255, 127,   0)))); // orange
 
 
-    Vec4<float> a = Vec4<float>(10, 0, 3);
-    Vec4<float> b = Vec4<float>(10, 5, 2);
-    Vec4<float> c = Vec4<float>(10, 2, 5);
+    Vec3<float> a = Vec3<float>(30, 0, 3);
+    Vec3<float> b = Vec3<float>(30, 5, 2);
+    Vec3<float> c = Vec3<float>(30, 2, 5);
 
     objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 255, 255)))); // white
 
     list<DirectionalLight> lDirLights;
 
-    Camera* camera = new Camera(Vec4<float>(61,0,2), // center
-                                Vec4<float>(1,0,0), // direction
-                                Vec4<float>(0,1,0), // normal
+    Camera* camera = new Camera(Vec3<float>(-20,0,2), // center
+                                Vec3<float>(1,0,0), // direction
+                                Vec3<float>(0,1,0), // normal
                                 16/2, 9/2,
                                 35,
                                 xRes, yRes);
 
     /*
-    Camera* camera = new Camera(Vec4<float>(0,0,0), // center
-                                Vec4<float>(1,0,0), // direction
-                                Vec4<float>(0,1,0), // normal
+    Camera* camera = new Camera(Vec3<float>(0,0,0), // center
+                                Vec3<float>(1,0,0), // direction
+                                Vec3<float>(0,1,0), // normal
                                 16/2, 9/2,
                                 35,
                                 xRes, yRes);
@@ -67,16 +67,16 @@ Scene TestScenes::getTestScene2()
     for (int x = 0 ; x < 100 ; x += 10)
         for (int y = 0 ; y < 100 ; y += 10)
             for (int z = 0 ; z < 100 ; z += 10)
-                objects.push_back(Sphere(Vec4<float>(x, y, z), 3, &sphereMaterial));
+                objects.push_back(Sphere(Vec3<float>(x, y, z), 3, &sphereMaterial));
 
     list<DirectionalLight> lDirLights;
     lDirLights.push_back(DirectionalLight(20,
 					  Color(255,255,200),
-					  Vec4<float>(1, 1, -1)));
+					  Vec3<float>(1, 1, -1)));
 
-    Camera camera(Vec4<float>(-20, -20, 30),
-                  Vec4<float>(2, 2, -1),
-                  Vec4<float>(-1, -1, 2),
+    Camera camera(Vec3<float>(-20, -20, 30),
+                  Vec3<float>(2, 2, -1),
+                  Vec3<float>(-1, -1, 2),
                   16,9,
                   5,
                   800,450);

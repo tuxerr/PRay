@@ -1,13 +1,13 @@
 #ifndef DEF_CAMERA
 #define DEF_CAMERA
 
-#include "vec4.h"
+#include "vec3.h"
 
 class Camera {
 private :
-    Vec4<float> point;
-    Vec4<float> direction;
-    Vec4<float> normal;
+    Vec3<float> point;
+    Vec3<float> direction;
+    Vec3<float> normal;
     float viewplaneWidth;
     float viewplaneHeight;
     float viewplaneDist;
@@ -15,26 +15,26 @@ private :
     int yResolution;
 
 public :
-    Camera(Vec4<float> point,
-           Vec4<float> direction,
-           Vec4<float> normal,
+    Camera(Vec3<float> point,
+           Vec3<float> direction,
+           Vec3<float> normal,
            float viewplaneWidth,
            float viewplaneHeight,
            float viewplaneDist,
            int xResolution,
            int yResolution);
-    Vec4<float> getPoint() const;
-    Vec4<float> getDirection() const;
-    Vec4<float> getNormal() const;
-    void setPoint(Vec4<float> point);
-    void setDirection(Vec4<float> direction);
-    void setNormal(Vec4<float> normal);
+    Vec3<float> getPoint() const;
+    Vec3<float> getDirection() const;
+    Vec3<float> getNormal() const;
+    void setPoint(Vec3<float> point);
+    void setDirection(Vec3<float> direction);
+    void setNormal(Vec3<float> normal);
     float getViewplaneWidth() const;
     float getViewplaneHeight() const;
     float getViewplaneDist() const;
     int getXResolution() const;
     int getYResolution() const;
-    Vec4<float> getDirection(int x, int y);
+    Vec3<float> getDirection(int x, int y);
 };
 
 #endif

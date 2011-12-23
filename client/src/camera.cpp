@@ -1,8 +1,8 @@
 #include "camera.h"
 
-Camera::Camera(Vec4<float> point,
-               Vec4<float> direction,
-               Vec4<float> normal,
+Camera::Camera(Vec3<float> point,
+               Vec3<float> direction,
+               Vec3<float> normal,
                float viewplaneWidth,
                float viewplaneHeight,
                float viewplaneDist,
@@ -20,27 +20,27 @@ Camera::Camera(Vec4<float> point,
 
 }
 
-Vec4<float> Camera::getPoint() const {
+Vec3<float> Camera::getPoint() const {
   return point;
 }
 
-Vec4<float> Camera::getDirection() const {
+Vec3<float> Camera::getDirection() const {
   return direction;
 }
 
-Vec4<float> Camera::getNormal() const {
+Vec3<float> Camera::getNormal() const {
   return normal;
 }
 
-void Camera::setPoint(Vec4<float> point_) {
+void Camera::setPoint(Vec3<float> point_) {
   point = point_;
 }
 
-void Camera::setDirection(Vec4<float> direction_) {
+void Camera::setDirection(Vec3<float> direction_) {
   direction = direction_;
 }
 
-void Camera::setNormal(Vec4<float> normal_) {
+void Camera::setNormal(Vec3<float> normal_) {
   normal = normal_;
 }
 
@@ -56,7 +56,7 @@ float Camera::getViewplaneDist() const {
   return viewplaneDist;
 }
 
-Vec4<float> Camera::getDirection(int x, int y) {
+Vec3<float> Camera::getDirection(int x, int y) {
   return direction*viewplaneDist
          + normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))
 	  + direction*normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution));

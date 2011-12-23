@@ -12,7 +12,7 @@ Color UglyMaterial::getColor() {
 }
 
 Color UglyMaterial::renderRay(const Ray & ray,
-                              const Vec4<float> & normal,
+                              const Vec3<float> & normal,
                               Scene* /*nonUsedParameter*/) {
 
   float factor = std::abs( ray.getDirection().scalar(normal) / (ray.getDirection().norm() * normal.norm()) );

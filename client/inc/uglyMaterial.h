@@ -4,15 +4,15 @@
 #include "color.h"
 #include "ray.h"
 #include "material.h"
-#include "vec4.h"
+#include "vec3.h"
 
 class UglyMaterial : public Material {
-private:  
+private:
   Color color;
 public :
   UglyMaterial(const Color &color);
   Color getColor();
-  Color renderRay(const Ray &ray, const Vec4<float> &normal, Scene *scene);
+  Color renderRay(const Ray &ray, const Vec3<float> &normal, Scene *scene);
 };
 
 

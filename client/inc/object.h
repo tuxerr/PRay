@@ -3,7 +3,7 @@
 
 #include "ray.h"
 #include "material.h"
-#include "vec4.h"
+#include "vec3.h"
 
 class Object {
 protected :
@@ -11,9 +11,9 @@ protected :
 public :
     Object(Material* material);
     virtual ~Object();
-    virtual void getIntersection(Ray& ray, 
-                                 float* distance, 
-                                 Vec4<float>* normal, 
+    virtual void getIntersection(Ray& ray,
+                                 float* distance,
+                                 Vec3<float>* normal,
                                  Material** material) = 0;
     Material* getMaterial();
 };

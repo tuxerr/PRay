@@ -131,19 +131,19 @@ int main()
                     case SDLK_a:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - Vec4<float>(0,0,1));
+                            cam->setPoint(cam->getPoint() - Vec3<float>(0,0,1));
                         }
                         break;
                     case SDLK_e:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + Vec4<float>(0,0,1));
+                            cam->setPoint(cam->getPoint() + Vec3<float>(0,0,1));
                         }
                         break;
                     case SDLK_LEFT:
                         {
                             Camera* cam = scene.getCamera();
-                            Vec4<float> axis = Vec4<float>(0,0,1);
+                            Vec3<float> axis = Vec3<float>(0,0,1);
                             cam->setDirection(cam->getDirection().rotate(1, axis));
                             cam->setNormal(cam->getNormal().rotate(1, axis));
                         }
@@ -151,7 +151,7 @@ int main()
                     case SDLK_RIGHT:
                         {
                             Camera* cam = scene.getCamera();
-                            Vec4<float> axis = Vec4<float>(0,0,1);
+                            Vec3<float> axis = Vec3<float>(0,0,1);
                             cam->setDirection(cam->getDirection().rotate(-1, axis));
                             cam->setNormal(cam->getNormal().rotate(-1, axis));
                         }
@@ -159,7 +159,7 @@ int main()
                     case SDLK_UP:
                         {
                             Camera* cam = scene.getCamera();
-                            Vec4<float> axis = cam->getDirection().cross(cam->getNormal());
+                            Vec3<float> axis = cam->getDirection().cross(cam->getNormal());
                             cam->setDirection(cam->getDirection().rotate(1, axis));
                             cam->setNormal(cam->getNormal().rotate(1, axis));
                         }
@@ -167,7 +167,7 @@ int main()
                     case SDLK_DOWN:
                         {
                             Camera* cam = scene.getCamera();
-                            Vec4<float> axis = cam->getDirection().cross(cam->getNormal());
+                            Vec3<float> axis = cam->getDirection().cross(cam->getNormal());
                             cam->setDirection(cam->getDirection().rotate(-1, axis));
                             cam->setNormal(cam->getNormal().rotate(-1, axis));
                         }

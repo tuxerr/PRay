@@ -37,7 +37,7 @@ Camera* Scene::getCamera() {
 
 Color Scene::renderRay(Ray &ray) {
   float distance;
-  Vec4<float> normal;
+  Vec3<float> normal;
   Material* material = 0;
 
   computeIntersection(ray, &distance, &normal, &material);
@@ -52,12 +52,12 @@ Color Scene::renderRay(Ray &ray) {
 /**
  * *distance < 0 if no intersection was found
  */
-void Scene::computeIntersection(Ray &ray, float *distance, Vec4<float> *normal,
+void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
                                 Material **material) {
 
     *distance = -2;
     float tempDistance = -1;
-    Vec4<float> tempNormal;
+    Vec3<float> tempNormal;
     Material* tempMaterial;
     list<Object*>::iterator iter;
 
@@ -81,9 +81,9 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec4<float> *normal,
 
 Color Scene::renderPixel(int x, int y) {
 
-    Vec4<float> direction  = camera->getDirection(x, y); //.normalize();
+    Vec3<float> direction  = camera->getDirection(x, y); //.normalize();
     Color color = Color(0,0,0);
-    Vec4<float> origin = camera->getPoint();
+    Vec3<float> origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
     return renderRay(r);
 }

@@ -3,7 +3,7 @@
 
 #include <list>
 
-#include "vec4.h"
+#include "vec3.h"
 #include "camera.h"
 #include "color.h"
 #include "ambientLight.h"
@@ -34,7 +34,7 @@ class Scene {
   AmbientLight getAmbientLight();
   Camera* getCamera();
   Color renderRay(Ray &ray);
-  void computeIntersection(Ray &ray, float *distance, Vec4<float> *normal,
+  void computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
                            Material **material);
   Color renderPixel(int x, int y);
 };

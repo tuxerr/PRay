@@ -1,6 +1,6 @@
 #include "phongMaterial.h"
 
-PhongMaterial::PhongMaterial(const Color &color, float specularReflection, float diffuseReflection, float ambiantReflection, float shininess) : 
+PhongMaterial::PhongMaterial(const Color &color, float specularReflection, float diffuseReflection, float ambiantReflection, float shininess) :
   color(color), specularReflection(specularReflection), diffuseReflection(diffuseReflection),
   ambiantReflection(ambiantReflection), shininess(shininess)
 {
@@ -27,6 +27,6 @@ float PhongMaterial::getShininess() {
   return shininess;
 }
 
-Color PhongMaterial::renderRay(const Ray &ray, const Vec4<float> &normal, Scene *scene) {
+Color PhongMaterial::renderRay(const Ray &ray, const Vec3<float> &normal, Scene *scene) {
   return color; //TODO
 }
