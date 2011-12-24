@@ -37,11 +37,11 @@ void Camera::setPoint(Vec3<float> point_) {
 }
 
 void Camera::setDirection(Vec3<float> direction_) {
-  direction = direction_;
+  direction = direction_.normalize();
 }
 
 void Camera::setNormal(Vec3<float> normal_) {
-  normal = normal_;
+  normal = normal_.normalize();
 }
 
 float Camera::getViewplaneWidth() const {
@@ -57,7 +57,7 @@ float Camera::getViewplaneDist() const {
 }
 
 Vec3<float> Camera::getDirection(int x, int y) {
-  return direction*viewplaneDist
+  return (direction*viewplaneDist
          + normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))
-	  + direction*normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution));
+	  + direction*normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution))).normalize();
 }
