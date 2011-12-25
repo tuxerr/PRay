@@ -1,7 +1,7 @@
 #include "client.h"
 
 Client::Client(SOCKET sock,sockaddr_in &addr_info) : 
-    sock(sock), addr_info(addr_info), continue_loop(false) 
+    sock(sock), addr_info(addr_info), continue_loop(true) 
 {
     ip_addr=string(inet_ntoa(addr_info.sin_addr));
     Logger::log()<<"New client connected : "<<ip_addr<<std::endl;
@@ -58,6 +58,7 @@ void Client::main_loop() {
 
 	int sel_res=select(sock+1,&fd_sock,NULL,NULL,&rp_time);
 
+        Logger::log()<<sel_res<<std::endl;
 	if(sel_res==-1) {
 	    Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
             continue_loop=false;
@@ -66,6 +67,7 @@ void Client::main_loop() {
             socket_mutex.lock();
 	    ssize_t message_length = recv(sock,recv_str,RECV_L,0);    
             socket_mutex.unlock();
+            Logger::log()<<message_length<<std::endl;
 
             if(message_length==0) { // TCP DISCONNECT
                 Logger::log(LOG_WARNING)<<"Client "<<ip_addr<<" has disconnected"<<std::endl;

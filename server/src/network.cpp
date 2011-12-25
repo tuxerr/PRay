@@ -5,7 +5,6 @@ Network::Network(int port) :
 {
     Logger::log()<<"Starting network activities on TCP port "<<port<<endl;
     accept_sock.bind_to_port(port);
-  
 }
 
 Network::~Network() {
@@ -31,8 +30,7 @@ int Network::get_client_number() {
 void Network::tcp_accept_loop() {
     if(SOMAXCONN<NETWORK_MAX_CLIENTS) {
 	max_clients=SOMAXCONN;
-	Logger::log(LOG_WARNING)<<"Network max clients has been reduced from "<<NETWORK_MAX_CLIENTS
-				<<" to "<<SOMAXCONN<<std::endl;
+	Logger::log(LOG_WARNING)<<"Network max clients has been reduced from "<<NETWORK_MAX_CLIENTS<<" to "<<SOMAXCONN<<std::endl;
     }
 
     if(listen(accept_sock.sock,NETWORK_MAX_CLIENTS)==-1) {

@@ -2,6 +2,7 @@
 #include "ncursesui.h"
 #include "network.h"
 #include <ostream>
+#include <unistd.h>
 
 using namespace std;
 
@@ -12,11 +13,7 @@ int main(int argv, char *argc[])
     Network network;
     network.launch();
 
-    NcursesUI ui;
-
-    ui.init();
-
-    ui.run();
+    sleep(10);
 
     network.stop();
 

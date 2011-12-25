@@ -20,7 +20,7 @@ class Client {
     bool has_messages();
     string unstack_message();
     void stop();
-    static void * main_loop_thread(void *This);
+    static void *main_loop_thread(void *This);
 
  private:
     SOCKET sock; 
