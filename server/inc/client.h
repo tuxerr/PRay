@@ -20,6 +20,7 @@ class Client {
     bool has_messages();
     string unstack_message();
     void stop();
+    bool isconnected();
     static void *main_loop_thread(void *This);
 
  private:
@@ -31,6 +32,7 @@ class Client {
     Mutex socket_mutex;
     Mutex received_messages_mutex;
     bool continue_loop;
+    bool islaunched;
 };
 
 #endif

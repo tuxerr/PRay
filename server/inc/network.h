@@ -22,6 +22,7 @@ public:
     void stop();
     void send_to_all(string message);
     void tcp_accept_loop();
+    void purge_clients();
     static void* tcp_accept_loop_thread(void *This);
 
 private:
@@ -30,7 +31,7 @@ private:
     TCPSocket accept_sock;
     int max_clients;
     int listening_port;
-    std::vector<Client> connected_clients;
+    std::list<Client> connected_clients;
     bool continue_loop;
     Mutex client_list_mutex;
     

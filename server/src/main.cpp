@@ -13,7 +13,14 @@ int main(int argv, char *argc[])
     Network network;
     network.launch();
 
-    sleep(10);
+    while(network.get_client_number()==0) {
+        sleep(1);
+    }
+
+    while(network.get_client_number()!=0) {
+        std::cout<<"waiting for all disc"<<std::endl;
+        sleep(1);
+    }
 
     network.stop();
 

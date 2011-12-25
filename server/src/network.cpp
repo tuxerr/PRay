@@ -20,9 +20,23 @@ int Network::launch() {
     return 1;
 }
 
-int Network::get_client_number() {
+void Network::purge_clients() {
     client_list_mutex.lock();
-    int res= connected_clients.size();
+    std::list<Client>::iterator it=connected_clients.begin();
+    for(;it!=connected_clients.end();it++) {
+        if(!it->isconnected()) {
+            connected_clients.erase(it);
+            return purge_clients();
+        }
+    }
+    client_list_mutex.unlock();
+}
+
+int Network::get_client_number() {
+    purge_clients();
+
+    client_list_mutex.lock();
+    int res=connected_clients.size();
     client_list_mutex.unlock();
     return res;
 }
@@ -82,7 +96,7 @@ void* Network::tcp_accept_loop_thread(void *This) {
 
 void Network::stop() {
     client_list_mutex.lock();
-    for(std::vector<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
+    for(std::list<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
         (*it).stop();
     }
     client_list_mutex.unlock();
@@ -92,7 +106,7 @@ void Network::stop() {
 
 void Network::send_to_all(string message) {
     client_list_mutex.lock();
-    for(std::vector<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
+    for(std::list<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
         it->send_message(message);
     }
     client_list_mutex.unlock();

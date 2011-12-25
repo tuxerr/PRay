@@ -1,7 +1,7 @@
 #include "client.h"
 
 Client::Client(SOCKET sock,sockaddr_in &addr_info) : 
-    sock(sock), addr_info(addr_info), continue_loop(true) 
+    sock(sock), addr_info(addr_info), continue_loop(true), islaunched(false)
 {
     ip_addr=string(inet_ntoa(addr_info.sin_addr));
     Logger::log()<<"New client connected : "<<ip_addr<<std::endl;
@@ -21,6 +21,10 @@ int Client::send_message(string mes) {
     socket_mutex.unlock();
 
     return message_length;
+}
+
+bool Client::isconnected() {
+    return islaunched;
 }
 
 void Client::launch_thread() {
@@ -49,6 +53,7 @@ string Client::unstack_message() {
 
 void Client::main_loop() {
     char recv_str[RECV_L]="";
+    islaunched=true;
 
     while(continue_loop) {
 	fd_set fd_sock; FD_ZERO(&fd_sock); FD_SET(sock,&fd_sock);
@@ -58,7 +63,6 @@ void Client::main_loop() {
 
 	int sel_res=select(sock+1,&fd_sock,NULL,NULL,&rp_time);
 
-        Logger::log()<<sel_res<<std::endl;
 	if(sel_res==-1) {
 	    Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
             continue_loop=false;
@@ -67,7 +71,6 @@ void Client::main_loop() {
             socket_mutex.lock();
 	    ssize_t message_length = recv(sock,recv_str,RECV_L,0);    
             socket_mutex.unlock();
-            Logger::log()<<message_length<<std::endl;
 
             if(message_length==0) { // TCP DISCONNECT
                 Logger::log(LOG_WARNING)<<"Client "<<ip_addr<<" has disconnected"<<std::endl;
@@ -80,6 +83,8 @@ void Client::main_loop() {
             }
 	}
     }
+
+    islaunched=false;
 }
 
 void* Client::main_loop_thread(void *This) {
