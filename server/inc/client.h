@@ -20,7 +20,7 @@ class Client {
     bool has_messages();
     string unstack_message();
     void stop();
-    bool isconnected();
+    bool is_connected();
     static void *main_loop_thread(void *This);
 
  private:

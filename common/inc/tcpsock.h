@@ -22,7 +22,7 @@ class TCPSocket {
     TCPSocket();
     ~TCPSocket();
     void bind_to_port(int port);
-    void bind_to_port_and_ip(int port,char *ip);
+    void connect_to_server(const char *ip, int port);
     SOCKET sock;	
 
 };

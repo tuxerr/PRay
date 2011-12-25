@@ -27,17 +27,16 @@ void TCPSocket::bind_to_port(int port) {
     }
 }
 
-void TCPSocket::bind_to_port_and_ip(int port,char *ip) {
+void TCPSocket::connect_to_server(const char *ip,int port) {
     sockaddr_in conf;
     conf.sin_family=AF_INET;
     conf.sin_port=htons(port);
     conf.sin_addr.s_addr=inet_addr(ip);
     
-    /* binding sock to the new sockaddr */
-    if(bind(sock,(sockaddr *)&conf,sizeof(conf)) == SOCKET_ERROR) {
-	Logger::log(LOG_ERROR)<<"Unable to bind socket on port "<<port<<" and ip "<<ip<<". Exiting server"<<std::endl;
+    int connect_res = connect(sock,(sockaddr *)&conf,sizeof(conf));
+    if(connect_res==-1) {
+        Logger::log(LOG_ERROR)<<"Unable to connect socket to "<<ip<<"("<<port<<")"<<std::endl;
         exit(0);
-    } 
-
+    }
 }
 

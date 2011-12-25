@@ -23,7 +23,7 @@ int Client::send_message(string mes) {
     return message_length;
 }
 
-bool Client::isconnected() {
+bool Client::is_connected() {
     return islaunched;
 }
 
@@ -56,15 +56,15 @@ void Client::main_loop() {
     islaunched=true;
 
     while(continue_loop) {
-	fd_set fd_sock; FD_ZERO(&fd_sock); FD_SET(sock,&fd_sock);
 
+        fd_set fd_sock; FD_ZERO(&fd_sock); FD_SET(sock,&fd_sock);
 	struct timeval rp_time;	
 	rp_time.tv_sec=0; rp_time.tv_usec=NETWORK_CLIENT_SLEEPTIME;
 
 	int sel_res=select(sock+1,&fd_sock,NULL,NULL,&rp_time);
 
 	if(sel_res==-1) {
-	    Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
+	    Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
             continue_loop=false;
 	} else if(sel_res>0) {
 
@@ -73,10 +73,10 @@ void Client::main_loop() {
             socket_mutex.unlock();
 
             if(message_length==0) { // TCP DISCONNECT
-                Logger::log(LOG_WARNING)<<"Client "<<ip_addr<<" has disconnected"<<std::endl;
+                Logger::log(LOG_WARNING)<<"Server "<<ip_addr<<" disconnected"<<std::endl;
                 continue_loop=false;
             } else if(message_length==-1) {
-                Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
+                Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
                 continue_loop=false;
             } else {
                 received_messages.push_back(string(recv_str));

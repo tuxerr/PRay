@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <pthread.h>
-#include <vector>
+#include <list>
 #include <string>
 #include <errno.h>
 #include "client.h"
