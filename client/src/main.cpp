@@ -9,6 +9,8 @@
 #define WIDTH  1280
 #define HEIGHT  720
 
+#define CAM_TRANS_FACTOR  5
+#define CAM_ROT_ANGLE     2
 
 int main()
 {
@@ -66,10 +68,20 @@ int main()
 
         while ( rendering )
         {
-            Logger::log(LOG_DEBUG) << "camera.point = "
-                                   << scene.getCamera()->getPoint().x << " , "
-                                   << scene.getCamera()->getPoint().y << " , "
-                                   << scene.getCamera()->getPoint().z << endl;
+	  /*
+            Logger::log(LOG_DEBUG) << "Camera point=("
+                                   << scene.getCamera()->getPoint().x << ","
+                                   << scene.getCamera()->getPoint().y << ","
+                                   << scene.getCamera()->getPoint().z 
+				   << ") direction=("
+				   << scene.getCamera()->getDirection().x << ","
+				   << scene.getCamera()->getDirection().y << ","
+				   << scene.getCamera()->getDirection().z
+				   << ") normal=("
+				   << scene.getCamera()->getNormal().x << ","
+				   << scene.getCamera()->getNormal().y << ","
+				   << scene.getCamera()->getNormal().z << ")" << endl;
+	  */
 
             for (int y=0 ; y < height ; y++)
             {
@@ -107,69 +119,69 @@ int main()
                     case SDLK_z:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + cam->getDirection());
+                            cam->setPoint(cam->getPoint() + cam->getDirection()*CAM_TRANS_FACTOR);
                         }
                         break;
                     case SDLK_s:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - cam->getDirection());
+                            cam->setPoint(cam->getPoint() - cam->getDirection()*CAM_TRANS_FACTOR);
                         }
                         break;
                     case SDLK_q:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - cam->getDirection().cross(cam->getNormal()));
+                            cam->setPoint(cam->getPoint() - cam->getDirection().cross(cam->getNormal())*CAM_TRANS_FACTOR);
                         }
                         break;
                     case SDLK_d:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + cam->getDirection().cross(cam->getNormal()));
+                            cam->setPoint(cam->getPoint() + cam->getDirection().cross(cam->getNormal())*CAM_TRANS_FACTOR);
                         }
                         break;
                     case SDLK_a:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - Vec3<float>(0,0,1));
+                            cam->setPoint(cam->getPoint() - Vec3<float>(0,0,1)*CAM_TRANS_FACTOR);
                         }
                         break;
                     case SDLK_e:
                         {
                             Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + Vec3<float>(0,0,1));
+                            cam->setPoint(cam->getPoint() + Vec3<float>(0,0,1)*CAM_TRANS_FACTOR);
                         }
                         break;
                     case SDLK_LEFT:
                         {
                             Camera* cam = scene.getCamera();
                             Vec3<float> axis = Vec3<float>(0,0,1);
-                            cam->setDirection(cam->getDirection().rotate(1, axis));
-                            cam->setNormal(cam->getNormal().rotate(1, axis));
+                            cam->setDirection(cam->getDirection().rotate(-CAM_ROT_ANGLE, axis));
+                            cam->setNormal(cam->getNormal().rotate(-CAM_ROT_ANGLE, axis));
                         }
                         break;
                     case SDLK_RIGHT:
                         {
                             Camera* cam = scene.getCamera();
                             Vec3<float> axis = Vec3<float>(0,0,1);
-                            cam->setDirection(cam->getDirection().rotate(-1, axis));
-                            cam->setNormal(cam->getNormal().rotate(-1, axis));
+                            cam->setDirection(cam->getDirection().rotate(CAM_ROT_ANGLE, axis));
+                            cam->setNormal(cam->getNormal().rotate(CAM_ROT_ANGLE, axis));
                         }
                         break;
                     case SDLK_UP:
                         {
                             Camera* cam = scene.getCamera();
                             Vec3<float> axis = cam->getDirection().cross(cam->getNormal());
-                            cam->setDirection(cam->getDirection().rotate(1, axis));
-                            cam->setNormal(cam->getNormal().rotate(1, axis));
+                            cam->setDirection(cam->getDirection().rotate(CAM_ROT_ANGLE, axis));
+                            cam->setNormal(cam->getNormal().rotate(CAM_ROT_ANGLE, axis));
                         }
                         break;
                     case SDLK_DOWN:
                         {
                             Camera* cam = scene.getCamera();
                             Vec3<float> axis = cam->getDirection().cross(cam->getNormal());
-                            cam->setDirection(cam->getDirection().rotate(-1, axis));
-                            cam->setNormal(cam->getNormal().rotate(-1, axis));
+                            cam->setDirection(cam->getDirection().rotate(-CAM_ROT_ANGLE, axis));
+                            cam->setNormal(cam->getNormal().rotate(-CAM_ROT_ANGLE, axis));
                         }
                         break;
                     default:
