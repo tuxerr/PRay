@@ -27,7 +27,7 @@ void TCPSocket::bind_to_port(int port) {
     }
 }
 
-void TCPSocket::connect_to_server(const char *ip,int port) {
+int TCPSocket::connect_to_server(const char *ip,int port) {
     sockaddr_in conf;
     conf.sin_family=AF_INET;
     conf.sin_port=htons(port);
@@ -36,7 +36,6 @@ void TCPSocket::connect_to_server(const char *ip,int port) {
     int connect_res = connect(sock,(sockaddr *)&conf,sizeof(conf));
     if(connect_res==-1) {
         Logger::log(LOG_ERROR)<<"Unable to connect socket to "<<ip<<"("<<port<<")"<<std::endl;
-        exit(0);
     }
+    return connect_res;
 }
-

@@ -1,6 +1,6 @@
 #include "server.h"
 
-Server::Server(char *ip,int port) :
+Server::Server(const char *ip,int port) :
     ip_addr(ip), dest_port(port), continue_loop(true), islaunched(false)
 {
 }
@@ -14,7 +14,12 @@ void Server::connect() {
 }
 
 void Server::main_loop() {
-    sock.connect_to_server(ip_addr.c_str(),dest_port);
+ 
+    while(sock.connect_to_server(ip_addr.c_str(),dest_port)!=0) {
+        sleep(2);
+    }
+    Logger::log()<<"Established connection to the server "<<ip_addr<<"("<<dest_port<<")"<<std::endl;
+    
     char recv_str[RECV_L]="";
     islaunched=true;
 
@@ -27,7 +32,7 @@ void Server::main_loop() {
 	int sel_res=select(sock.sock+1,&fd_sock,NULL,NULL,&rp_time);
 
 	if(sel_res==-1) {
-	    Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
+	    Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
             continue_loop=false;
 	} else if(sel_res>0) {
 
@@ -36,10 +41,10 @@ void Server::main_loop() {
             socket_mutex.unlock();
 
             if(message_length==0) { // TCP DISCONNECT
-                Logger::log(LOG_WARNING)<<"Client "<<ip_addr<<" has disconnected"<<std::endl;
+                Logger::log(LOG_WARNING)<<"Server "<<ip_addr<<" has disconnected"<<std::endl;
                 continue_loop=false;
             } else if(message_length==-1) {
-                Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
+                Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
                 continue_loop=false;
             } else {
                 received_messages.push_back(string(recv_str));
@@ -48,6 +53,7 @@ void Server::main_loop() {
     }
 
     islaunched=false;
+    Logger::log()<<"Disconnecting from server "<<ip_addr<<"("<<dest_port<<")"<<std::endl;
 }
 
 void Server::stop() {

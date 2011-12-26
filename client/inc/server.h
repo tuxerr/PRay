@@ -15,7 +15,7 @@
 
 class Server {
 public:
-    Server(char *ip,int port=DEFAULT_LISTENING_PORT);
+    Server(const char *ip,int port=DEFAULT_LISTENING_PORT);
     void connect();
     void stop();
     int send_message(string mes);

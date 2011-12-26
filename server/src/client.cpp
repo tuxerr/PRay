@@ -9,12 +9,12 @@ Client::Client(SOCKET sock,sockaddr_in &addr_info,int id_number) :
 }
 
 Client::~Client() {
-
+    
 }
 
 int Client::send_message(string mes) {
     if(!is_connected()) {
-        Logger::log(LOG_ERROR)<<"Error while sending TCP packet on client "<<ip_addr<<" thread"<<std::endl;
+        Logger::log(LOG_ERROR)<<"Error while sending TCP packet on client "<<ip_addr<<" thread : Client is disconnected"<<std::endl;
         return -1;
     }
 
@@ -56,9 +56,14 @@ string Client::unstack_message() {
     if(!is_connected()) {
         return "";
     }
+    string res;
     received_messages_mutex.lock();
-    string res=received_messages.front();
-    received_messages.pop_front();
+    if(!received_messages.empty()) {
+        res=received_messages.front();        
+        received_messages.pop_front();
+    } else {
+        res="";
+    }
     received_messages_mutex.unlock();
     return res;
 }
