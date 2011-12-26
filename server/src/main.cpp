@@ -18,8 +18,12 @@ int main(int argv, char *argc[])
     }
 
     while(network.get_client_number()!=0) {
-        std::cout<<"waiting for all disc"<<std::endl;
-        sleep(1);
+        sleep(2);
+        std::vector<int> res = network.get_client_ids();
+        Client *cli = network.get_client(res.back());
+        cli->send_message("trololololo");
+        while(!cli->has_messages());
+        std::cout<<"received : "<<cli->unstack_message()<<std::endl;
     }
 
     network.stop();

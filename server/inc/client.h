@@ -12,7 +12,7 @@
 
 class Client {
  public:
-    Client(SOCKET sock,sockaddr_in &addr_info);
+    Client(SOCKET sock,sockaddr_in &addr_info,int id_number);
     ~Client();
     int send_message(string mes);
     void launch_thread();
@@ -21,6 +21,7 @@ class Client {
     string unstack_message();
     void stop();
     bool is_connected();
+    int get_id();
     static void *main_loop_thread(void *This);
 
  private:
@@ -33,6 +34,7 @@ class Client {
     Mutex received_messages_mutex;
     bool continue_loop;
     bool islaunched;
+    int id_number;
 };
 
 #endif

@@ -1,7 +1,8 @@
 #include "client.h"
 
-Client::Client(SOCKET sock,sockaddr_in &addr_info) : 
-    sock(sock), addr_info(addr_info), continue_loop(true), islaunched(false)
+Client::Client(SOCKET sock,sockaddr_in &addr_info,int id_number) : 
+    sock(sock), addr_info(addr_info), continue_loop(true), 
+    islaunched(false), id_number(id_number)
 {
     ip_addr=string(inet_ntoa(addr_info.sin_addr));
     Logger::log()<<"New client connected : "<<ip_addr<<std::endl;
@@ -12,6 +13,11 @@ Client::~Client() {
 }
 
 int Client::send_message(string mes) {
+    if(!is_connected()) {
+        Logger::log(LOG_ERROR)<<"Error while sending TCP packet on client "<<ip_addr<<" thread"<<std::endl;
+        return -1;
+    }
+
     socket_mutex.lock();
     ssize_t message_length = send(sock,mes.c_str(),mes.size()+1,0);
     if(message_length==-1) {
@@ -36,6 +42,9 @@ void Client::launch_thread() {
 }
 
 bool Client::has_messages() {
+    if(!is_connected()) {
+        return false;
+    }
     bool empty;
     received_messages_mutex.lock();
     empty=received_messages.empty();
@@ -44,6 +53,9 @@ bool Client::has_messages() {
 }
 
 string Client::unstack_message() {
+    if(!is_connected()) {
+        return "";
+    }
     received_messages_mutex.lock();
     string res=received_messages.front();
     received_messages.pop_front();
@@ -64,7 +76,7 @@ void Client::main_loop() {
 	int sel_res=select(sock+1,&fd_sock,NULL,NULL,&rp_time);
 
 	if(sel_res==-1) {
-	    Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
+	    Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
             continue_loop=false;
 	} else if(sel_res>0) {
 
@@ -73,18 +85,22 @@ void Client::main_loop() {
             socket_mutex.unlock();
 
             if(message_length==0) { // TCP DISCONNECT
-                Logger::log(LOG_WARNING)<<"Server "<<ip_addr<<" disconnected"<<std::endl;
+                Logger::log(LOG_WARNING)<<"Client "<<ip_addr<<" disconnected"<<std::endl;
                 continue_loop=false;
             } else if(message_length==-1) {
-                Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
+                Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
                 continue_loop=false;
             } else {
-                received_messages.push_back(string(recv_str));
+                received_messages.push_back(string(recv_str,message_length-1));
             }
 	}
     }
 
     islaunched=false;
+}
+
+int Client::get_id() {
+    return id_number;
 }
 
 void* Client::main_loop_thread(void *This) {

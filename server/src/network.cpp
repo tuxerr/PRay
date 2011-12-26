@@ -1,7 +1,7 @@
 #include "network.h"
 
 Network::Network(int port) : 
-    listening_port(port), continue_loop(true)
+    listening_port(port), continue_loop(true), last_id(-1)
 {
     Logger::log()<<"Starting network activities on TCP port "<<port<<endl;
     accept_sock.bind_to_port(port);
@@ -22,11 +22,11 @@ int Network::launch() {
 
 void Network::purge_clients() {
     client_list_mutex.lock();
-    std::list<Client>::iterator it=connected_clients.begin();
+
+    std::map<int,Client>::iterator it=connected_clients.begin();
     for(;it!=connected_clients.end();it++) {
-        if(!it->isconnected()) {
+        if(! it->second.is_connected() ) {
             connected_clients.erase(it);
-            return purge_clients();
         }
     }
     client_list_mutex.unlock();
@@ -75,11 +75,11 @@ void Network::tcp_accept_loop() {
             SOCKET new_socket=accept(accept_sock.sock,(sockaddr*)&info,&info_size); 
 
             if(new_socket>0) { 	// a new client has been found
-                Client act_client(new_socket,info);
-                connected_clients.push_back(act_client);
-            
-                // start the client thread
-                connected_clients.back().launch_thread();
+                Client act_client(new_socket,info,last_id+1);
+                connected_clients.insert(pair<int,Client>(last_id+1,act_client));
+                connected_clients.find(last_id+1)->second.launch_thread();
+                last_id++;
+
             }
         }
 
@@ -96,8 +96,8 @@ void* Network::tcp_accept_loop_thread(void *This) {
 
 void Network::stop() {
     client_list_mutex.lock();
-    for(std::list<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
-        (*it).stop();
+    for(std::map<int,Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
+        it->second.stop();
     }
     client_list_mutex.unlock();
     continue_loop=false;
@@ -105,9 +105,40 @@ void Network::stop() {
 }
 
 void Network::send_to_all(string message) {
-    client_list_mutex.lock();
-    for(std::list<Client>::iterator it=connected_clients.begin();it!=connected_clients.end();it++) {
-        it->send_message(message);
+    for(std::map<int,Client>::iterator it=connected_clients.begin();
+        it!=connected_clients.end();it++) {
+        it->second.send_message(message);
     }
-    client_list_mutex.unlock();
+}
+
+std::vector<int> Network::get_client_ids() {
+    std::vector<int> ret;
+    for(std::map<int,Client>::iterator it=connected_clients.begin();
+        it!=connected_clients.end();it++) {
+        ret.push_back(it->first);
+    }
+    return ret;
+}
+
+int Network::get_last_connected_client_id() {
+    return last_id;
+}
+
+Client* Network::get_client(int id) {
+    std::map<int,Client>::iterator it=connected_clients.find(id);
+    if(it==connected_clients.end()) {
+        return NULL;
+    } else {
+        return &(it->second);
+    }
+}
+
+Client* Network::get_first_nonempty_client() {
+    for(std::map<int,Client>::iterator it=connected_clients.begin();
+        it!=connected_clients.end();it++) {
+        if(it->second.has_messages()) {
+            return &(it->second);
+        }
+    }
+    return NULL;
 }

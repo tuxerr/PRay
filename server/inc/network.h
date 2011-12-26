@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <pthread.h>
+#include <vector>
+#include <map>
 #include <list>
 #include <string>
 #include <errno.h>
@@ -23,17 +25,22 @@ public:
     void send_to_all(string message);
     void tcp_accept_loop();
     void purge_clients();
+    std::vector<int> get_client_ids();
+    int get_last_connected_client_id();
+    Client* get_first_nonempty_client();
+    Client* get_client(int id);
     static void* tcp_accept_loop_thread(void *This);
 
-private:
 
+private:
     pthread_t thread;
     TCPSocket accept_sock;
     int max_clients;
     int listening_port;
-    std::list<Client> connected_clients;
+    std::map<int,Client> connected_clients;
     bool continue_loop;
     Mutex client_list_mutex;
+    int last_id;
     
 };
 
