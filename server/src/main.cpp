@@ -9,7 +9,6 @@ using namespace std;
 int main(int argv, char *argc[])
 {
     Logger::init("pray_server.log");
-    Logger::log()<<"salut"<<endl;
     Network network;
     network.launch();
 
@@ -22,7 +21,7 @@ int main(int argv, char *argc[])
         std::vector<int> res = network.get_client_ids();
         Client *cli = network.get_client(res.back());
         cli->send_message("trololololo");
-        while(!cli->has_messages());
+        while(!cli->has_messages() && cli->is_connected());
         std::cout<<"received : "<<cli->unstack_message()<<std::endl;
     }
 

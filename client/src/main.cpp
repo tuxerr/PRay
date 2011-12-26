@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
 #include "logger.h"
+#include "server.h"
 #include "color.h"
 #include "testScenes.h"
 

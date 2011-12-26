@@ -24,21 +24,22 @@ void Network::purge_clients() {
     client_list_mutex.lock();
 
     std::map<int,Client>::iterator it=connected_clients.begin();
-    for(;it!=connected_clients.end();it++) {
+    while(it!=connected_clients.end()) {
         if(! it->second.is_connected() ) {
-            connected_clients.erase(it);
+            it->second.stop();
+            connected_clients.erase(it++);
+        } else {
+            ++it;
         }
     }
+
     client_list_mutex.unlock();
 }
 
 int Network::get_client_number() {
     purge_clients();
-
-    client_list_mutex.lock();
-    int res=connected_clients.size();
-    client_list_mutex.unlock();
-    return res;
+    
+    return connected_clients.size();
 }
 
 void Network::tcp_accept_loop() {
