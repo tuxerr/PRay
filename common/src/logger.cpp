@@ -2,7 +2,7 @@
 
 Logger* Logger::logger_ptr;
 
-void (*Logger::sigsegv_handlerptr)(int) = NULL;
+void (*Logger::sigsegv_handlerptr)(int);
 
 LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
     prefix(prefix), file(file), firstflush(true) {

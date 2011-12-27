@@ -55,13 +55,13 @@ public:
     static void init(string file_path=DEFAULT_LOG_PATH);
     ~Logger();
     static Logger& log(Log_Type type=LOG_INFO);
-    void close();
     void set_logtype(Log_Type type);
 
 private:
     Logger(string file_path);
     Logger(Logger const&);         // Don't Implement.
     void operator=(Logger const&); // Don't implement
+    void close();
 
     string logtype_to_prefix(Log_Type type);
     string current_prefix;
