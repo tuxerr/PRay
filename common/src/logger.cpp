@@ -1,5 +1,9 @@
 #include "logger.h"
 
+Logger* Logger::logger_ptr;
+
+void (*Logger::sigsegv_handlerptr)(int) = NULL;
+
 LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
     prefix(prefix), file(file), firstflush(true) {
     setp (buffer, buffer+(bufferSize-1));
@@ -43,6 +47,13 @@ int LoggerStreambuf::sync() {
 void Logger::init(string file_path) {
     static Logger log(file_path);
     logger_ptr=&log;
+    Logger::sigsegv_handlerptr=signal(SIGSEGV,Logger::sigsegv_newhandler);
+}
+
+void Logger::sigsegv_newhandler(int sig) {
+    Logger::log(LOG_ERROR)<<"Segmentation Fault"<<std::endl;
+    Logger::log().close();
+    (*Logger::sigsegv_handlerptr)(sig);
 }
 
 Logger& Logger::log(Log_Type type) {
@@ -52,6 +63,12 @@ Logger& Logger::log(Log_Type type) {
     } else {
         cerr<<"Logger class is not initiated"<<endl;
         exit(0);
+    }
+}
+
+void Logger::close() {
+    if(m_file) {
+        m_file.close();
     }
 }
 
@@ -94,4 +111,4 @@ string Logger::logtype_to_prefix(Log_Type type) {
     return prefix;
 }
 
-Logger* Logger::logger_ptr;
+

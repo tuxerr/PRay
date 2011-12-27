@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include "mutex.h"
+#include <signal.h>
 
 using namespace std;
 
@@ -54,6 +55,7 @@ public:
     static void init(string file_path=DEFAULT_LOG_PATH);
     ~Logger();
     static Logger& log(Log_Type type=LOG_INFO);
+    void close();
     void set_logtype(Log_Type type);
 
 private:
@@ -64,8 +66,10 @@ private:
     string logtype_to_prefix(Log_Type type);
     string current_prefix;
     fstream m_file;
-    static Logger *logger_ptr;
 
+    static Logger *logger_ptr;
+    static void (*sigsegv_handlerptr)(int);
+    static void sigsegv_newhandler(int sig);
 };
 
 #endif
