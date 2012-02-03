@@ -7,7 +7,9 @@ Camera::Camera(Vec3<float> point,
                float viewplaneHeight,
                float viewplaneDist,
                int xResolution,
-               int yResolution) :
+               int yResolution,
+	       int transFactor,
+	       int rotatAngle) :
   point(point),
   direction(direction.normalize()),
   normal(normal.normalize()),
@@ -15,9 +17,12 @@ Camera::Camera(Vec3<float> point,
   viewplaneHeight(viewplaneHeight),
   viewplaneDist(viewplaneDist),
   xResolution(xResolution),
-  yResolution(yResolution)
+  yResolution(yResolution),
+  transFactor(transFactor),
+  rotatAngle(rotatAngle),
+  mode(mode)
 {
-
+  lateral = direction.cross(normal);
 }
 
 Vec3<float> Camera::getPoint() const {
@@ -60,4 +65,149 @@ Vec3<float> Camera::getDirection(int x, int y) {
   return (direction*viewplaneDist
 	  + normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution))
 	  + direction*normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))).normalize();
+}
+
+Vec3<float> Camera::horizontalProj(Vec3<float> vec) {
+  Vec3<float> x = Vec3<float>(1,0,0);
+  Vec3<float> y = Vec3<float>(0,1,0);
+  return x.scalar(y.scalar(vec)).normalize();
+}
+
+void Camera::translateForward() {
+  switch (mode) {
+  case CAMERA:
+    point += direction * transFactor;
+    break;
+  case SCENE:
+    point += horizontalProj(direction) * transFactor;
+    break;
+  }
+}
+
+void Camera::translateBackwards() {
+  switch (mode) {
+  case CAMERA:
+    point -= direction * transFactor;
+    break;
+  case SCENE:
+    point -= horizontalProj(direction) * transFactor;
+    break;
+  }
+}
+
+void Camera::translateLeft() {
+  switch (mode) {
+  case CAMERA:
+    point -= lateral * transFactor;
+    break;
+  case SCENE:
+    point -= horizontalProj(lateral) * transFactor;
+    break;
+  }
+}
+
+void Camera::translateRight() {
+switch (mode) {
+  case CAMERA:
+    point += lateral * transFactor;
+    break;
+  case SCENE:
+    point += horizontalProj(lateral) * transFactor;
+    break;
+  }
+}
+
+void Camera::translateVerticalUp() {
+switch (mode) {
+  case CAMERA:
+    point += normal * transFactor;
+    break;
+  case SCENE:
+    point.z += transFactor; 
+    break;
+  }
+}
+
+void Camera::translateVerticalDown() {
+switch (mode) {
+  case CAMERA:
+    point -= normal * transFactor;
+    break;
+  case SCENE:
+    point.z -= transFactor;
+    break;
+  }
+}
+
+// angle : in degrees
+void Camera::rotate(float angle, vec3<float> axis) {
+  direction.rotate(angle, axis);
+  normal.rotate(angle, axis);
+  lateral.rotate(angle, axis);
+}
+
+void Camera::rollLeft() {
+  switch (mode) {
+  case CAMERA:
+    rotate(-rotatAngle, direction);
+    break;
+  case SCENE:
+    rotate(-rotatAngle, horizontalProj(direction));
+    break;
+  }
+}
+
+void Camera::rollRight() {
+  switch (mode) {
+  case CAMERA:
+    rotate(rotatAngle, direction);
+    break;
+  case SCENE:
+    rotate(rotatAngle, horizontalProj(direction));
+    break;
+  }
+}
+
+void Camera::pitchUp() {
+  switch (mode) {
+  case CAMERA:
+    rotate(-rotatAngle, lateral);
+    break;
+  case SCENE:
+    rotate(-rotatAngle, horizontalProj(lateral));
+    break;
+  }
+}
+
+void Camera::pitchDown() {
+  switch (mode) {
+  case CAMERA:
+    rotate(rotatAngle, lateral);
+    break;
+  case SCENE:
+    rotate(rotatAngle, horizontalProj(lateral));
+    break;
+  }
+}
+
+void Camera::yawLeft() {
+  switch (mode) {
+  case CAMERA:
+    rotate(-rotatAngle, normal);
+    break;
+  case SCENE:
+    rotate(-rotatAngle, Vec3<float>(0,0,1));
+    break;
+  }
+}
+
+void Camera::yawRight() {
+  switch (mode) {
+  case CAMERA:
+    rotate(rotatAngle, normal);
+    break;
+  case SCENE:
+    rotate(rotatAngle, Vec3<float>(0,0,1));
+    break;
+  }
 }
