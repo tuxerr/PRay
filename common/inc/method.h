@@ -1,7 +1,7 @@
 #ifndef DEF_METHOD
 #define DEF_METHOD
 
-// constructor is called  : Method<C> met(instance,&C::func_name)
+// constructor is called  : Method<C> met(instance,&C::func_name);
 
 template <class C>
 class Method {

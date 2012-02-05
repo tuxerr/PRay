@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include <string>
-#include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
 #include "logger.h"
 #include "server.h"
@@ -25,27 +24,6 @@ int main()
         Color pixel;
         int width = WIDTH;
         int height = HEIGHT;
-
-        Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
-
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
-        {
-            Logger::log(LOG_ERROR)<<"Problem during SDL initialisation: "<<SDL_GetError()<<endl;
-            exit(EXIT_FAILURE);
-        }
-
-        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-        Logger::log(LOG_INFO)<<"SDL initialised"<<endl;
-
-        const SDL_VideoInfo* videoInfos = SDL_GetVideoInfo();
-
-        if (0.9*videoInfos->current_w < WIDTH) { // the screen is too small for the predifined resolution
-            width = 0.9*videoInfos->current_w;
-            height = width * HEIGHT / WIDTH; // to keep the screen ratio
-        }
-
-        screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
 
         // scene loading
         TestScenes testScenes;
@@ -190,6 +168,7 @@ int main()
                         break;
                     }
                     break;
+
                 default:
                     waiting = true;
                     break;

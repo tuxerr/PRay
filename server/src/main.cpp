@@ -3,14 +3,17 @@
 #include "network.h"
 #include <ostream>
 #include <unistd.h>
+#include <signal.h>
 
 using namespace std;
 
 int main(int argv, char *argc[])
 {
     Logger::init("pray_server.log");
+
     Network network;
     network.launch();
+
 
     while(network.get_client_number()==0) {
         sleep(1);
