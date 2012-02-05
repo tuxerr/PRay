@@ -23,7 +23,7 @@ private :
     int rotatAngle;
     cameraMode mode;
     Vec3<float> horizontalProj(Vec3<float> vec);
-    void rotate(float angle, vec3<float> axis);
+    void rotate(float angle, Vec3<float> axis);
 
 public :
     Camera(Vec3<float> point,
@@ -50,7 +50,7 @@ public :
     int getYResolution() const;
     Vec3<float> getDirection(int x, int y);
     void translateForward();
-    void translatebackwards();
+    void translateBackwards();
     void translateLeft();
     void translateRight();
     void translateVerticalUp();
