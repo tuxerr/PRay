@@ -15,7 +15,9 @@ public:
     Vec3<number> cross(Vec3<number> n);
     number scalar(Vec3<number> n) const;
     Vec3<number> operator+(Vec3<number> n);
+    void operator+=(Vec3<number> n);
     Vec3<number> operator-(Vec3<number> n);
+    void operator-=(Vec3<number> n);
     Vec3<number> operator*(Vec3<number> n);
     Vec3<number> operator*(number n);
     Vec3<number> operator/(number n);
@@ -53,12 +55,26 @@ Vec3<number> Vec3<number>::operator+(Vec3<number> n) {
 }
 
 template <class number>
+void Vec3<number>::operator+=(Vec3<number> n) {
+    x+=n.x;
+    y+=n.y;
+    z+=n.z;
+}
+
+template <class number>
 Vec3<number> Vec3<number>::operator-(Vec3<number> n) {
     Vec3<number> res;
     res.x=x-n.x;
     res.y=y-n.y;
     res.z=z-n.z;
     return res;
+}
+
+template <class number>
+void Vec3<number>::operator-=(Vec3<number> n) {
+    x-=n.x;
+    y-=n.y;
+    z-=n.z;
 }
 
 // vectorial product
