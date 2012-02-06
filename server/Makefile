@@ -2,7 +2,7 @@
 EXEC = pray_server
 # source files
 CXX = g++
-CXXFLAGS = -g -Wall -W -O3 -march=native -Wunused -I./inc -I../common/inc
+CXXFLAGS = -g -Wall -W -O3 -march=native -Wunused -I./inc -I../common/inc -std=c++0x
 LDFLAGS = -lm -lrt -lcurses -lpthread
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
