@@ -1,6 +1,6 @@
 #include "display.h"
 
-Display::init(int height,int width) {
+void Display::init(int height,int width) {
     static Display disp(height,width);
     display_ptr=&disp;
 }
@@ -24,7 +24,7 @@ void Display::refresh_controls() {
 
         switch(event.type) {
         case SDL_KEYDOWN:
-            std::map<Method<void>,SDLKey>::iterator it = map.find(event.key.keysym.sym);
+            std::map<SDLKey, Method<void> >::iterator it = map.find(event.key.keysym.sym);
             if(it!=map.end()) {
                 it->first.call();
             }
@@ -41,15 +41,13 @@ void Display::refresh_controls() {
     }
 }
 
-bool Display::escape_pressed() {
-    return esc_pressed;
+bool Display::quit() {
+    return quit_pressed;
 }
 
 Display::Display(int width,int height) : 
     height(height),width(width), quit_pressed(false), screen(null)
 {
-    Logger::log(LOG_INFO)<<"Starting client in standalone mode"<<endl;
-
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         Logger::log(LOG_ERROR)<<"Problem during SDL initialisation: "<<SDL_GetError()<<endl;
@@ -57,8 +55,6 @@ Display::Display(int width,int height) :
     }
 
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-    Logger::log(LOG_INFO)<<"SDL initialised"<<endl;
 
     const SDL_VideoInfo* videoInfos = SDL_GetVideoInfo();
 
@@ -68,9 +64,28 @@ Display::Display(int width,int height) :
     }
 
     screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
+    Logger::log(LOG_INFO)<<"SDL initialised (video and controls)"<<endl;
 }
 
 Display::~Display() {
     SDL_Quit();
     Logger::log(LOG_INFO)<<"SDL Quit"<<endl;
+}
+
+void Display::add_pixel(int x,int y,Color color) {
+    // all pixels are 32b-encoded
+    Uint32 *p = (Uint32 *)screen->pixels + x * 4 + y * screen->pitch;
+    *p=SDL_MapRGB(screen->format,color.getR(),color.getG(),color.getB());
+}
+
+void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
+    // all pixels are 32b-encoded
+    int i=0;
+    for(int h=0;h<height;h++) {
+        for(int w=0;w<width;w++) {
+            Uint32 *p = (Uint32 *)screen->pixels + (x+w) * 4 + (y+h) * screen->pitch;
+            *p=SDL_MapRGB(screen->format,pixels[i].getR(),pixels[i].getG(),pixels[i].getB());
+            i++;
+        }        
+    }
 }

@@ -11,6 +11,7 @@
 #include <map>
 #include "method.h"
 #include <SDL/SDL.h>
+#include <SDL/SDL_version.h>
 #include "color.h"
 
 class Display {
@@ -32,7 +33,7 @@ private:
     int width;
     static Display *display_ptr;
     bool quit_pressed;
-    std::map<Method<void>,SDLKey> bindings;
+    std::map<SDLKey, Method<void> > bindings;
     SDL_Surface *screen;
 };
 
