@@ -32,16 +32,19 @@ int main()
 
         Logger::log(LOG_INFO)<<"Rendering started"<<endl;
 
-        disp->register_keyhook(std::bind(&Camera::translateForward,scene.getCamera()),SDLK_z);
-        disp->register_keyhook(std::bind(&Camera::translateBackwards,scene.getCamera()),SDLK_s);
-        disp->register_keyhook(std::bind(&Camera::translateRight,scene.getCamera()),SDLK_d);
-        disp->register_keyhook(std::bind(&Camera::translateLeft,scene.getCamera()),SDLK_q);
-        disp->register_keyhook(std::bind(&Camera::rollLeft,scene.getCamera()),SDLK_a);
-        disp->register_keyhook(std::bind(&Camera::rollRight,scene.getCamera()),SDLK_e);
-        disp->register_keyhook(std::bind(&Camera::pitchUp,scene.getCamera()),SDLK_UP);
-        disp->register_keyhook(std::bind(&Camera::pitchDown,scene.getCamera()),SDLK_DOWN);
-        disp->register_keyhook(std::bind(&Camera::yawLeft,scene.getCamera()),SDLK_LEFT);
-        disp->register_keyhook(std::bind(&Camera::yawRight,scene.getCamera()),SDLK_RIGHT);
+        disp->register_keyhook(std::bind(&Camera::translateForward,   scene.getCamera()),SDLK_z);
+        disp->register_keyhook(std::bind(&Camera::translateBackwards, scene.getCamera()),SDLK_s);
+        disp->register_keyhook(std::bind(&Camera::translateRight,     scene.getCamera()),SDLK_d);
+        disp->register_keyhook(std::bind(&Camera::translateLeft,      scene.getCamera()),SDLK_q);
+	disp->register_keyhook(std::bind(&Camera::translateUp,        scene.getCamera()),SDLK_r);
+	disp->register_keyhook(std::bind(&Camera::translateDown,      scene.getCamera()),SDLK_f);
+        disp->register_keyhook(std::bind(&Camera::rollLeft,           scene.getCamera()),SDLK_a);
+        disp->register_keyhook(std::bind(&Camera::rollRight,          scene.getCamera()),SDLK_e);
+        disp->register_keyhook(std::bind(&Camera::pitchUp,            scene.getCamera()),SDLK_UP);
+        disp->register_keyhook(std::bind(&Camera::pitchDown,          scene.getCamera()),SDLK_DOWN);
+        disp->register_keyhook(std::bind(&Camera::yawLeft,            scene.getCamera()),SDLK_LEFT);
+        disp->register_keyhook(std::bind(&Camera::yawRight,           scene.getCamera()),SDLK_RIGHT);
+	disp->register_keyhook(std::bind(&Camera::switchMode,         scene.getCamera()),SDLK_m);
 
         while ( !disp->quit() )
         {

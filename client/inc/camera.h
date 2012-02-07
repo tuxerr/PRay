@@ -53,8 +53,8 @@ public :
     void translateBackwards();
     void translateLeft();
     void translateRight();
-    void translateVerticalUp();
-    void translateVerticalDown();
+    void translateUp();
+    void translateDown();
     void rollLeft();
     void rollRight();
     void pitchUp();
