@@ -8,6 +8,6 @@
 class SceneLoader {
 public:
   Scene load(std::string nom);
-}
+};
 
 #endif
