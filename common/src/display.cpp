@@ -54,10 +54,9 @@ bool Display::quit() {
     return quit_pressed;
 }
 
-Display::Display(int width,int height) : 
-    height(height),width(width), quit_pressed(false), screen(NULL)
+Display::Display(int p_width,int p_height) : 
+    height(p_height),width(p_width), quit_pressed(false), screen(NULL)
 {
-    float ratio= height/width;
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         Logger::log(LOG_ERROR)<<"Problem during SDL initialisation: "<<SDL_GetError()<<endl;
@@ -68,20 +67,28 @@ Display::Display(int width,int height) :
 
     const SDL_VideoInfo* videoInfos = SDL_GetVideoInfo();
 
-    if (0.9*videoInfos->current_w < width) { // the screen is too small for the predifined resolution
+    if (videoInfos->current_w < width) { // the screen is too small for the predifined resolution
         width = 0.9*videoInfos->current_w;
-        height = width * ratio; // to keep the screen ratio
+        height = 0.9*videoInfos->current_h; // to keep the screen ratio
     }
 
     SDL_WM_SetCaption(DEFAULT_NAME,NULL);
 
     screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
-    Logger::log(LOG_INFO)<<"SDL initialised (video and controls)"<<endl;
+    Logger::log(LOG_INFO)<<"SDL initialised (video and controls) in "<<width<<"x"<<height<<endl;
 }
 
 Display::~Display() {
     SDL_Quit();
     Logger::log(LOG_INFO)<<"SDL Quit"<<endl;
+}
+
+int Display::get_width() {
+    return width;
+}
+
+int Display::get_height() {
+    return height;
 }
 
 void Display::add_pixel(int x,int y,Color color) {

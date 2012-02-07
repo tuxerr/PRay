@@ -5,8 +5,8 @@
 #include "testScenes.h"
 #include "display.h"
 
-#define WIDTH 1280
-#define HEIGHT 720
+#define WIDTH 1920
+#define HEIGHT 1080
 
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
@@ -23,14 +23,14 @@ int main()
         Display *disp = &(Display::getInstance());
         
         Color pixel;
-        int width = WIDTH;
-        int height = HEIGHT;
+        int width = disp->get_width();
+        int height = disp->get_height();
 
         // scene loading
         TestScenes testScenes;
         Scene scene = testScenes.createTestScene1(width, height);
 
-        Logger::log(LOG_INFO)<<"Rendering started"<<endl;
+        Logger::log(LOG_INFO)<<"Rendering started in "<<width<<"x"<<height<<endl;
 
         disp->register_keyhook(std::bind(&Camera::translateForward,   scene.getCamera()),SDLK_z);
         disp->register_keyhook(std::bind(&Camera::translateBackwards, scene.getCamera()),SDLK_s);
