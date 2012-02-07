@@ -29,6 +29,9 @@ void Display::refresh_controls() {
                 if(bindings[i].second == event.key.keysym.sym) {
                     (bindings[i].first)();
                 }
+                if(event.key.keysym.sym == SDLK_ESCAPE) {
+                    quit_pressed=true;
+                }
             }
             break;
 
@@ -65,6 +68,8 @@ Display::Display(int width,int height) :
         width = 0.9*videoInfos->current_w;
         height = width * ratio; // to keep the screen ratio
     }
+
+    SDL_WM_SetCaption(DEFAULT_NAME,NULL);
 
     screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
     Logger::log(LOG_INFO)<<"SDL initialised (video and controls)"<<endl;
