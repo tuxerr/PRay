@@ -5,8 +5,8 @@
 #include "testScenes.h"
 #include "display.h"
 
-#define HEIGHT 640
-#define WIDTH 480
+#define WIDTH 640
+#define HEIGHT 480
 
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
@@ -19,7 +19,7 @@ int main()
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        Display::init(HEIGHT,WIDTH);
+        Display::init(WIDTH,HEIGHT);
         Display *disp = &(Display::getInstance());
         
         Color pixel;
