@@ -2,6 +2,7 @@
 
 using namespace std;
 
-Scene SceneLoader::load(String nom) {
-
+Scene SceneLoader::load(string nom) {
+  return ;
 }
+

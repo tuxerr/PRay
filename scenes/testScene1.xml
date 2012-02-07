@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+  <camera name="cam" default="true">
+    <position x="0" y="0" z="0"/>
+    <target x="1" y="0" z="0"/>
+    <normal x="0" y="0" z="1"/>
+    <viewplane  w="16/2" h="9/2" d="35" />
+  </camera>
+  <object>
+    <shape>
+      <sphere>
+        <center x="100" y="-6" z="0"/>
+        <radius value="3"/>
+      </sphere>
+    </shape>
+    <material>
+      <ugly>
+	<color r="255" g="0" b="0" />
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <sphere>
+        <center x="100" y="0" z="0"/>
+        <radius value="3"/>
+      </sphere>
+    </shape>
+    <material>
+      <ugly>
+	<color r="0" g="255" b="0" />
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <sphere>
+        <center x="100" y="6" z="0"/>
+        <radius value="3"/>
+      </sphere>
+    </shape>
+    <material>
+      <ugly>
+	<color r="0" g="0" b="255" />
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <sphere>
+        <center x="90" y="-1" z="0"/>
+        <radius value="1"/>
+      </sphere>
+    </shape>
+    <material>
+      <ugly>
+	<color r="255" g="0" b="255" />
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <sphere>
+        <center x="100" y="3" z="3"/>
+        <radius value="2"/>
+      </sphere>
+    </shape>
+    <material>
+      <ugly>
+	<color r="255" g="127" b="0" />
+      </ugly>
+    </material>
+  </object>
+</scene>

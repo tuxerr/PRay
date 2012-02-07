@@ -3,10 +3,11 @@
 
 #include <string>
 #include <tinyxml.h>
+#include "scene.h"
 
 class SceneLoader {
 public:
-  Scene load(String nom);
+  Scene load(std::string nom);
 }
 
 #endif
