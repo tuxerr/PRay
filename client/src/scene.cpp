@@ -16,6 +16,12 @@ Scene::Scene(const list<Object*> objects,
 
 Scene::~Scene()
 {
+    list<Object*>::iterator iter;
+
+    for (iter = objects.begin() ; iter != objects.end() ; iter++) {
+        delete *iter;
+    }
+
     //delete camera;
 }
 
