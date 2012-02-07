@@ -98,17 +98,6 @@ void Camera::translateBackwards() {
 void Camera::translateLeft() {
     switch (mode) {
     case CAMERA:
-        point -= lateral * transFactor;
-        break;
-    case SCENE:
-        point -= horizontalProj(lateral) * transFactor;
-        break;
-    }
-}
-
-void Camera::translateRight() {
-    switch (mode) {
-    case CAMERA:
         point += lateral * transFactor;
         break;
     case SCENE:
@@ -117,18 +106,29 @@ void Camera::translateRight() {
     }
 }
 
-void Camera::translateVerticalUp() {
+void Camera::translateRight() {
+    switch (mode) {
+    case CAMERA:
+        point -= lateral * transFactor;
+        break;
+    case SCENE:
+        point -= horizontalProj(lateral) * transFactor;
+        break;
+    }
+}
+
+void Camera::translateUp() {
     switch (mode) {
     case CAMERA:
         point += normal * transFactor;
         break;
     case SCENE:
-        point.z += transFactor; 
+        point.z += transFactor;
         break;
     }
 }
 
-void Camera::translateVerticalDown() {
+void Camera::translateDown() {
     switch (mode) {
     case CAMERA:
         point -= normal * transFactor;
@@ -141,23 +141,12 @@ void Camera::translateVerticalDown() {
 
 // angle : in degrees
 void Camera::rotate(float angle, Vec3<float> axis) {
-    direction.rotate(angle, axis);
-    normal.rotate(angle, axis);
-    lateral.rotate(angle, axis);
+    direction = direction.rotate(angle, axis);
+    normal = normal.rotate(angle, axis);
+    lateral = lateral.rotate(angle, axis);
 }
 
 void Camera::rollLeft() {
-    switch (mode) {
-    case CAMERA:
-        rotate(-rotatAngle, direction);
-        break;
-    case SCENE:
-        rotate(-rotatAngle, horizontalProj(direction));
-        break;
-    }
-}
-
-void Camera::rollRight() {
     switch (mode) {
     case CAMERA:
         rotate(rotatAngle, direction);
@@ -168,13 +157,24 @@ void Camera::rollRight() {
     }
 }
 
+void Camera::rollRight() {
+    switch (mode) {
+    case CAMERA:
+        rotate(-rotatAngle, direction);
+        break;
+    case SCENE:
+        rotate(-rotatAngle, horizontalProj(direction));
+        break;
+    }
+}
+
 void Camera::pitchUp() {
     switch (mode) {
     case CAMERA:
-        rotate(-rotatAngle, lateral);
+        rotate(rotatAngle, lateral);
         break;
     case SCENE:
-        rotate(-rotatAngle, horizontalProj(lateral));
+        rotate(rotatAngle, horizontalProj(lateral));
         break;
     }
 }
@@ -182,10 +182,10 @@ void Camera::pitchUp() {
 void Camera::pitchDown() {
     switch (mode) {
     case CAMERA:
-        rotate(rotatAngle, lateral);
+        rotate(-rotatAngle, lateral);
         break;
     case SCENE:
-        rotate(rotatAngle, horizontalProj(lateral));
+        rotate(-rotatAngle, horizontalProj(lateral));
         break;
     }
 }
@@ -208,6 +208,17 @@ void Camera::yawRight() {
         break;
     case SCENE:
         rotate(rotatAngle, Vec3<float>(0,0,1));
+        break;
+    }
+}
+
+void Camera::switchMode() {
+    switch (mode) {
+    case CAMERA:
+        mode = SCENE;
+        break;
+    case SCENE:
+        mode = CAMERA;
         break;
     }
 }

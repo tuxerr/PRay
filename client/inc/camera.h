@@ -4,7 +4,7 @@
 #include "vec3.h"
 
 #define DEFAULT_CAM_TRANS_FACTOR  5
-#define DEFAULT_CAM_ROT_ANGLE     2
+#define DEFAULT_CAM_ROT_ANGLE     5
 
 typedef enum { SCENE, CAMERA } cameraMode; 
 
@@ -53,14 +53,15 @@ public :
     void translateBackwards();
     void translateLeft();
     void translateRight();
-    void translateVerticalUp();
-    void translateVerticalDown();
+    void translateUp();
+    void translateDown();
     void rollLeft();
     void rollRight();
     void pitchUp();
     void pitchDown();
     void yawLeft();
     void yawRight();
+    void switchMode();
 };
 
 #endif

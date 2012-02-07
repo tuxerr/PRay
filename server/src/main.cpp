@@ -24,7 +24,7 @@ int main(int argv, char *argc[])
     Network network;
     network.launch();
 
-    Display::init(640,480);
+    Display::init(640,640);
     Display *disp = &(Display::getInstance());
     disp->register_keyhook(std::bind(&Test::print,Test()),SDLK_a);
     disp->refresh_display();
