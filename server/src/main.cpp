@@ -26,7 +26,6 @@ int main(int argv, char *argc[])
 
     Display::init(640,480);
     Display *disp = &(Display::getInstance());
-    disp->add_pixel(639,479,Color(255,0,0));
     disp->register_keyhook(std::bind(&Test::print,Test()),SDLK_a);
     disp->refresh_display();
 

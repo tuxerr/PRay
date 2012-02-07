@@ -4,7 +4,7 @@ EXEC = pray_client
 CXX = g++
 #CXX = icpc
 CXXFLAGS = -g -Wall -W -O3 -march=native -Wunused `sdl-config --cflags` -I./inc -I../common/inc -std=c++0x
-LDFLAGS = -lm -lrt `sdl-config --libs` -lSDL_gfx -lpthread
+LDFLAGS = -lm -lrt `sdl-config --libs` -lpthread
 SRCS = $(wildcard src/*.cpp)
 INCS = $(wildcard inc/*.h)
 OBJS = $(SRCS:.cpp=.o)
@@ -12,8 +12,6 @@ COMMONSRCS = $(wildcard ../common/src/*.cpp)
 COMMONOBJS = $(COMMONSRCS:.cpp=.o)
 
 all: $(EXEC)
-
-Release: $(EXEC)
 
 $(EXEC) : $(OBJS)
 	cd ../common; make

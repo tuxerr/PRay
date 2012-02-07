@@ -1,13 +1,12 @@
-#include <cstdlib>
 #include <string>
-#include <SDL/SDL_gfxPrimitives.h>
 #include "logger.h"
 #include "server.h"
 #include "color.h"
 #include "testScenes.h"
+#include "display.h"
 
-#define WIDTH  1280
-#define HEIGHT  720
+#define HEIGHT 640
+#define WIDTH 480
 
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
@@ -20,7 +19,9 @@ int main()
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        SDL_Surface *screen = NULL;
+        Display::init(HEIGHT,WIDTH);
+        Display *disp = &(Display::getInstance());
+        
         Color pixel;
         int width = WIDTH;
         int height = HEIGHT;
@@ -29,163 +30,42 @@ int main()
         TestScenes testScenes;
         Scene scene = testScenes.createTestScene1(width, height);
 
-        if (screen == NULL)
-        {
-            Logger::log(LOG_ERROR)<<"Problem during screen initialisation: "<<SDL_GetError()<<endl;
-            exit(EXIT_FAILURE);
-        }
-
-        SDL_WM_SetCaption("PRay rendering", NULL);
-        SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
-
-        Logger::log(LOG_INFO)<<"Screen initialised"<<endl;
-
         Logger::log(LOG_INFO)<<"Rendering started"<<endl;
 
-        SDL_Event event;
-        bool rendering = true;
+        disp->register_keyhook(std::bind(&Camera::translateForward,scene.getCamera()),SDLK_z);
+        disp->register_keyhook(std::bind(&Camera::translateBackwards,scene.getCamera()),SDLK_s);
+        disp->register_keyhook(std::bind(&Camera::translateRight,scene.getCamera()),SDLK_d);
+        disp->register_keyhook(std::bind(&Camera::translateLeft,scene.getCamera()),SDLK_q);
+        disp->register_keyhook(std::bind(&Camera::rollLeft,scene.getCamera()),SDLK_a);
+        disp->register_keyhook(std::bind(&Camera::rollRight,scene.getCamera()),SDLK_e);
+        disp->register_keyhook(std::bind(&Camera::pitchUp,scene.getCamera()),SDLK_UP);
+        disp->register_keyhook(std::bind(&Camera::pitchDown,scene.getCamera()),SDLK_DOWN);
+        disp->register_keyhook(std::bind(&Camera::yawLeft,scene.getCamera()),SDLK_LEFT);
+        disp->register_keyhook(std::bind(&Camera::yawRight,scene.getCamera()),SDLK_RIGHT);
 
-        while ( rendering )
+        while ( !disp->quit() )
         {
-	  /*
-            Logger::log(LOG_DEBUG) << "Camera point=("
-                                   << scene.getCamera()->getPoint().x << ","
-                                   << scene.getCamera()->getPoint().y << ","
-                                   << scene.getCamera()->getPoint().z 
-				   << ") direction=("
-				   << scene.getCamera()->getDirection().x << ","
-				   << scene.getCamera()->getDirection().y << ","
-				   << scene.getCamera()->getDirection().z
-				   << ") normal=("
-				   << scene.getCamera()->getNormal().x << ","
-				   << scene.getCamera()->getNormal().y << ","
-				   << scene.getCamera()->getNormal().z << ")" << endl;
-	  */
-
             for (int y=0 ; y < height ; y++)
             {
                 for (int x=0 ; x < width ; x++)
                 {
                     pixel = scene.renderPixel(x,y);
 
-                    pixelRGBA(screen, x, y, pixel.getR(), pixel.getG(), pixel.getB(), 255);
+                    disp->add_pixel(x,y,pixel);
                 }
             }
 
-            SDL_Flip(screen);
+            disp->refresh_display();
 
-            bool waiting = true;
+            disp->refresh_controls();
 
-            while (waiting)
-            {
-                waiting = false;
-
-                SDL_WaitEvent(&event);
-
-                switch (event.type)
-                {
-                case SDL_QUIT:
-                    rendering = false;
-                    break;
-                case SDL_KEYDOWN: // see the README for keys
-                    switch(event.key.keysym.sym)
-                    {
-                    case SDLK_RETURN:
-                    case SDLK_SPACE:
-                    case SDLK_ESCAPE:
-                        rendering = false;
-                        break;
-                    case SDLK_z:
-                        {
-                            Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + cam->getDirection()*CAM_TRANS_FACTOR);
-                        }
-                        break;
-                    case SDLK_s:
-                        {
-                            Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - cam->getDirection()*CAM_TRANS_FACTOR);
-                        }
-                        break;
-                    case SDLK_q:
-                        {
-                            Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - cam->getDirection().cross(cam->getNormal())*CAM_TRANS_FACTOR);
-                        }
-                        break;
-                    case SDLK_d:
-                        {
-                            Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + cam->getDirection().cross(cam->getNormal())*CAM_TRANS_FACTOR);
-                        }
-                        break;
-                    case SDLK_a:
-                        {
-                            Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() - Vec3<float>(0,0,1)*CAM_TRANS_FACTOR);
-                        }
-                        break;
-                    case SDLK_e:
-                        {
-                            Camera* cam = scene.getCamera();
-                            cam->setPoint(cam->getPoint() + Vec3<float>(0,0,1)*CAM_TRANS_FACTOR);
-                        }
-                        break;
-                    case SDLK_LEFT:
-                        {
-                            Camera* cam = scene.getCamera();
-                            Vec3<float> axis = Vec3<float>(0,0,1);
-                            cam->setDirection(cam->getDirection().rotate(-CAM_ROT_ANGLE, axis));
-                            cam->setNormal(cam->getNormal().rotate(-CAM_ROT_ANGLE, axis));
-                        }
-                        break;
-                    case SDLK_RIGHT:
-                        {
-                            Camera* cam = scene.getCamera();
-                            Vec3<float> axis = Vec3<float>(0,0,1);
-                            cam->setDirection(cam->getDirection().rotate(CAM_ROT_ANGLE, axis));
-                            cam->setNormal(cam->getNormal().rotate(CAM_ROT_ANGLE, axis));
-                        }
-                        break;
-                    case SDLK_UP:
-                        {
-                            Camera* cam = scene.getCamera();
-                            Vec3<float> axis = cam->getDirection().cross(cam->getNormal());
-                            cam->setDirection(cam->getDirection().rotate(CAM_ROT_ANGLE, axis));
-                            cam->setNormal(cam->getNormal().rotate(CAM_ROT_ANGLE, axis));
-                        }
-                        break;
-                    case SDLK_DOWN:
-                        {
-                            Camera* cam = scene.getCamera();
-                            Vec3<float> axis = cam->getDirection().cross(cam->getNormal());
-                            cam->setDirection(cam->getDirection().rotate(-CAM_ROT_ANGLE, axis));
-                            cam->setNormal(cam->getNormal().rotate(-CAM_ROT_ANGLE, axis));
-                        }
-                        break;
-                    default:
-                        waiting = true;
-                        break;
-                    }
-                    break;
-
-                default:
-                    waiting = true;
-                    break;
-                }
-            }
         }
 
         Logger::log(LOG_INFO)<<"Rendering complete"<<endl;
 
-        SDL_SaveBMP(screen, "image.bmp");
-
         Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
 
         testScenes.destroyTestScene1(scene);
-        SDL_FreeSurface(screen);
-        SDL_Quit();
-
     }
 
     return EXIT_SUCCESS;
