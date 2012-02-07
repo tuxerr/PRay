@@ -77,7 +77,7 @@ Display::~Display() {
 
 void Display::add_pixel(int x,int y,Color color) {
     // all pixels are 32b-encoded
-    
+   
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR(),color.getG(),color.getB());
 }
