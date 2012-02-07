@@ -19,15 +19,17 @@ void Display::refresh_display() {
     SDL_Flip(screen);
 }
 
-void Display::refresh_controls() {
+bool Display::refresh_controls() {
     SDL_Event event;
-    while(SDL_PollEvent(&event)==1) {
-
+    bool change=false;
+//    while(SDL_PollEvent(&event)==1) {
+    SDL_WaitEvent(&event);
         switch(event.type) {
         case SDL_KEYDOWN:
             for(unsigned int i=0;i<bindings.size();i++) {
                 if(bindings[i].second == event.key.keysym.sym) {
                     (bindings[i].first)();
+                    change=true;
                 }
                 if(event.key.keysym.sym == SDLK_ESCAPE) {
                     quit_pressed=true;
@@ -43,7 +45,9 @@ void Display::refresh_controls() {
             break;
         }
 
-    }
+//    }
+//
+    return change;
 }
 
 bool Display::quit() {

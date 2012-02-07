@@ -12,9 +12,9 @@ COMMONSRCS = $(wildcard ../common/src/*.cpp)
 COMMONOBJS = $(COMMONSRCS:.cpp=.o)
 
 all: $(EXEC)
+	cd ../common; make
 
 $(EXEC) : $(OBJS)
-	cd ../common; make
 	$(CXX) -o $@ $^ $(COMMONOBJS) $(LDFLAGS)
 
 %.o : %.cpp

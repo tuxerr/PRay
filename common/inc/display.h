@@ -22,7 +22,7 @@ public:
     static Display& getInstance();
     void register_keyhook(std::function<void(void)> met,SDLKey key);
     void refresh_display();
-    void refresh_controls();
+    bool refresh_controls();
     bool quit();
     void add_pixel(int width,int height,Color color);
     void add_surface(int x,int y,int width,int height,std::vector<Color> &pixels);
