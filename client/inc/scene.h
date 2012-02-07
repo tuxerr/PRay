@@ -9,7 +9,6 @@
 #include "ambientLight.h"
 #include "directionalLight.h"
 #include "ray.h"
-//#include "material.h"
 #include "object.h"
 
 

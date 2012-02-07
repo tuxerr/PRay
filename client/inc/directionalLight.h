@@ -4,20 +4,17 @@
 
 #include "vec3.h"
 #include "color.h"
-#include "ambientLight.h"
+#include "light.h"
 
-class DirectionalLight : public AmbientLight {
+class DirectionalLight : public Light {
 private :
     Vec3<float> direction;
 public :
-    DirectionalLight(float intensity,
-                     const Color &color,
+    DirectionalLight(const Color &color,
                      const Vec3<float> &direction);
-    DirectionalLight(float intensity,
-                     float color,
+    DirectionalLight(float color,
                      const Vec3<float> &direction);
-    DirectionalLight(float intensity,
-                     float r,
+    DirectionalLight(float r,
                      float g,
                      float b,
                      const Vec3<float> &direction);

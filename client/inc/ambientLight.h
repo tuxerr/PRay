@@ -1,18 +1,13 @@
 #ifndef DEF_AMBIENTLIGHT
 #define DEF_AMBIENTLIGHT
 
-#include "color.h"
+#include "light.h"
 
-class AmbientLight {
-private :
-    float intensity;
-    Color color;
+class AmbientLight : Light{
 public :
-    AmbientLight (float intensity, const Color &color);
-    AmbientLight (float intensity =1, float grey =1);
-    AmbientLight (float intensity, float r, float g, float b);
-    float getIntensity();
-    Color getColor();
+    AmbientLight (const Color &color);
+    AmbientLight (float grey =1);
+    AmbientLight (float r, float g, float b);
 };
 
 #endif
