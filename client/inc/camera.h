@@ -61,6 +61,7 @@ public :
     void pitchDown();
     void yawLeft();
     void yawRight();
+    void switchMode();
 };
 
 #endif

@@ -211,3 +211,14 @@ void Camera::yawRight() {
         break;
     }
 }
+
+void Camera::switchMode() {
+    switch (mode) {
+    case CAMERA:
+        mode = SCENE;
+        break;
+    case SCENE:
+        mode = CAMERA;
+        break;
+  }
+}
