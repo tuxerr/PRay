@@ -78,6 +78,16 @@ Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
                               <<radius<<endl;
 
         object = new Sphere(center, radius, material);
+    } else if (childName.compare("triangle")==0 ){
+        Vec3<float> a = readVec3Float(child->FirstChildElement("a"));
+        Vec3<float> b = readVec3Float(child->FirstChildElement("b"));
+        Vec3<float> c = readVec3Float(child->FirstChildElement("c"));
+
+	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
+			      <<b.x<<","<<b.y<<","<<b.z<<") ("
+			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
+
+        object = new Triangle(a, b, c, material);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown shape"<<endl;
     }
@@ -98,12 +108,16 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         child->FirstChildElement("ambiant")->QueryFloatAttribute("v", &ambiant);
         child->FirstChildElement("shininess")->QueryFloatAttribute("v", &shininess);
 
-        Logger::log(LOG_DEBUG)<<"Material : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
+        Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
 
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
+
+        Logger::log(LOG_DEBUG)<<"Material : Ugly : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
+                              <<")"<<endl;
+
         material = new UglyMaterial(color);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown material"<<endl;

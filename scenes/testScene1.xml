@@ -12,6 +12,34 @@
   </directionalLight>
   <object>
     <shape>
+      <triangle>
+	<a x="100" y="-6" z="0"/>
+	<b x="100" y="0" z="0"/>
+	<c x="100" y="-3" z="4"/>
+      </triangle>
+    </shape>
+    <material>
+      <ugly>
+	<color r="200" g="200" b="200"/>
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <triangle>
+	<a x="100" y="-6" z="0"/>
+	<b x="100" y="0" z="0"/>
+	<c x="100" y="-3" z="-4"/>
+      </triangle>
+    </shape>
+    <material>
+      <ugly>
+	<color r="200" g="200" b="200"/>
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
       <sphere>
         <center x="100" y="-6" z="0"/>
         <radius v="3"/>
