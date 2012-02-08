@@ -7,6 +7,7 @@
 #include "ambientLight.h"
 #include "vec3.h"
 #include "phongMaterial.h"
+#include "uglyMaterial.h"
 
 using namespace std;
 
@@ -99,6 +100,9 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
 
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
+    } else if (childName.compare("ugly")==0 ) {
+        Color color = readColor(child->FirstChildElement("color"));
+        material = new UglyMaterial(color);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown material"<<endl;
     }

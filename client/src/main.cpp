@@ -26,9 +26,6 @@ int main()
         int width = disp->get_width();
         int height = disp->get_height();
 
-        // scene loading
-        // TestScenes testScenes;
-        // Scene scene = testScenes.createTestScene1(width, height);
         SceneLoader sceneLoader;
         Scene scene = sceneLoader.load("../scenes/testScene1.xml", width, height);
 
@@ -38,15 +35,15 @@ int main()
         disp->register_keyhook(std::bind(&Camera::translateBackwards, scene.getCamera()), SDLK_s);
         disp->register_keyhook(std::bind(&Camera::translateRight,     scene.getCamera()), SDLK_d);
         disp->register_keyhook(std::bind(&Camera::translateLeft,      scene.getCamera()), SDLK_q);
-	disp->register_keyhook(std::bind(&Camera::translateUp,        scene.getCamera()), SDLK_r);
-	disp->register_keyhook(std::bind(&Camera::translateDown,      scene.getCamera()), SDLK_f);
+        disp->register_keyhook(std::bind(&Camera::translateUp,        scene.getCamera()), SDLK_r);
+        disp->register_keyhook(std::bind(&Camera::translateDown,      scene.getCamera()), SDLK_f);
         disp->register_keyhook(std::bind(&Camera::rollLeft,           scene.getCamera()), SDLK_a);
         disp->register_keyhook(std::bind(&Camera::rollRight,          scene.getCamera()), SDLK_e);
         disp->register_keyhook(std::bind(&Camera::pitchUp,            scene.getCamera()), SDLK_UP);
         disp->register_keyhook(std::bind(&Camera::pitchDown,          scene.getCamera()), SDLK_DOWN);
         disp->register_keyhook(std::bind(&Camera::yawLeft,            scene.getCamera()), SDLK_LEFT);
         disp->register_keyhook(std::bind(&Camera::yawRight,           scene.getCamera()), SDLK_RIGHT);
-	disp->register_keyhook(std::bind(&Camera::switchMode,         scene.getCamera()), SDLK_m);
+        disp->register_keyhook(std::bind(&Camera::switchMode,         scene.getCamera()), SDLK_m);
 
         while ( !disp->quit() )
         {
@@ -67,10 +64,6 @@ int main()
         }
 
         Logger::log(LOG_INFO)<<"Rendering complete"<<endl;
-
-        Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
-
-        //testScenes.destroyTestScene1(scene);
     }
 
     return EXIT_SUCCESS;
