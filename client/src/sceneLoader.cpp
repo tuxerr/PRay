@@ -11,12 +11,12 @@
 
 using namespace std;
 
-Scene SceneLoader::load(string scene_file, int xRes, int yRes) {
+int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
     TiXmlDocument doc(scene_file);
     if ( !doc.LoadFile() ) {
         Logger::log(LOG_ERROR) << "Scene loading failed : " << scene_file << endl;
         Logger::log(LOG_ERROR) << "error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
-        // exit(EXIT_FAILURE);
+	return -1;
     } else {
 
         Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
@@ -58,7 +58,9 @@ Scene SceneLoader::load(string scene_file, int xRes, int yRes) {
 
         Logger::log(LOG_INFO) << "Scene loaded with success" << endl;
 
-        return Scene(objects,lDirLights,AmbientLight(),camera);
+        *scene = new Scene(objects,lDirLights,AmbientLight(),camera);
+
+	return 0;
     }
 }
 
