@@ -43,7 +43,7 @@ class PhongMaterial : public Material {
   float getDiffuseReflection();
   float getAmbiantReflection();
   float getShininess();
-  Color renderRay(const Ray &ray, const Vec3<float> &normal, Scene *scene);
+  Color renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene);
 };
 
 #endif

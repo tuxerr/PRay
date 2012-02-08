@@ -14,19 +14,19 @@ Scene TestScenes::createTestScene1(int xRes, int yRes)
   list<Object*> objects;
 
     objects.push_back(new Sphere(Vec3<float>(100,-6, 0), 3, new UglyMaterial(Color(255,   0,   0)))); // red
-    objects.push_back(new Sphere(Vec3<float>(100, 0, 0), 3, new UglyMaterial(Color(  0, 255,   0)))); // green
-    objects.push_back(new Sphere(Vec3<float>(100, 6, 0), 3, new PhongMaterial(Color(  0,   100, 255), 0.6, 0.5, 0.4, 100))); // blue~
+    objects.push_back(new Sphere(Vec3<float>(100, 0, 0), 3, new PhongMaterial(Color(  0,   255, 0), 0.2, 0.7, 0.2, 100))); // green
+    objects.push_back(new Sphere(Vec3<float>(100, 6, 0), 3, new PhongMaterial(Color(  0,   0, 255), 0.6, 0.5, 0.4, 400))); // blue
     objects.push_back(new Sphere(Vec3<float>( 90,-1, 0), 1, new UglyMaterial(Color(255,   0, 255)))); // violet
     objects.push_back(new Sphere(Vec3<float>(100, 3, 3), 2, new UglyMaterial(Color(255, 127,   0)))); // orange
 
-    Vec3<float> a = Vec3<float>(100, 6, 1); // the triangle should be visible
-    Vec3<float> b = Vec3<float>(100, 0, 1);
-    Vec3<float> c = Vec3<float>( 95, 3, 5);
-    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 255, 255)))); // white
+    //    Vec3<float> a = Vec3<float>(100, 6, 1); // the triangle should be visible
+    //    Vec3<float> b = Vec3<float>(100, 0, 1);
+    //    Vec3<float> c = Vec3<float>( 95, 3, 5);
+    //    objects.push_back(new Triangle(a,b,c,new UglyMaterial(Color(255, 255, 255)))); // white
 
     list<DirectionalLight> lDirLights;
 
-    lDirLights.push_back(DirectionalLight(255.0, (Vec3<float> (-1, -0.5, 0)).normalize()));
+    lDirLights.push_back(DirectionalLight(255.0, (Vec3<float> (1, 0.5, 0)).normalize()));
 
     Camera* camera = new Camera(Vec3<float>(0,0,0), // center
                                 Vec3<float>(1,0,0), // direction

@@ -12,7 +12,7 @@ private:
 public :
   UglyMaterial(const Color &color);
   Color getColor();
-  Color renderRay(const Ray &ray, const Vec3<float> &normal, Scene *scene);
+  Color renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene);
 };
 
 
