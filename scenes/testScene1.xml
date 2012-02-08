@@ -8,36 +8,11 @@
   </camera>
   <directionalLight>
     <color r="255" g="255" b="255"/>
-    <direction x="1" y="O" z="0"/>
+    <direction x="0" y="1" z="1"/>
   </directionalLight>
-  <object>
-    <shape>
-      <triangle>
-	<a x="100" y="-6" z="0"/>
-	<b x="100" y="0" z="0"/>
-	<c x="100" y="-3" z="6"/>
-      </triangle>
-    </shape>
-    <material>
-      <ugly>
-	<color r="200" g="200" b="200"/>
-      </ugly>
-    </material>
-  </object>
-  <object>
-    <shape>
-      <triangle>
-	<a x="100" y="-6" z="0"/>
-	<b x="100" y="0" z="0"/>
-	<c x="100" y="-3" z="-6"/>
-      </triangle>
-    </shape>
-    <material>
-      <ugly>
-	<color r="200" g="200" b="200"/>
-      </ugly>
-    </material>
-  </object>
+  <ambientLight>
+    <color r="255" g="255" b="255"/>
+  </ambientLight>
   <object>
     <shape>
       <sphere>
@@ -46,8 +21,22 @@
       </sphere>
     </shape>
     <material>
-      <phong>
+      <ugly>
         <color r="255" g="0" b="0"/>
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <triangle>
+	<a x="103" y="-3" z="-3"/>
+	<b x="103" y="3" z="3"/>
+	<c x="97" y="-3" z="3"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="100" g="255" b="0"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
         <ambiant v="0.4"/>
@@ -57,10 +46,47 @@
   </object>
   <object>
     <shape>
-      <sphere>
-        <center x="100" y="0" z="0"/>
-        <radius v="3"/>
-      </sphere>
+      <triangle>
+	<a x="103" y="-3" z="-3"/>
+	<b x="97" y="3" z="-3"/>
+	<c x="103" y="3" z="3"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="0" g="255" b="100"/>
+        <specular v="0.6"/>
+        <diffuse v="0.6"/>
+        <ambiant v="0.4"/>
+        <shininess v="100"/>
+      </phong>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <triangle>
+	<a x="97" y="-3" z="3"/>
+	<b x="103" y="3" z="3"/>
+	<c x="97" y="3" z="-3"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="100" g="255" b="100"/>
+        <specular v="0.6"/>
+        <diffuse v="0.5"/>
+        <ambiant v="0.4"/>
+        <shininess v="100"/>
+      </phong>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <triangle>
+	<a x="97" y="3" z="-3"/>
+	<b x="103" y="-3" z="-3"/>
+	<c x="97" y="-3" z="3"/>
+      </triangle>
     </shape>
     <material>
       <phong>

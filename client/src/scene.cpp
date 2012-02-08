@@ -74,6 +74,13 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
     {
         (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
+	// Fixes the precision problem for shadows.
+	if(tempDistance<0 && tempDistance > -0.1) {
+	  tempDistance = -tempDistance;
+	}
+	// ----------------------------------------
+
+
         if (tempDistance >= 0
             && ((*distance >= 0 && tempDistance < *distance)
                 || *distance < 0 ))
@@ -85,6 +92,7 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
 
         tempDistance = -1;
     }
+    
 }
 
 
@@ -105,7 +113,7 @@ list<DirectionalLight> Scene::visibleLights(Vec3<float> point) {
 
   float distance = -1;
   Vec3<float> normal;
-  Material *material = new UglyMaterial(Color(255, 127, 0));
+  Material *material;
   Color color = Color(0.0);
   list<DirectionalLight> result = list<DirectionalLight>();
   Ray ray = Ray(point, normal, color);
@@ -113,11 +121,11 @@ list<DirectionalLight> Scene::visibleLights(Vec3<float> point) {
   for(DirectionalLight l : directionalLights) {
     ray = Ray(point, l.getDirection()*(-1), color);
     computeIntersection(ray, &distance, &normal, &material);
-    if(distance <= 0) {
-      result.push_back(l);
-    }
+    //  Logger::log(LOG_DEBUG)<< distance <<endl;      
+      if(distance < 0) {
+	result.push_back(l);
+      }
   }
 
-  //  delete material;
   return result;
 }
