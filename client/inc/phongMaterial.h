@@ -32,17 +32,29 @@ class PhongMaterial : public Material {
    */
   float shininess;
 
+  /**
+   * 1 for a perfect mirror, 0 for no reflectivity
+   */
+  float reflectivity;
+
  public :
   PhongMaterial(const Color &color, 
 		float specularReflection, 
 		float diffuseReflection, 
 		float ambiantReflection, 
 		float shininess);
+  PhongMaterial(const Color &color, 
+		float specularReflection, 
+		float diffuseReflection, 
+		float ambiantReflection, 
+		float shininess,
+		float reflectivity);
   Color getColor();
   float getSpecularReflection();
   float getDiffuseReflection();
   float getAmbiantReflection();
   float getShininess();
+  float getReflectivity();
   Color renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene);
 };
 

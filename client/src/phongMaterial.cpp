@@ -14,7 +14,24 @@ PhongMaterial::PhongMaterial(const Color &color,
   specularReflection(specularReflection), 
   diffuseReflection(diffuseReflection),
   ambiantReflection(ambiantReflection), 
-  shininess(shininess)
+  shininess(shininess),
+  reflectivity(1)
+{
+
+}
+
+PhongMaterial::PhongMaterial(const Color &color, 
+			     float specularReflection, 
+			     float diffuseReflection, 
+			     float ambiantReflection, 
+			     float shininess,
+			     float reflectivity) :
+  color(color), 
+  specularReflection(specularReflection), 
+  diffuseReflection(diffuseReflection),
+  ambiantReflection(ambiantReflection), 
+  shininess(shininess),
+  reflectivity(reflectivity)
 {
 
 }
@@ -39,9 +56,11 @@ float PhongMaterial::getShininess() {
   return shininess;
 }
 
-Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
+float PhongMaterial::getReflectivity() {
+  return reflectivity;
+}
 
-  //  Logger::log(LOG_DEBUG)<< "PHONGMATERIAL" <<endl;  
+Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
 
   float r = 0;
   float g = 0;
@@ -49,46 +68,38 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
 
   Vec3<float> point = ray.getOrigin() + ray.getDirection()*distance;
   list<DirectionalLight> lights = scene->visibleLights(point);
-  //list<DirectionalLight> lights = scene->getDirectionalLights();
+
+  float diffuse;
+  float specular;
 
   r += color.getR()*ambiantReflection;
-  
-  //  Logger::log(LOG_DEBUG)<< lights <<endl;  
-
-  for(DirectionalLight l : lights) {
-    r += color.getR()*diffuseReflection*fabs(l.getDirection().scalar(normal));
-    r += color.getR()*specularReflection
-      *fabs(pow(l.getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), 
-	   shininess));
-  }
-  
-  r<255 ? r=r : r=255;
-
-
   g += color.getG()*ambiantReflection;
-  
+  b += color.getB()*ambiantReflection;  
+
   for(DirectionalLight l : lights) {
-    g += color.getG()*diffuseReflection*fabs(l.getDirection().scalar(normal));
-    g += color.getG()*specularReflection
-      *fabs(pow(l.getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), 
-		shininess));
+    diffuse = diffuseReflection*fabs(l.getDirection().scalar(normal));
+    specular = specularReflection*fabs(pow(l.getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), shininess));
+
+    r += color.getR()*diffuse;
+    g += color.getG()*diffuse;
+    b += color.getB()*diffuse;
+
+    r += color.getR()*specular;
+    g += color.getG()*specular;
+    b += color.getB()*specular;
+    
   }
   
-  g<255 ? g=g : g=255;
-
-
-  b += color.getB()*ambiantReflection;
-  
-  for(DirectionalLight l : lights) {
-    b += color.getB()*diffuseReflection*fabs(l.getDirection().scalar(normal));
-    b += color.getB()*specularReflection
-      *fabs(pow(l.getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), 
-		shininess));
+  if(r>255) {
+    r=255;
   }
-  
-  b<255 ? b=b : b=255;
+  if(g>255) {
+    g=255;
+  }
+  if(b>255) {
+    b=255;
+  }  
 
-  //    Logger::log(LOG_DEBUG)<< r << " " << g << " " << b <<endl;  
-    return Color(r, g, b);
+  return Color(r, g, b);
 
 }
