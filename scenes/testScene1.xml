@@ -8,7 +8,7 @@
   </camera>
   <directionalLight>
     <color r="255" g="255" b="255"/>
-    <direction x="-1" y="-0.5" z="0"/>
+    <direction x="0" y="1" z="1"/>
   </directionalLight>
   <object>
     <shape>
@@ -21,7 +21,7 @@
       <phong>
         <color r="255" g="0" b="0"/>
         <specular v="0.6"/>
-        <diffuse v="0.5"/>
+        <diffuse v="0.6"/>
         <ambiant v="0.4"/>
         <shininess v="100"/>
       </phong>
