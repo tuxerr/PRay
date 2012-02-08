@@ -7,15 +7,16 @@
 #include "ambientLight.h"
 #include "vec3.h"
 #include "phongMaterial.h"
+#include "uglyMaterial.h"
 
 using namespace std;
 
-Scene SceneLoader::load(string scene_file, int xRes, int yRes) {
+int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
     TiXmlDocument doc(scene_file);
     if ( !doc.LoadFile() ) {
         Logger::log(LOG_ERROR) << "Scene loading failed : " << scene_file << endl;
         Logger::log(LOG_ERROR) << "error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
-        // exit(EXIT_FAILURE);
+	return -1;
     } else {
 
         Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
@@ -57,7 +58,9 @@ Scene SceneLoader::load(string scene_file, int xRes, int yRes) {
 
         Logger::log(LOG_INFO) << "Scene loaded with success" << endl;
 
-        return Scene(objects,lDirLights,AmbientLight(),camera);
+        *scene = new Scene(objects,lDirLights,AmbientLight(),camera);
+
+	return 0;
     }
 }
 
@@ -75,6 +78,16 @@ Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
                               <<radius<<endl;
 
         object = new Sphere(center, radius, material);
+    } else if (childName.compare("triangle")==0 ){
+        Vec3<float> a = readVec3Float(child->FirstChildElement("a"));
+        Vec3<float> b = readVec3Float(child->FirstChildElement("b"));
+        Vec3<float> c = readVec3Float(child->FirstChildElement("c"));
+
+	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
+			      <<b.x<<","<<b.y<<","<<b.z<<") ("
+			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
+
+        object = new Triangle(a, b, c, material);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown shape"<<endl;
     }
@@ -99,6 +112,9 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
 
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
+    } else if (childName.compare("ugly")==0 ) {
+        Color color = readColor(child->FirstChildElement("color"));
+        material = new UglyMaterial(color);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown material"<<endl;
     }

@@ -1,6 +1,7 @@
 #include "logger.h"
 #include "scene.h"
 #include "material.h"
+#include "uglyMaterial.h"
 
 Scene::Scene(const list<Object*> objects,
 	     const list<DirectionalLight> &directionalLights,
@@ -49,9 +50,11 @@ Color Scene::renderRay(Ray &ray) {
   computeIntersection(ray, &distance, &normal, &material);
 
   if (distance < 0) { // no intersection was found
+    //    Logger::log(LOG_DEBUG) << "NO INTERSECTION" << endl;
     return Color(0,0,0);
   } else {
-    return material->renderRay(ray, normal, this);
+    //    Logger::log(LOG_DEBUG) << "INTERSECTION : " << material << endl;
+    return material->renderRay(ray, distance, normal, this);
   }
 }
 
@@ -91,5 +94,30 @@ Color Scene::renderPixel(int x, int y) {
     Color color = Color(0,0,0);
     Vec3<float> origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
+    //    Logger::log(LOG_DEBUG) << "before scene::renderRay" << endl;
     return renderRay(r);
+}
+
+/**
+ * Give the lights that are visible from a point. Used for shadows.
+ */
+list<DirectionalLight> Scene::visibleLights(Vec3<float> point) {
+
+  float distance = -1;
+  Vec3<float> normal;
+  Material *material = new UglyMaterial(Color(255, 127, 0));
+  Color color = Color(0.0);
+  list<DirectionalLight> result = list<DirectionalLight>();
+  Ray ray = Ray(point, normal, color);
+
+  for(DirectionalLight l : directionalLights) {
+    ray = Ray(point, l.getDirection()*(-1), color);
+    computeIntersection(ray, &distance, &normal, &material);
+    if(distance <= 0) {
+      result.push_back(l);
+    }
+  }
+
+  //  delete material;
+  return result;
 }

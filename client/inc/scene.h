@@ -36,7 +36,7 @@ class Scene {
   void computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
                            Material **material);
   Color renderPixel(int x, int y);
-  list<Light> visibleLights(Vec3<float> point);
+  list<DirectionalLight> visibleLights(Vec3<float> point);
 };
 
 #endif

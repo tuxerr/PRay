@@ -22,8 +22,7 @@ void Display::refresh_display() {
 bool Display::refresh_controls() {
     SDL_Event event;
     bool change=false;
-//    while(SDL_PollEvent(&event)==1) {
-    SDL_WaitEvent(&event);
+    while(SDL_PollEvent(&event)==1) {
         switch(event.type) {
         case SDL_KEYDOWN:
             for(unsigned int i=0;i<bindings.size();i++) {
@@ -44,9 +43,8 @@ bool Display::refresh_controls() {
         default:
             break;
         }
+    }
 
-//    }
-//
     return change;
 }
 

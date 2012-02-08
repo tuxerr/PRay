@@ -9,7 +9,7 @@
 
 class SceneLoader {
 public:
-    Scene load(std::string nom, int xRes, int yRes);
+    int load(std::string nom, Scene** scene, int xRes, int yRes);
 
 private:
     Object* readShape(TiXmlElement* node, Material* material);

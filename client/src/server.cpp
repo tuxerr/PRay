@@ -1,5 +1,7 @@
 #include "server.h"
 
+using namespace std;
+
 Server::Server(const char *ip,int port) :
     ip_addr(ip), dest_port(port), continue_loop(true), islaunched(false)
 {

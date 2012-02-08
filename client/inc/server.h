@@ -18,17 +18,17 @@ public:
     Server(const char *ip,int port=DEFAULT_LISTENING_PORT);
     void connect();
     void stop();
-    int send_message(string mes);
+    int send_message(std::string mes);
     bool has_messages();
     bool is_connected();
-    string unstack_message();
+    std::string unstack_message();
 
     void main_loop();
     static void *main_loop_thread(void *This);
     
 private:
     TCPSocket sock;
-    string ip_addr;
+    std::string ip_addr;
     int dest_port;
     pthread_t thread;
     std::list<std::string> received_messages;
