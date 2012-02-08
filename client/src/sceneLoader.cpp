@@ -45,7 +45,10 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 Color color = readColor(node->FirstChildElement("color"));
                 Vec3<float> direction = readVec3Float(node->FirstChildElement("direction"));
                 lDirLights.push_back(DirectionalLight(color, direction.normalize()));
-            } else if ( nodeName.compare("object")==0 ) {
+            } else if ( nodeName.compare("ambientLight")==0 ) {
+	        Color color = readColor(node->FirstChildElement("color"));
+		ambientLight = AmbientLight(color);
+	    } else if ( nodeName.compare("object")==0 ) {
                 Material* material = readMaterial(node->FirstChildElement("material"));
                 Object* object = readShape(node->FirstChildElement("shape"), material);
                 objects.push_back(object);
@@ -58,7 +61,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
 
         Logger::log(LOG_INFO) << "Scene loaded with success" << endl;
 
-        *scene = new Scene(objects,lDirLights,AmbientLight(),camera);
+        *scene = new Scene(objects,lDirLights,ambientLight,camera);
 
 	return 0;
     }
