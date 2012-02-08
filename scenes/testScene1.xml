@@ -15,7 +15,7 @@
       <triangle>
 	<a x="100" y="-6" z="0"/>
 	<b x="100" y="0" z="0"/>
-	<c x="100" y="-3" z="6"/>
+	<c x="100" y="-3" z="4"/>
       </triangle>
     </shape>
     <material>
@@ -29,7 +29,7 @@
       <triangle>
 	<a x="100" y="-6" z="0"/>
 	<b x="100" y="0" z="0"/>
-	<c x="100" y="-3" z="-6"/>
+	<c x="100" y="-3" z="-4"/>
       </triangle>
     </shape>
     <material>

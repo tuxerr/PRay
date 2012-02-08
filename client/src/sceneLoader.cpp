@@ -108,12 +108,16 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         child->FirstChildElement("ambiant")->QueryFloatAttribute("v", &ambiant);
         child->FirstChildElement("shininess")->QueryFloatAttribute("v", &shininess);
 
-        Logger::log(LOG_DEBUG)<<"Material : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
+        Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
 
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
+
+        Logger::log(LOG_DEBUG)<<"Material : Ugly : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
+                              <<")"<<endl;
+
         material = new UglyMaterial(color);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown material"<<endl;
