@@ -8,8 +8,36 @@
   </camera>
   <directionalLight>
     <color r="255" g="255" b="255"/>
-    <direction x="-1" y="-0.5" z="0"/>
+    <direction x="1" y="O" z="0"/>
   </directionalLight>
+  <object>
+    <shape>
+      <triangle>
+	<a x="100" y="-6" z="0"/>
+	<b x="100" y="0" z="0"/>
+	<c x="100" y="-3" z="6"/>
+      </triangle>
+    </shape>
+    <material>
+      <ugly>
+	<color r="200" g="200" b="200"/>
+      </ugly>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <triangle>
+	<a x="100" y="-6" z="0"/>
+	<b x="100" y="0" z="0"/>
+	<c x="100" y="-3" z="-6"/>
+      </triangle>
+    </shape>
+    <material>
+      <ugly>
+	<color r="200" g="200" b="200"/>
+      </ugly>
+    </material>
+  </object>
   <object>
     <shape>
       <sphere>
