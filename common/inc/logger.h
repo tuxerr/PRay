@@ -2,13 +2,14 @@
 #define DEF_LOGGER
 
 #include <iostream>
+#include <functional>
 #include <streambuf>
 #include <string>
+#include <sstream>
 #include <fstream>
+#include <vector>
 #include "mutex.h"
 #include <signal.h>
-
-using namespace std;
 
 #define DEFAULT_LOG_PATH "pray_log.log"
 
@@ -24,12 +25,13 @@ enum Log_Type {
 };
 
 //streambuffer class that handles I/O to the logger
-class LoggerStreambuf : public streambuf
+class LoggerStreambuf : public std::streambuf
 {
 private:
-    string &prefix;
-    fstream &file;
+    std::string &prefix;
+    std::fstream &file;
     Mutex write_mut;
+    std::vector< std::function<void(std::string)> > &vec;
 
 protected:
     static const int bufferSize = 100;   // size of data buffer
@@ -37,7 +39,7 @@ protected:
     bool firstflush;
 
 public:
-    LoggerStreambuf(string &prefix,fstream &file);
+    LoggerStreambuf(std::string &prefix,std::fstream &file,std::vector<std::function<void(std::string)> > &vec);
 
     virtual ~LoggerStreambuf() { sync(); }
 
@@ -49,23 +51,26 @@ protected:
 };
 
 //main logger class
-class Logger : public ostream
+class Logger : public std::ostream
 {
 public:
-    static void init(string file_path=DEFAULT_LOG_PATH);
+    static void init(std::string file_path=DEFAULT_LOG_PATH);
     ~Logger();
     static Logger& log(Log_Type type=LOG_INFO);
     void set_logtype(Log_Type type);
+    void add_handler(std::function<void(std::string)>);
 
 private:
-    Logger(string file_path);
+    Logger(std::string file_path);
     Logger(Logger const&);         // Don't Implement.
     void operator=(Logger const&); // Don't implement
     void close();
 
-    string logtype_to_prefix(Log_Type type);
-    string current_prefix;
-    fstream m_file;
+    std::string logtype_to_prefix(Log_Type type);
+    std::string current_prefix;
+    std::fstream m_file;
+
+    std::vector< std::function<void(std::string)> > vec;
 
     static Logger *logger_ptr;
     static void (*sigsegv_handlerptr)(int);

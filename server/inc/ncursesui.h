@@ -3,30 +3,36 @@
 
 #include <iostream>
 #include <ncurses.h>
+#include <string>
+#include <string.h>
 #include "logger.h"
+#include <queue>
 
-enum mode_e { 
-    m_start,
-    m_command,
-    m_log, 
-    m_ping, 
-    m_quit
-};
+using namespace std;
 
 class NcursesUI {
-private :
-    int preview_ping;
-    char command[256];
-    int row;
-    int col;
-    int mode_ch;
-    enum mode_e mode;
-    enum mode_e prev_mode;
 public :
     NcursesUI();
     ~NcursesUI();
     void init();
     void run();
+
+private :
+    int mode_ch;
+};
+
+class NcursesWindow {
+public:
+    NcursesWindow(string title,int height,int width,int starty,int startx);
+    ~NcursesWindow();
+    void add_string(string text);
+    void refresh();
+
+private:
+    WINDOW *ptr;
+    std::deque<std::string> messages;
+    unsigned int max_size;
+    unsigned int col_size;
 };
 
 #endif

@@ -15,6 +15,10 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_version.h>
 #include "color.h"
+#include <algorithm>
+
+
+using namespace std;
 
 class Display {
 public:

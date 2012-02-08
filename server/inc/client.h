@@ -7,6 +7,8 @@
 #include "logger.h"
 #include <pthread.h>
 
+using namespace std;
+
 #define NETWORK_CLIENT_SLEEPTIME 30000
 #define RECV_L 3000
 

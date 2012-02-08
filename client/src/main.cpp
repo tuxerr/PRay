@@ -70,7 +70,6 @@ int main()
 
         Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
 
-        //testScenes.destroyTestScene1(scene);
     }
 
     return EXIT_SUCCESS;

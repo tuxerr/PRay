@@ -4,7 +4,7 @@ TCPSocket::TCPSocket() {
     sock=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 //    fcntl(sock,F_SETFL,O_NONBLOCK);
     if(sock==INVALID_SOCKET) {
-	Logger::log(LOG_ERROR)<<"Error during the creation of a TCP socket"<<endl;
+	Logger::log(LOG_ERROR)<<"Error during the creation of a TCP socket"<<std::endl;
 	exit(0);
     }
 }

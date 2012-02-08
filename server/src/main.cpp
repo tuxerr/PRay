@@ -24,12 +24,15 @@ int main(int argv, char *argc[])
     Network network;
     network.launch();
 
-    Display::init(640,640);
-    Display *disp = &(Display::getInstance());
-    disp->register_keyhook(std::bind(&Test::print,Test()),SDLK_a);
-    disp->refresh_display();
+//    Display::init(640,640);
+//    Display *disp = &(Display::getInstance());
+//    disp->refresh_display();
 
-/*    while(network.get_client_number()==0) {
+    NcursesUI ui;
+    ui.init();
+    ui.run();
+
+/*  while(network.get_client_number()==0) {
         sleep(1);
     }
 
@@ -40,10 +43,9 @@ int main(int argv, char *argc[])
         cli->send_message("trololololo");
         while(!cli->has_messages() && cli->is_connected());
         std::cout<<"received : "<<cli->unstack_message()<<std::endl;
-        } */
+    } */
 
     network.stop();
-    sleep(4);
 
     return 0;
 }
