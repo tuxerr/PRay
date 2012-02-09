@@ -13,7 +13,6 @@ COMMONOBJS = $(COMMONSRCS:.cpp=.o)
 
 all: $(EXEC)
 
-
 $(EXEC) : $(OBJS)
 	cd ../common; make
 	$(CXX) -o $@ $^ $(COMMONOBJS) $(LDFLAGS)
