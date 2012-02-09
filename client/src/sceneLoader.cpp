@@ -20,7 +20,6 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         Logger::log(LOG_ERROR) << "error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
 	return -1;
     } else {
-
         Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
 
         list<Object*> objects;
@@ -61,7 +60,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
             node = node->NextSiblingElement();
         }
 
-        Logger::log(LOG_INFO) << "Scene loaded with success" << endl;
+        Logger::log(LOG_INFO) << "Scene loaded with success ("<<(int) objects.size()<<" objects)" << endl;
 
         *scene = new Scene(objects,lDirLights,ambientLight,camera);
 

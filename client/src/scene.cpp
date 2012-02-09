@@ -51,7 +51,7 @@ Color Scene::renderRay(Ray &ray) {
 
   if (distance < 0) { // no intersection was found
     //    Logger::log(LOG_DEBUG) << "NO INTERSECTION" << endl;
-    return Color(0,0,0);
+    return Color(1,1,1);
   } else {
     //    Logger::log(LOG_DEBUG) << "INTERSECTION : " << material << endl;
     return material->renderRay(ray, distance, normal, this);
