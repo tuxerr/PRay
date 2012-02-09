@@ -1,7 +1,0 @@
-Une lumiere ambiente est obligatoire dans une scene, si il n'y en a pas dans le XML, on peut en mettre une de couleur 0 0 0, ceci n'est pas implemente.
-Je me demande si les couleurs ne devraient pas etre codees par des float dans 0..1. En effet, dans la suite, un lancer de rayon va faire plein de multiplications
-dans tout les sens et ca peut poser probleme. On peut effectuer une conversion pour les calculs et concerver le format de stoquage.
-Une lumière blanche 255 255 255 n'est pas sencé d'avoir d'impact sur la couleur de l'objet => Multiplication par 1 1 1, la multiplication par 255 quand à elle,
-va rendre tout les objets blanc comme neige il me semble.
-
-Fichier simplement la pour que je pense à ca demain ...
