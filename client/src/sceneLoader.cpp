@@ -9,6 +9,8 @@
 #include "phongMaterial.h"
 #include "uglyMaterial.h"
 
+//#define SCENELOADER_DEBUG 
+
 using namespace std;
 
 int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
@@ -36,7 +38,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 Vec3<float> target = readVec3Float(node->FirstChildElement("target"));
                 Vec3<float> normal = readVec3Float(node->FirstChildElement("normal"));
                 camera = new Camera(position,
-                                    target,
+                                    target-position,
                                     normal,
                                     16/2, 9/2,
                                     35,
@@ -77,19 +79,21 @@ Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
         float radius = 0;
         child->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
+#ifdef SCENELOADER_DEBUG        
         Logger::log(LOG_DEBUG)<<"Sphere : ("<<center.x<<","<<center.y<<","<<center.z<<") "
                               <<radius<<endl;
-
+#endif
         object = new Sphere(center, radius, material);
     } else if (childName.compare("triangle")==0 ){
         Vec3<float> a = readVec3Float(child->FirstChildElement("a"));
         Vec3<float> b = readVec3Float(child->FirstChildElement("b"));
         Vec3<float> c = readVec3Float(child->FirstChildElement("c"));
 
+#ifdef SCENELOADER_DEBUG  
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
-
+#endif
         object = new Triangle(a, b, c, material);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown shape"<<endl;
@@ -111,16 +115,18 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         child->FirstChildElement("ambiant")->QueryFloatAttribute("v", &ambiant);
         child->FirstChildElement("shininess")->QueryFloatAttribute("v", &shininess);
 
+#ifdef SCENELOADER_DEBUG 
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
-
+#endif
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 
+#ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Ugly : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<")"<<endl;
-
+#endif
         material = new UglyMaterial(color);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown material"<<endl;
@@ -130,13 +136,13 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 }
 
 Color SceneLoader::readColor(TiXmlElement* node) {
-    int r, g, b;
+    float r=0, g=0, b=0;
    
-    node->QueryIntAttribute("r", &r);
-    node->QueryIntAttribute("g", &g);
-    node->QueryIntAttribute("b", &b);
+    node->QueryFloatAttribute("r", &r);
+    node->QueryFloatAttribute("g", &g);
+    node->QueryFloatAttribute("b", &b);
 
-    return Color(r, g, b);
+    return Color(r/255, g/255, b/255);
 }
 
 Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {

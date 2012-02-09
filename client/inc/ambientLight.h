@@ -3,7 +3,7 @@
 
 #include "light.h"
 
-class AmbientLight : Light{
+class AmbientLight : public Light {
 public :
     AmbientLight (const Color &color);
     AmbientLight (float grey =1);

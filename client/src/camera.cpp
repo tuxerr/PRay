@@ -1,3 +1,4 @@
+#include "logger.h"
 #include "camera.h"
 
 Camera::Camera(Vec3<float> point,
@@ -24,6 +25,10 @@ Camera::Camera(Vec3<float> point,
     mode(mode)
 {
     lateral = direction.cross(normal);
+    
+    if (! (direction.scalar(normal) < 1e-6)) {
+        Logger::log(LOG_WARNING)<<"Incorrect camera : direction and normal are not orthogonal"<<std::endl;
+    }
 }
 
 Vec3<float> Camera::getPoint() const {
@@ -221,4 +226,10 @@ void Camera::switchMode() {
         mode = CAMERA;
         break;
     }
+}
+
+void Camera::logInformations() {
+    Logger::log(LOG_INFO)<<"Camera : position = ("<<point.x<<", "<<point.y<<", "<<point.z<<")"<<std::endl;
+    Logger::log(LOG_INFO)<<"       : direction = ("<<direction.x<<", "<<direction.y<<", "<<direction.z<<")"<<std::endl;
+    Logger::log(LOG_INFO)<<"       : normal = ("<<normal.x<<", "<<normal.y<<", "<<normal.z<<")"<<std::endl;
 }

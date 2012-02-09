@@ -68,36 +68,61 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
 
   Vec3<float> point = ray.getOrigin() + ray.getDirection()*distance;
   list<DirectionalLight> lights = scene->visibleLights(point);
+  //list<DirectionalLight> lights = scene->getDirectionalLights();
+  
 
   float diffuse;
   float specular;
+  
+  Color ambientColor = (scene->getAmbientLight()).getColor();
 
-  r += color.getR()*ambiantReflection;
-  g += color.getG()*ambiantReflection;
-  b += color.getB()*ambiantReflection;  
+  float rr;
+  float rg;
+  float rb;
+  
+  r += color.getR()*ambiantReflection*ambientColor.getR();
+  g += color.getG()*ambiantReflection*ambientColor.getG();
+  b += color.getB()*ambiantReflection*ambientColor.getB();
 
   for(DirectionalLight l : lights) {
+
     diffuse = diffuseReflection*fabs(l.getDirection().scalar(normal));
     specular = specularReflection*fabs(pow(l.getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), shininess));
 
-    r += color.getR()*diffuse;
-    g += color.getG()*diffuse;
-    b += color.getB()*diffuse;
+    rr = l.getColor().getR();
+    rg = l.getColor().getG();
+    rb = l.getColor().getB();
 
-    r += color.getR()*specular;
-    g += color.getG()*specular;
-    b += color.getB()*specular;
-    
+    r += color.getR()*diffuse*rr;
+    g += color.getG()*diffuse*rg;
+    b += color.getB()*diffuse*rb;
+
+    r += color.getR()*specular*rr;
+    g += color.getG()*specular*rg;
+    b += color.getB()*specular*rb;
+ 
   }
-  
-  if(r>255) {
-    r=255;
+
+
+  Color black = Color(0,0,0);
+  Ray reflectedRay = Ray(ray.getOrigin(),
+			 ray.getDirection().symmetry(normal),
+			 black);
+  Color reflectedColor = scene->renderRay(reflectedRay);
+
+  r += reflectivity*color.getR()*reflectedColor.getR();
+  g += reflectivity*color.getG()*reflectedColor.getG();
+  b += reflectivity*color.getB()*reflectedColor.getB();
+ 
+
+  if(r>1) {
+    r=1;
   }
-  if(g>255) {
-    g=255;
+  if(g>1) {
+    g=1;
   }
-  if(b>255) {
-    b=255;
+  if(b>1) {
+    b=1;
   }  
 
   return Color(r, g, b);

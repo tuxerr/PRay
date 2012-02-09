@@ -75,9 +75,9 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
         (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
 	// Fixes the precision problem for shadows.
-	if(tempDistance<0 && tempDistance > -0.1) {
+	if(tempDistance < 0 && tempDistance > -0.1) {
 	  tempDistance = -tempDistance;
-	}
+      	}
 	// ----------------------------------------
 
 

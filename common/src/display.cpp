@@ -77,6 +77,9 @@ Display::Display(int p_width,int p_height) :
 }
 
 Display::~Display() {
+    SDL_SaveBMP(screen, "image.bmp");
+    Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
+
     SDL_Quit();
     Logger::log(LOG_INFO)<<"SDL Quit"<<endl;
 }

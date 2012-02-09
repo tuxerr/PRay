@@ -5,15 +5,26 @@
 #include "display.h"
 #include "sceneLoader.h"
 
-#define WIDTH 800
-#define HEIGHT 450
+#define WIDTH 1280
+#define HEIGHT 720
 
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
 
-int main()
+int main(int argc, char* argv[])
 {
+    string filename;
+    int frameNumber = 0;
+
     Logger::init("pray_client.log");
+
+    if (argc != 2) {
+        Logger::log(LOG_ERROR) << "Missing argument" << endl;
+        Logger::log(LOG_INFO) << "Usage: " << argv[0] << " scene.xml" << endl;
+	return EXIT_FAILURE;
+    } 
+    
+    filename = string(argv[1]);
 
     const string standaloneMode ("--test");
 
@@ -29,7 +40,7 @@ int main()
         SceneLoader sceneLoader;
         Scene* scene;
 	
-	if ( sceneLoader.load("../scenes/testScene1.xml", &scene, width, height) != 0 ) {
+	if ( sceneLoader.load(filename, &scene, width, height) != 0 ) {
 	    return EXIT_FAILURE;
 	}
 
@@ -48,6 +59,7 @@ int main()
         disp->register_keyhook(std::bind(&Camera::yawLeft,            scene->getCamera()), SDLK_LEFT);
         disp->register_keyhook(std::bind(&Camera::yawRight,           scene->getCamera()), SDLK_RIGHT);
         disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
+        disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
 
         while ( !disp->quit() )
         {
@@ -63,13 +75,13 @@ int main()
 
             disp->refresh_display();
 
+	    Logger::log(LOG_INFO) << "Frame " << frameNumber++ << " rendered" << endl;
+
             disp->refresh_controls();
 
         }
 
-        Logger::log(LOG_INFO)<<"Rendering complete"<<endl;
-
-        Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
+        Logger::log(LOG_INFO)<<"Rendering terminated"<<endl;
 
 	delete scene;
     }
