@@ -9,6 +9,8 @@
 #include "phongMaterial.h"
 #include "uglyMaterial.h"
 
+//#define SCENELOADER_DEBUG 
+
 using namespace std;
 
 int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
@@ -77,19 +79,21 @@ Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
         float radius = 0;
         child->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
+#ifdef SCENELOADER_DEBUG        
         Logger::log(LOG_DEBUG)<<"Sphere : ("<<center.x<<","<<center.y<<","<<center.z<<") "
                               <<radius<<endl;
-
+#endif
         object = new Sphere(center, radius, material);
     } else if (childName.compare("triangle")==0 ){
         Vec3<float> a = readVec3Float(child->FirstChildElement("a"));
         Vec3<float> b = readVec3Float(child->FirstChildElement("b"));
         Vec3<float> c = readVec3Float(child->FirstChildElement("c"));
 
+#ifdef SCENELOADER_DEBUG  
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
-
+#endif
         object = new Triangle(a, b, c, material);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown shape"<<endl;
@@ -111,16 +115,18 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         child->FirstChildElement("ambiant")->QueryFloatAttribute("v", &ambiant);
         child->FirstChildElement("shininess")->QueryFloatAttribute("v", &shininess);
 
+#ifdef SCENELOADER_DEBUG 
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
-
+#endif
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 
+#ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Ugly : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<")"<<endl;
-
+#endif
         material = new UglyMaterial(color);
     } else {
         Logger::log(LOG_ERROR)<<"Unknown material"<<endl;
