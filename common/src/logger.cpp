@@ -76,7 +76,7 @@ void Logger::close() {
 }
 
 Logger::Logger(string file_path) :
-    ostream(new LoggerStreambuf(current_prefix,m_file)), ios(0), current_prefix("[INF]")
+    ios(0), ostream(new LoggerStreambuf(current_prefix,m_file)), current_prefix("[INF]")
 {
     m_file.open(file_path.c_str(),ios::out|ios::trunc);
     if(!m_file) {
