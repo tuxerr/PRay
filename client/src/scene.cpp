@@ -15,6 +15,8 @@ Scene::Scene(const list<Object*> objects,
 
 }
 
+int Scene::reflections;
+
 Scene::~Scene()
 {
     list<Object*>::iterator iter;
@@ -53,7 +55,14 @@ Color Scene::renderRay(Ray &ray) {
     //    Logger::log(LOG_DEBUG) << "NO INTERSECTION" << endl;
     return Color(1,1,1);
   } else {
-    //    Logger::log(LOG_DEBUG) << "INTERSECTION : " << material << endl;
+    /*    Logger::log(LOG_DEBUG) << "INTERSECTION : " << material << endl;
+    Logger::log(LOG_DEBUG) << "TROLOL" << endl;
+    
+    
+    Logger::log(LOG_DEBUG) << "ray : " << &ray << endl;
+    Logger::log(LOG_DEBUG) << "distance : " << &distance << endl;
+    Logger::log(LOG_DEBUG) << "normal : " << &normal << endl;
+    Logger::log(LOG_DEBUG) << "this : " << this << endl;*/
     return material->renderRay(ray, distance, normal, this);
   }
 }
@@ -103,6 +112,7 @@ Color Scene::renderPixel(int x, int y) {
     Vec3<float> origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
     //    Logger::log(LOG_DEBUG) << "before scene::renderRay" << endl;
+    reflections = 0;
     return renderRay(r);
 }
 
