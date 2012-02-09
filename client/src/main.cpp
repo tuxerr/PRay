@@ -14,11 +14,13 @@
 int main(int argc, char* argv[])
 {
     string filename;
+    int frameNumber = 0;
 
     Logger::init("pray_client.log");
 
     if (argc != 2) {
-        Logger::log(LOG_ERROR) << "bad arguments" << endl;
+        Logger::log(LOG_ERROR) << "Missing argument" << endl;
+        Logger::log(LOG_INFO) << "Usage: " << argv[0] << " scene.xml" << endl;
 	return EXIT_FAILURE;
     } 
     
@@ -72,15 +74,15 @@ int main(int argc, char* argv[])
 
             disp->refresh_display();
 
-	    Logger::log(LOG_DEBUG)<<"Frame rendered"<<endl;
+	    Logger::log(LOG_INFO) << "Frame " << frameNumber++ << " rendered" << endl;
 
             disp->refresh_controls();
 
         }
 
-        Logger::log(LOG_INFO)<<"Rendering complete"<<endl;
+        Logger::log(LOG_INFO)<<"Rendering terminated"<<endl;
 
-        Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
+        //Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
 
 	delete scene;
     }
