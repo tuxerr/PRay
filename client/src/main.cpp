@@ -82,8 +82,6 @@ int main(int argc, char* argv[])
 
         Logger::log(LOG_INFO)<<"Rendering terminated"<<endl;
 
-        //Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
-
 	delete scene;
     }
 
