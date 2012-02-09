@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
   <camera>
-    <position x="-20" y="0" z="0"/>
-    <target x="0.1" y="0" z="0"/>
-    <normal x="0" y="0" z="1"/>
-    <viewplane w="16/2" h="9/2" d="35"/>
+    <position x="-15" y="7" z="20"/>
+    <target x="0" y="0" z="0"/>
+    <normal x="0" y="1" z="0"/>
+    <viewplane w="16/2" h="9/2" d="10"/>
   </camera>
   <directionalLight>
     <color r="255" g="255" b="255"/>

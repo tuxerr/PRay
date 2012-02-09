@@ -36,7 +36,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 Vec3<float> target = readVec3Float(node->FirstChildElement("target"));
                 Vec3<float> normal = readVec3Float(node->FirstChildElement("normal"));
                 camera = new Camera(position,
-                                    target,
+                                    target-position,
                                     normal,
                                     16/2, 9/2,
                                     35,
@@ -136,7 +136,7 @@ Color SceneLoader::readColor(TiXmlElement* node) {
     node->QueryFloatAttribute("g", &g);
     node->QueryFloatAttribute("b", &b);
 
-    return Color(r/256, g/256, b/256);
+    return Color(r/255, g/255, b/255);
 }
 
 Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {
