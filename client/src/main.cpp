@@ -11,9 +11,18 @@
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
 
-int main()
+int main(int argc, char* argv[])
 {
+    string filename;
+
     Logger::init("pray_client.log");
+
+    if (argc != 2) {
+        Logger::log(LOG_ERROR) << "bad arguments" << endl;
+	return EXIT_FAILURE;
+    } 
+    
+    filename = string(argv[1]);
 
     const string standaloneMode ("--test");
 
@@ -29,7 +38,7 @@ int main()
         SceneLoader sceneLoader;
         Scene* scene;
 	
-	if ( sceneLoader.load("../scenes/testScene1.xml", &scene, width, height) != 0 ) {
+	if ( sceneLoader.load(filename, &scene, width, height) != 0 ) {
 	    return EXIT_FAILURE;
 	}
 
@@ -62,6 +71,8 @@ int main()
             }
 
             disp->refresh_display();
+
+	    Logger::log(LOG_DEBUG)<<"Frame rendered"<<endl;
 
             disp->refresh_controls();
 
