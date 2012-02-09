@@ -227,3 +227,9 @@ void Camera::switchMode() {
         break;
     }
 }
+
+void Camera::logInformations() {
+    Logger::log(LOG_INFO)<<"Camera : position = ("<<point.x<<", "<<point.y<<", "<<point.z<<")"<<std::endl;
+    Logger::log(LOG_INFO)<<"       : direction = ("<<direction.x<<", "<<direction.y<<", "<<direction.z<<")"<<std::endl;
+    Logger::log(LOG_INFO)<<"       : normal = ("<<normal.x<<", "<<normal.y<<", "<<normal.z<<")"<<std::endl;
+}
