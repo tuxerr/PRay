@@ -63,6 +63,8 @@ int main()
 
             disp->refresh_display();
 
+	    Logger::log(LOG_DEBUG)<<"Frame rendered"<<endl;
+
             disp->refresh_controls();
 
         }
