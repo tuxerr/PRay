@@ -13,7 +13,6 @@
   <ambientLight>
     <color r="255" g="255" b="255"/>
   </ambientLight>
-
   <object>
     <shape>
       <sphere>
@@ -28,10 +27,10 @@
         <diffuse v="0.5"/>
         <ambiant v="0.05"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
-
   <object>
     <shape>
       <triangle>
@@ -47,8 +46,8 @@
         <diffuse v="0.5"/>
         <ambiant v="0.1"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
-
 </scene>

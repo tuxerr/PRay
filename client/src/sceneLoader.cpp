@@ -108,17 +108,25 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 
     if (childName.compare("phong")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
-        float specular=0, diffuse=0, ambiant=0, shininess=0;
-        child->FirstChildElement("specular")->QueryFloatAttribute("v", &specular);
-        child->FirstChildElement("diffuse")->QueryFloatAttribute("v", &diffuse);
-        child->FirstChildElement("ambiant")->QueryFloatAttribute("v", &ambiant);
-        child->FirstChildElement("shininess")->QueryFloatAttribute("v", &shininess);
+        float specular=0, diffuse=0, ambiant=0, shininess=0, reflexivity=0;
+        TiXmlElement* child2;
+        
+        child2 = child->FirstChildElement("specular");
+        if (child2) child2->QueryFloatAttribute("v", &specular);
+        child2 = child->FirstChildElement("diffuse");
+        if (child2) child2->QueryFloatAttribute("v", &diffuse);
+        child2 = child->FirstChildElement("ambiant");
+        if (child2) child2->QueryFloatAttribute("v", &ambiant);
+        child2 = child->FirstChildElement("shininess");
+        if (child2) child2->QueryFloatAttribute("v", &shininess);
+        child2 = child->FirstChildElement("reflexivity");
+        if (child2) child2->QueryFloatAttribute("v", &reflexivity);
 
 #ifdef SCENELOADER_DEBUG 
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
-                              <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<endl;
+                              <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "reflexivity<<endl;
 #endif
-        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess);
+        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 

@@ -10,21 +10,6 @@ PhongMaterial::PhongMaterial(const Color &color,
 			     float specularReflection, 
 			     float diffuseReflection, 
 			     float ambiantReflection, 
-			     float shininess) :
-  color(color), 
-  specularReflection(specularReflection), 
-  diffuseReflection(diffuseReflection),
-  ambiantReflection(ambiantReflection), 
-  shininess(shininess),
-  reflectivity(0)
-{
-
-}
-
-PhongMaterial::PhongMaterial(const Color &color, 
-			     float specularReflection, 
-			     float diffuseReflection, 
-			     float ambiantReflection, 
 			     float shininess,
 			     float reflectivity) :
   color(color), 
