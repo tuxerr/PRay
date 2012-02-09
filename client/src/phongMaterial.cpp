@@ -16,7 +16,7 @@ PhongMaterial::PhongMaterial(const Color &color,
   diffuseReflection(diffuseReflection),
   ambiantReflection(ambiantReflection), 
   shininess(shininess),
-  reflectivity(1)
+  reflectivity(0)
 {
 
 }
@@ -106,7 +106,7 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
  
   }
 
-  if(scene->reflections < MAX_REFLECTIONS) {
+  if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
     scene->reflections += 1;
     Color black = Color(0,0,0);
 
