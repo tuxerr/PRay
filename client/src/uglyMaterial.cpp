@@ -22,8 +22,21 @@ Color UglyMaterial::renderRay(const Ray & ray,
 
   float factor = std::abs( ray.getDirection().scalar(normal) / (ray.getDirection().norm() * normal.norm()) );
 
-  return Color(factor * color.getR(),
-               factor * color.getG(),
-               factor * color.getB());
+  float r = factor * color.getR();
+  float g = factor * color.getG();
+  float b = factor * color.getB();
+
+  if(r>1) {
+    r=1;
+  }
+  if(g>1) {
+    g=1;
+  }
+  if(b>1) {
+    b=1;
+  }  
+
+  return Color(r, g, b);
+               
 }
 

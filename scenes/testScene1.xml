@@ -39,7 +39,7 @@
         <color r="100" g="255" b="0"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0"/>
         <shininess v="100"/>
       </phong>
     </material>
@@ -57,7 +57,7 @@
         <color r="0" g="255" b="100"/>
         <specular v="0.6"/>
         <diffuse v="0.6"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0"/>
         <shininess v="100"/>
       </phong>
     </material>
@@ -75,7 +75,7 @@
         <color r="100" g="255" b="100"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0"/>
         <shininess v="100"/>
       </phong>
     </material>
@@ -93,7 +93,7 @@
         <color r="0" g="255" b="0"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0"/>
         <shininess v="100"/>
       </phong>
     </material>
@@ -107,10 +107,10 @@
     </shape>
     <material>
       <phong>
-        <color r="0" g="0" b="255"/>
+        <color r="50" g="50" b="255"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0.05"/>
         <shininess v="100"/>
       </phong>
     </material>
@@ -127,7 +127,7 @@
         <color r="255" g="0" b="255"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0"/>
         <shininess v="100"/>
       </phong>
     </material>
@@ -144,7 +144,7 @@
         <color r="255" g="127" b="0"/>
         <specular v="0.6"/>
         <diffuse v="0.5"/>
-        <ambiant v="0.4"/>
+        <ambiant v="0"/>
         <shininess v="100"/>
       </phong>
     </material>
