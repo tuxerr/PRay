@@ -93,7 +93,7 @@ void Display::add_pixel(int x,int y,Color color) {
     // all pixels are 32b-encoded
    
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
-    *p=SDL_MapRGB(screen->format,color.getR(),color.getG(),color.getB());
+    *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
 }
 
 void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
@@ -102,7 +102,7 @@ void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &p
     for(int h=0;h<height;h++) {
         for(int w=0;w<width;w++) {
             Uint32 *p = (Uint32 *)screen->pixels + (x+w) + (y+h) * (screen->pitch/4);
-            *p=SDL_MapRGB(screen->format,pixels[i].getR(),pixels[i].getG(),pixels[i].getB());
+            *p=SDL_MapRGB(screen->format,pixels[i].getR()*255,pixels[i].getG()*255,pixels[i].getB()*255);
             i++;
         }        
     }
