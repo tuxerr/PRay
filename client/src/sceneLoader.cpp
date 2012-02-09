@@ -130,7 +130,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 }
 
 Color SceneLoader::readColor(TiXmlElement* node) {
-    float r, g, b;
+    float r=0, g=0, b=0;
    
     node->QueryFloatAttribute("r", &r)/256;
     node->QueryFloatAttribute("g", &g)/256;
