@@ -44,7 +44,6 @@ void NcursesUI::run()
         if(mode_ch=='z') {
             log_win.add_string("trolol2");
             log_win.refresh();
-            
         }
 
     }

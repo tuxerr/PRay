@@ -31,7 +31,6 @@ private:
     std::string &prefix;
     std::fstream &file;
     Mutex write_mut;
-    std::vector< std::function<void(std::string)> > &vec;
 
 protected:
     static const int bufferSize = 100;   // size of data buffer
@@ -39,7 +38,7 @@ protected:
     bool firstflush;
 
 public:
-    LoggerStreambuf(std::string &prefix,std::fstream &file,std::vector<std::function<void(std::string)> > &vec);
+    LoggerStreambuf(std::string &prefix,std::fstream &file);
 
     virtual ~LoggerStreambuf() { sync(); }
 
@@ -58,7 +57,6 @@ public:
     ~Logger();
     static Logger& log(Log_Type type=LOG_INFO);
     void set_logtype(Log_Type type);
-    void add_handler(std::function<void(std::string)>);
 
 private:
     Logger(std::string file_path);
@@ -69,8 +67,6 @@ private:
     std::string logtype_to_prefix(Log_Type type);
     std::string current_prefix;
     std::fstream m_file;
-
-    std::vector< std::function<void(std::string)> > vec;
 
     static Logger *logger_ptr;
     static void (*sigsegv_handlerptr)(int);

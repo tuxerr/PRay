@@ -6,8 +6,8 @@ Logger* Logger::logger_ptr;
 
 void (*Logger::sigsegv_handlerptr)(int);
 
-LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file,vector< function<void(string)> > &vec) :
-    prefix(prefix), file(file), vec(vec), firstflush(true)
+LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
+    prefix(prefix), file(file), firstflush(true)
 {
     setp (buffer, buffer+(bufferSize-1));
 }
@@ -23,11 +23,6 @@ int LoggerStreambuf::flushBuffer () {
     if(num!=0) {
         file.write(buffer,num);
         std::cout.write(buffer,num);
-        for(unsigned int i=0;i<vec.size();i++) {
-            stringstream str(stringstream::in | stringstream::out);
-            str.write(buffer,num);
-            vec[i](str.str());
-        }
         pbump(-num); // reset put pointer accordingly
     }
     return num;
@@ -81,7 +76,7 @@ void Logger::close() {
 }
 
 Logger::Logger(string file_path) :
-    ostream(new LoggerStreambuf(current_prefix,m_file,vec)), ios(0), current_prefix("[INF]")
+    ostream(new LoggerStreambuf(current_prefix,m_file)), ios(0), current_prefix("[INF]")
 {
     m_file.open(file_path.c_str(),ios::out|ios::trunc);
     if(!m_file) {
