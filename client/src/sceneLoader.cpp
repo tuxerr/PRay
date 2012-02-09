@@ -132,11 +132,11 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 Color SceneLoader::readColor(TiXmlElement* node) {
     float r=0, g=0, b=0;
    
-    node->QueryFloatAttribute("r", &r)/256;
-    node->QueryFloatAttribute("g", &g)/256;
-    node->QueryFloatAttribute("b", &b)/256;
+    node->QueryFloatAttribute("r", &r);
+    node->QueryFloatAttribute("g", &g);
+    node->QueryFloatAttribute("b", &b);
 
-    return Color(r, g, b);
+    return Color(r/256, g/256, b/256);
 }
 
 Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {
