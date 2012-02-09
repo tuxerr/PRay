@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+  <camera>
+    <position x="-50" y="-50" z="0"/>
+    <target x="0" y="0" z="0"/>
+    <normal x="0" y="0" z="1"/>
+    <viewplane w="16/2" h="9/2" d="35"/>
+  </camera>
+  <directionalLight>
+    <color r="255" g="255" b="255"/>
+    <direction x="0" y="1" z="1"/>
+  </directionalLight>
+  <ambientLight>
+    <color r="255" g="255" b="255"/>
+  </ambientLight>
+  <object>
+    <shape>
+      <sphere>
+        <center x="0" y="0" z="0"/>
+        <radius v="3"/>
+      </sphere>
+    </shape>
+    <material>
+      <phong>
+        <color r="50" g="50" b="255"/>
+        <specular v="0.6"/>
+        <diffuse v="0.5"/>
+        <ambiant v="0.05"/>
+        <shininess v="100"/>
+        <reflexivity v="0.1"/>
+      </phong>
+    </material>
+  </object>
+  <object>
+    <shape>
+      <triangle>
+	<a x="-10" y="5" z="-10"/>
+	<b x="10" y="5" z="-10"/>
+	<c x="0" y="5" z="10"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="100" g="255" b="100"/>
+        <specular v="0.6"/>
+        <diffuse v="0.5"/>
+        <ambiant v="0.1"/>
+        <shininess v="100"/>
+        <reflexivity v="0.1"/>
+      </phong>
+    </material>
+  </object>
+</scene>

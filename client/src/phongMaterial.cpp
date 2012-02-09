@@ -4,21 +4,7 @@
 #include "math.h"
 #include "scene.h"
 
-
-PhongMaterial::PhongMaterial(const Color &color, 
-			     float specularReflection, 
-			     float diffuseReflection, 
-			     float ambiantReflection, 
-			     float shininess) :
-  color(color), 
-  specularReflection(specularReflection), 
-  diffuseReflection(diffuseReflection),
-  ambiantReflection(ambiantReflection), 
-  shininess(shininess),
-  reflectivity(1)
-{
-
-}
+#define MAX_REFLECTIONS 5
 
 PhongMaterial::PhongMaterial(const Color &color, 
 			     float specularReflection, 
@@ -62,6 +48,8 @@ float PhongMaterial::getReflectivity() {
 
 Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
 
+  //  Logger::log(LOG_DEBUG) << "PHONG " << endl;
+
   float r = 0;
   float g = 0;
   float b = 0;
@@ -103,17 +91,28 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
  
   }
 
+  if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
+    scene->reflections += 1;
+    Color black = Color(0,0,0);
 
-  Color black = Color(0,0,0);
-  Ray reflectedRay = Ray(ray.getOrigin(),
-			 ray.getDirection().symmetry(normal),
-			 black);
-  Color reflectedColor = scene->renderRay(reflectedRay);
+    Ray reflectedRay = Ray(point,
+			   (ray.getDirection()*(-1)).symmetry(normal),
+			   black);
 
-  r += reflectivity*color.getR()*reflectedColor.getR();
-  g += reflectivity*color.getG()*reflectedColor.getG();
-  b += reflectivity*color.getB()*reflectedColor.getB();
- 
+    //    Logger::log(LOG_DEBUG) << "Avant renderRay phong " << scene->reflections << endl;
+    //    Logger::log(LOG_DEBUG) << "reflectedRay " << &reflectedRay << endl;
+  
+    Color reflectedColor = scene->renderRay(reflectedRay);
+
+    //    Logger::log(LOG_DEBUG) << "Color " << reflectedColor.getR() << 
+    //      reflectedColor.getG() << 
+    //      reflectedColor.getB() << endl;
+
+    r += reflectivity*color.getR()*reflectedColor.getR();
+    g += reflectivity*color.getG()*reflectedColor.getG();
+    b += reflectivity*color.getB()*reflectedColor.getB();
+
+  }
 
   if(r>1) {
     r=1;

@@ -41,6 +41,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
@@ -59,6 +60,7 @@
         <diffuse v="0.6"/>
         <ambiant v="0"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
@@ -77,6 +79,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
@@ -95,6 +98,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
@@ -112,6 +116,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0.05"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
@@ -129,6 +134,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
@@ -146,6 +152,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0"/>
         <shininess v="100"/>
+        <reflexivity v="0.1"/>
       </phong>
     </material>
   </object>
