@@ -22,10 +22,9 @@ Camera::Camera(Vec3<float> point,
     yResolution(yResolution),
     transFactor(transFactor),
     rotatAngle(rotatAngle),
-    mode(mode)
+    mode(mode),
+    lateral(direction.cross(normal).normalize())
 {
-    lateral = direction.cross(normal);
-    
     if (! (direction.scalar(normal) < 1e-6)) {
         Logger::log(LOG_WARNING)<<"Incorrect camera : direction and normal are not orthogonal"<<std::endl;
     }
@@ -232,4 +231,5 @@ void Camera::logInformations() {
     Logger::log(LOG_INFO)<<"Camera : position = ("<<point.x<<", "<<point.y<<", "<<point.z<<")"<<std::endl;
     Logger::log(LOG_INFO)<<"       : direction = ("<<direction.x<<", "<<direction.y<<", "<<direction.z<<")"<<std::endl;
     Logger::log(LOG_INFO)<<"       : normal = ("<<normal.x<<", "<<normal.y<<", "<<normal.z<<")"<<std::endl;
+    Logger::log(LOG_INFO)<<"       : lateral = ("<<lateral.x<<", "<<lateral.y<<", "<<lateral.z<<")"<<std::endl;
 }

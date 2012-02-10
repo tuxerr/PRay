@@ -17,7 +17,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
     TiXmlDocument doc(scene_file);
     if ( !doc.LoadFile() ) {
         Logger::log(LOG_ERROR) << "Scene loading failed : " << scene_file << endl;
-        Logger::log(LOG_ERROR) << "error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
+        Logger::log(LOG_ERROR) << "Error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
 	return -1;
     } else {
         Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
@@ -26,16 +26,41 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         list<DirectionalLight> lDirLights;
         AmbientLight ambientLight;
         Camera* camera=0;
+        TiXmlElement* tmp_node = 0;
 
         TiXmlHandle hdl(&doc);
         TiXmlElement* node = hdl.FirstChildElement().FirstChildElement().Element();
+        if (node == NULL) {
+            Logger::log(LOG_ERROR)<<"Error on top of the file"<<endl;
+            return -1;
+        }
 
         while ( node ) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
-                Vec3<float> position = readVec3Float(node->FirstChildElement("position"));
-                Vec3<float> target = readVec3Float(node->FirstChildElement("target"));
-                Vec3<float> normal = readVec3Float(node->FirstChildElement("normal"));
+                Vec3<float> position, target, normal;
+
+                tmp_node = node->FirstChildElement("position");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <position> near line "<<node->Row()<<endl;
+                } else {
+                    position = readVec3Float(tmp_node);
+                }
+
+                tmp_node = node->FirstChildElement("target");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <target> near line "<<node->Row()<<endl;
+                } else {
+                    target = readVec3Float(tmp_node);
+                }
+
+                tmp_node = node->FirstChildElement("normal");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <normal> near line "<<node->Row()<<endl;
+                } else {
+                    normal = readVec3Float(tmp_node);
+                }
+
                 camera = new Camera(position,
                                     target-position,
                                     normal,
@@ -43,24 +68,62 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                                     35,
                                     xRes, yRes);
             } else if ( nodeName.compare("directionalLight")==0 ) {
-                Color color = readColor(node->FirstChildElement("color"));
-                Vec3<float> direction = readVec3Float(node->FirstChildElement("direction"));
+                Color color;
+                Vec3<float> direction;
+
+                tmp_node = node->FirstChildElement("color");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <color> near line "<<node->Row()<<endl;
+                } else {
+                    color = readColor(tmp_node);
+                }
+                
+                tmp_node = node->FirstChildElement("direction");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <direction> near line "<<node->Row()<<endl;
+                } else {
+                    direction = readVec3Float(tmp_node);
+                }
+
                 lDirLights.push_back(DirectionalLight(color, direction.normalize()));
             } else if ( nodeName.compare("ambientLight")==0 ) {
-	        Color color = readColor(node->FirstChildElement("color"));
+                Color color;
+
+                tmp_node = node->FirstChildElement("color");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <color> near line "<<node->Row()<<endl;
+                } else {
+                    color = readColor(tmp_node);
+                }
+
 		ambientLight = AmbientLight(color);
 	    } else if ( nodeName.compare("object")==0 ) {
-                Material* material = readMaterial(node->FirstChildElement("material"));
-                Object* object = readShape(node->FirstChildElement("shape"), material);
+                Material* material = 0;
+                Object* object = 0;
+
+                tmp_node = node->FirstChildElement("material");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <material> near line "<<node->Row()<<endl;
+                } else {
+                    material = readMaterial(tmp_node);
+                }
+
+                tmp_node = node->FirstChildElement("shape");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <shape> near line "<<node->Row()<<endl;
+                } else {
+                    object = readShape(tmp_node, material);
+                }
+
                 objects.push_back(object);
             } else {
-                Logger::log(LOG_ERROR)<<"Unknown primary node"<<endl;
+                Logger::log(LOG_ERROR)<<"Unknown primary node line "<<node->Row()<<endl;
             }
 
             node = node->NextSiblingElement();
         }
 
-        Logger::log(LOG_INFO) << "Scene loaded with success ("<<(int) objects.size()<<" objects)" << endl;
+        Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects)" << endl;
 
         *scene = new Scene(objects,lDirLights,ambientLight,camera);
 
@@ -144,7 +207,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 
 Color SceneLoader::readColor(TiXmlElement* node) {
     float r=0, g=0, b=0;
-   
+
     node->QueryFloatAttribute("r", &r);
     node->QueryFloatAttribute("g", &g);
     node->QueryFloatAttribute("b", &b);

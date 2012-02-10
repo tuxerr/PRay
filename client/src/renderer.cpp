@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-Renderer::Renderer(Scene *scene) : scene(scene)
+Renderer::Renderer(Scene *scene) : scene(scene), frameNumber(0)
 {
 }
 
@@ -57,7 +57,9 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_
         delete taskres;
     }
 
-    Logger::log()<<"Frame rendered in "<<SDL_GetTicks()-initial_tick<<" milliseconds"<<std::endl;
+    Logger::log()<<"Frame "<< frameNumber++ <<" rendered in "
+                 <<(SDL_GetTicks()-initial_tick)/(float)1000
+                 <<" seconds"<<std::endl;
     return res;
 }
 
