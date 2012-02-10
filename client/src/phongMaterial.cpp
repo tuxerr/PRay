@@ -4,7 +4,7 @@
 #include "math.h"
 #include "scene.h"
 
-#define MAX_REFLECTIONS 5
+#define MAX_REFLECTIONS 10
 
 PhongMaterial::PhongMaterial(const Color &color, 
 			     float specularReflection, 
@@ -22,28 +22,24 @@ PhongMaterial::PhongMaterial(const Color &color,
 
 }
 
-Color PhongMaterial::getColor() {
-  return color;
-}
+PhongMaterial::PhongMaterial(const Color &color, 
+			     float specularReflection, 
+			     float diffuseReflection, 
+			     float ambiantReflection, 
+			     float shininess,
+			     float reflectivity,
+			     float transparency,
+			     float refractionIndice) :
+  color(color), 
+  specularReflection(specularReflection), 
+  diffuseReflection(diffuseReflection),
+  ambiantReflection(ambiantReflection), 
+  shininess(shininess),
+  reflectivity(reflectivity),
+  transparency(1),
+  refractionIndice(2.419)
+{
 
-float PhongMaterial::getSpecularReflection() {
-  return specularReflection;
-}
-
-float PhongMaterial::getDiffuseReflection() {
-  return diffuseReflection;
-}
-
-float PhongMaterial::getAmbiantReflection() {
-  return ambiantReflection;
-}
-
-float PhongMaterial::getShininess() {
-  return shininess;
-}
-
-float PhongMaterial::getReflectivity() {
-  return reflectivity;
 }
 
 Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
@@ -94,26 +90,38 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
  
   }
 
+    Color black = Color(0,0,0);
+
   if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
     scene->reflections += 1;
-    Color black = Color(0,0,0);
 
     Ray reflectedRay = Ray(point,
 			   (ray.getDirection()*(-1)).symmetry(normal),
 			   black);
 
-    //    Logger::log(LOG_DEBUG) << "Avant renderRay phong " << scene->reflections << endl;
-    //    Logger::log(LOG_DEBUG) << "reflectedRay " << &reflectedRay << endl;
-  
     Color reflectedColor = scene->renderRay(reflectedRay);
-
-    //    Logger::log(LOG_DEBUG) << "Color " << reflectedColor.getR() << 
-    //      reflectedColor.getG() << 
-    //      reflectedColor.getB() << endl;
 
     r += reflectivity*color.getR()*reflectedColor.getR();
     g += reflectivity*color.getG()*reflectedColor.getG();
     b += reflectivity*color.getB()*reflectedColor.getB();
+
+  }
+
+
+  if(false && transparency != 0 && scene->reflections < MAX_REFLECTIONS) {
+    scene->reflections += 1;
+
+    
+
+    Ray reflectedRay = Ray(point,
+			   (ray.getDirection()*(-1)).symmetry(normal),
+			   black);
+
+    Color refractedColor = scene->renderRay(reflectedRay);
+
+    r += transparency*color.getR()*refractedColor.getR();
+    g += transparency*color.getG()*refractedColor.getG();
+    b += transparency*color.getB()*refractedColor.getB();
 
   }
 

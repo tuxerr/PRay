@@ -27,7 +27,7 @@
         <diffuse v="0.5"/>
         <ambiant v="0.05"/>
         <shininess v="100"/>
-        <reflexivity v="0.1"/>
+        <reflexivity v="0"/>
       </phong>
     </material>
   </object>
@@ -41,9 +41,9 @@
     </shape>
     <material>
       <phong>
-        <color r="100" g="255" b="100"/>
-        <specular v="0.6"/>
-        <diffuse v="0.5"/>
+        <color r="0" g="200" b="200"/>
+        <specular v="0"/>
+        <diffuse v="0"/>
         <ambiant v="0"/>
         <shininess v="100"/>
         <reflexivity v="1"/>
