@@ -15,7 +15,6 @@
 int main(int argc, char* argv[])
 {
     string filename;
-    int frameNumber = 0;
 
     Logger::init("pray_client.log");
 
@@ -66,16 +65,11 @@ int main(int argc, char* argv[])
 
         while ( !disp->quit() )
         {
-
             std::vector<Color> res = renderer.render(0,0,width,height);
             disp->add_surface(0,0,width,height,res);  
 
             disp->refresh_display();
-
-	    Logger::log(LOG_INFO) << "Frame " << frameNumber++ << " rendered" << endl;
-
             disp->refresh_controls();
-
         }
 
         Logger::log(LOG_INFO)<<"Rendering terminated"<<endl;

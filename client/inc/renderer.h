@@ -34,6 +34,8 @@ private:
     Mutex results_mut;
     std::vector< std::vector < Color >* > results;
     Scene *scene;
+
+    unsigned int frameNumber;
 };
 
 #endif
