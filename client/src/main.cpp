@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 
         while ( !disp->quit() )
         {
-            std::vector<Color> res = renderer.render(0,0,width,height);
+	  std::vector<Color> res = renderer.render(0,0,width,height);
             disp->add_surface(0,0,width,height,res);  
 
             disp->refresh_display();

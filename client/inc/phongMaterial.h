@@ -37,6 +37,10 @@ class PhongMaterial : public Material {
    */
   float reflectivity;
 
+  float transparency;
+
+  float refractionIndice;
+
  public :
   PhongMaterial(const Color &color, 
 		float specularReflection, 
@@ -44,12 +48,22 @@ class PhongMaterial : public Material {
 		float ambiantReflection, 
 		float shininess,
 		float reflectivity);
-  Color getColor();
+
+  PhongMaterial(const Color &color, 
+		float specularReflection, 
+		float diffuseReflection, 
+		float ambiantReflection, 
+		float shininess,
+		float reflectivity,
+		float transparency,
+		float refractionIndice);
+
+  /*  Color getColor();
   float getSpecularReflection();
   float getDiffuseReflection();
   float getAmbiantReflection();
   float getShininess();
-  float getReflectivity();
+  float getReflectivity();*/
   Color renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene);
 };
 
