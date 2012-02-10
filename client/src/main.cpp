@@ -4,6 +4,7 @@
 #include "color.h"
 #include "display.h"
 #include "sceneLoader.h"
+#include "renderer.h"
 
 #define WIDTH 1280
 #define HEIGHT 720
@@ -61,17 +62,13 @@ int main(int argc, char* argv[])
         disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
         disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
 
+        Renderer renderer(scene);
+
         while ( !disp->quit() )
         {
-            for (int y=0 ; y < height ; y++)
-            {
-                for (int x=0 ; x < width ; x++)
-                {
-                    pixel = scene->renderPixel(x,y);
 
-                    disp->add_pixel(x,y,pixel);
-                }
-            }
+            std::vector<Color> res = renderer.render(0,0,width,height);
+            disp->add_surface(0,0,width,height,res);  
 
             disp->refresh_display();
 
