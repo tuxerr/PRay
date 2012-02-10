@@ -53,7 +53,7 @@ def main(filename):
             f.write('\t\t<position x="%f" y="%f" z="%f"/>\n' %(ob.location.x, ob.location.y, ob.location.z))
             f.write('\t\t<target x="0" y="0" z="0"/>\n')
             f.write('\t\t<normal x="0" y="0" z="1"/>')
-            f.write('\n\t\t<viewplane w="16/2" h="9/2" d="%f"/>\n\t</camera>\n' %(ob.data.lens/16))
+            f.write('\n\t\t<viewplane w="16/2" h="9/2" d="%f"/>\n\t</camera>\n' %(ob.data.lens/4))
         if ob.type == 'MESH':        
             
             mesh = ob.data
