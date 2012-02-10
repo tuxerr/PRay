@@ -125,15 +125,18 @@ list<DirectionalLight> Scene::visibleLights(Vec3<float> point) {
   Vec3<float> normal;
   Material *material;
   Color color = Color(0.0);
-  list<DirectionalLight> result = list<DirectionalLight>();
+  list<DirectionalLight> result;
   Ray ray = Ray(point, normal, color);
 
-  for(DirectionalLight l : directionalLights) {
-    ray = Ray(point, l.getDirection()*(-1), color);
-    computeIntersection(ray, &distance, &normal, &material);
-    //  Logger::log(LOG_DEBUG)<< distance <<endl;      
+  list<DirectionalLight>::iterator itLight;
+  
+  for (itLight = directionalLights.begin(); itLight != directionalLights.end(); itLight++)
+  {
+      ray = Ray(point, itLight->getDirection()*(-1), color);
+      computeIntersection(ray, &distance, &normal, &material);
+      //  Logger::log(LOG_DEBUG)<< distance <<endl;      
       if(distance < 0) {
-	result.push_back(l);
+          result.push_back(*itLight);
       }
   }
 

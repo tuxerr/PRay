@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
 
         Logger::log(LOG_INFO)<<"Rendering started in "<<width<<"x"<<height<<endl;
 
+#ifndef __INTEL_COMPILER
         disp->register_keyhook(std::bind(&Camera::translateForward,   scene->getCamera()), SDLK_z);
         disp->register_keyhook(std::bind(&Camera::translateBackwards, scene->getCamera()), SDLK_s);
         disp->register_keyhook(std::bind(&Camera::translateRight,     scene->getCamera()), SDLK_d);
@@ -60,6 +61,7 @@ int main(int argc, char* argv[])
         disp->register_keyhook(std::bind(&Camera::yawRight,           scene->getCamera()), SDLK_RIGHT);
         disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
         disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
+#endif
 
         Renderer renderer(scene);
 

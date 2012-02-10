@@ -2,71 +2,52 @@ Flat profile:
 
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
- time   seconds   seconds    calls  ns/call  ns/call  name    
- 38.00      0.68     0.68 11479984    59.25    73.45  Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**)
- 21.23      1.06     0.38 11479984    33.11    37.61  Sphere::getIntersection(Ray&, float*, Vec3<float>*, Material**)
- 10.62      1.25     0.19  1843200   103.10   103.10  Camera::getDirection(int, int)
-  7.82      1.39     0.14 86427554     1.62     1.62  Ray::getDirection() const
-  5.59      1.49     0.10  2869996    34.85   479.07  SceneLoader::readVec3Float(TiXmlElement*)
-  5.03      1.58     0.09  3383394    26.61    26.61  Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&)
-  4.47      1.66     0.08 29534388     2.71     2.71  Ray::getOrigin() const
-  2.24      1.70     0.04   513398    77.93   734.64  PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*)
-  1.68      1.73     0.03   822006    36.50    36.50  DirectionalLight::getDirection()
-  1.12      1.75     0.02                             DirectionalLight::DirectionalLight(float, float, float, Vec3<float> const&)
-  0.56      1.76     0.01  4559836     2.19     2.19  Color::getG()
-  0.56      1.77     0.01   513398    19.48   588.27  Scene::visibleLights(Vec3<float>)
-  0.56      1.78     0.01                             Scene::renderPixel(int, int)
-  0.56      1.79     0.01                             Server::unstack_message()
-  0.00      1.79     0.00  4713206     0.00     0.00  Color::Color(float, float, float)
-  0.00      1.79     0.00  4559836     0.00     0.00  Color::getB()
-  0.00      1.79     0.00  4559836     0.00     0.00  Color::getR()
-  0.00      1.79     0.00  1843200     0.00     0.00  Camera::getPoint() const
-  0.00      1.79     0.00   976310     0.00     0.00  Light::getColor()
-  0.00      1.79     0.00   513399     0.00     0.00  Color::Color(float)
-  0.00      1.79     0.00   513398     0.00     0.00  Scene::getAmbientLight()
-  0.00      1.79     0.00   513398     0.00   479.07  Scene::renderRay(Ray&)
-  0.00      1.79     0.00   200132     0.00     5.43  UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*)
-  0.00      1.79     0.00       28     0.00     0.00  std::_Function_base::_Base_manager<std::_Bind<std::_Mem_fn<void (Camera::*)()> (Camera*)> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation)
-  0.00      1.79     0.00       10     0.00     0.00  SceneLoader::readColor(TiXmlElement*)
-  0.00      1.79     0.00       10     0.00     0.00  LoggerStreambuf::flushBuffer()
-  0.00      1.79     0.00       10     0.00     0.00  Mutex::unlock()
-  0.00      1.79     0.00        9     0.00     0.00  Mutex::lock()
-  0.00      1.79     0.00        9     0.00     0.00  Logger::logtype_to_prefix(Log_Type)
-  0.00      1.79     0.00        8     0.00     0.00  SceneLoader::readMaterial(TiXmlElement*)
-  0.00      1.79     0.00        8     0.00     0.00  SceneLoader::readShape(TiXmlElement*, Material*)
-  0.00      1.79     0.00        8     0.00     0.00  Object::Object(Material*)
-  0.00      1.79     0.00        8     0.00     0.00  Object::~Object()
-  0.00      1.79     0.00        7     0.00     0.00  PhongMaterial::PhongMaterial(Color const&, float, float, float, float)
-  0.00      1.79     0.00        5     0.00     0.00  Logger::log(Log_Type)
-  0.00      1.79     0.00        4     0.00     0.00  Sphere::Sphere(Vec3<float> const&, float, Material*)
-  0.00      1.79     0.00        4     0.00     0.00  Sphere::~Sphere()
-  0.00      1.79     0.00        4     0.00     0.00  Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*)
-  0.00      1.79     0.00        4     0.00     0.00  Triangle::~Triangle()
-  0.00      1.79     0.00        2     0.00     0.00  Light::Light(Color const&)
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN11SceneLoader4loadESsPP5Sceneii
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN12UglyMaterialC2ERK5Color
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN13PhongMaterialC2ERK5Colorffff
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5MutexC2Ev
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5SceneC2ESt4listIP6ObjectSaIS2_EERKS0_I16DirectionalLightSaIS5_EERK12AmbientLightP6Camera
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6Logger10logger_ptrE
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6ObjectC2EP8Material
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6ServerC2EPKci
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6SphereC2ERK4Vec3IfEfP8Material
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7Display11display_ptrE
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN8TriangleC2ER4Vec3IfES2_S2_P8Material
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN9TCPSocketC2Ev
-  0.00      1.79     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
-  0.00      1.79     0.00        1     0.00     0.00  AmbientLight::AmbientLight(float)
-  0.00      1.79     0.00        1     0.00     0.00  AmbientLight::AmbientLight(Color const&)
-  0.00      1.79     0.00        1     0.00     0.00  UglyMaterial::UglyMaterial(Color const&)
-  0.00      1.79     0.00        1     0.00     0.00  LoggerStreambuf::~LoggerStreambuf()
-  0.00      1.79     0.00        1     0.00     0.00  DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&)
-  0.00      1.79     0.00        1     0.00     0.00  Light::Light(float)
-  0.00      1.79     0.00        1     0.00     0.00  Mutex::Mutex()
-  0.00      1.79     0.00        1     0.00     0.00  Mutex::~Mutex()
-  0.00      1.79     0.00        1     0.00     0.00  Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*)
-  0.00      1.79     0.00        1     0.00     0.00  Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode)
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 63.99     44.01    44.01 41497962     0.00     0.00  Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**)
+ 26.76     62.41    18.40 704929733     0.00     0.00  Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode)
+  8.96     68.57     6.16    37851     0.16     1.81  SceneLoader::readVec3Float(TiXmlElement*)
+  0.06     68.61     0.04                             Camera::translateForward()
+  0.04     68.64     0.03     5545     0.01     2.26  Scene::visibleLights(Vec3<float>)
+  0.04     68.67     0.03                             Camera::horizontalProj(Vec3<float>)
+  0.03     68.69     0.02    84189     0.00     0.00  Camera::getDirection(int, int)
+  0.03     68.71     0.02      899     0.02    76.37  std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&)
+  0.03     68.73     0.02        1    20.00    20.00  Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*)
+  0.01     68.74     0.01  3079868     0.00     0.00  Display::register_keyhook(std::function<void ()>, SDLKey)
+  0.01     68.75     0.01     7633     0.00     1.64  PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*)
+  0.01     68.76     0.01                             Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&)
+  0.01     68.77     0.01                             Light::getColor()
+  0.01     68.78     0.01                             Renderer::render(int, int, int, int, int)
+  0.00     68.78     0.00    95947     0.00     0.00  Camera::setNormal(Vec3<float>)
+  0.00     68.78     0.00    61972     0.00     1.11  Scene::renderPixel(int, int)
+  0.00     68.78     0.00    14569     0.00     0.00  Scene::renderRay(Ray&)
+  0.00     68.78     0.00     6468     0.00     0.00  void std::vector<Color, std::allocator<Color> >::_M_insert_aux<Color const&>(__gnu_cxx::__normal_iterator<Color*, std::vector<Color, std::allocator<Color> > >, Color const&)
+  0.00     68.78     0.00     5097     0.00     0.00  _fini
+  0.00     68.78     0.00     1403     0.00     0.00  std::vector<std::vector<Color, std::allocator<Color> >*, std::allocator<std::vector<Color, std::allocator<Color> >*> >::_M_fill_assign(unsigned long, std::vector<Color, std::allocator<Color> >* const&)
+  0.00     68.78     0.00      970     0.00     0.00  SceneLoader::readColor(TiXmlElement*)
+  0.00     68.78     0.00      968     0.00     0.00  SceneLoader::readMaterial(TiXmlElement*)
+  0.00     68.78     0.00      968     0.00     0.00  SceneLoader::readShape(TiXmlElement*, Material*)
+  0.00     68.78     0.00      968     0.00     0.00  PhongMaterial::getShininess()
+  0.00     68.78     0.00      968     0.00     0.00  Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*)
+  0.00     68.78     0.00      968     0.00     0.00  Triangle::~Triangle()
+  0.00     68.78     0.00       28     0.00     0.00  Renderer::~Renderer()
+  0.00     68.78     0.00        8     0.00     0.00  Logger::sigsegv_newhandler(int)
+  0.00     68.78     0.00        7     0.00     0.00  main
+  0.00     68.78     0.00        6     0.00     0.00  LoggerStreambuf::~LoggerStreambuf()
+  0.00     68.78     0.00        6     0.00     0.00  Renderer::compute_task()
+  0.00     68.78     0.00        2     0.00     0.00  Ray::getDirection() const
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5MutexC2Ev
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6Logger10logger_ptrE
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6ObjectC2EP8Material
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7Display11display_ptrE
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN8RendererC2EP5Scene
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN9TCPSocketC2Ev
+  0.00     68.78     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00     68.78     0.00        1     0.00     0.00  AmbientLight::AmbientLight(float)
+  0.00     68.78     0.00        1     0.00     0.00  AmbientLight::AmbientLight(float, float, float)
+  0.00     68.78     0.00        1     0.00     0.00  DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&)
+  0.00     68.78     0.00        1     0.00     0.00  Logger::init(std::string)
+  0.00     68.78     0.00        1     0.00     0.00  Ray::getColor() const
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -98,296 +79,252 @@ name       the name of the function.  This is the minor sort
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 2 byte(s) for 0.56% of 1.79 seconds
+granularity: each sample hit covers 2 byte(s) for 0.01% of 68.78 seconds
 
 index % time    self  children    called     name
-                                                 <spontaneous>
-[1]     98.1    0.01    1.75                 Scene::renderPixel(int, int) [1]
-                0.06    0.82 1843200/2869996     SceneLoader::readVec3Float(TiXmlElement*) [2]
-                0.04    0.58  513212/513212      PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.19    0.00 1843200/1843200     Camera::getDirection(int, int) [9]
-                0.05    0.00 1843200/3383394     Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [11]
-                0.00    0.00  200062/200132      UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00 2973126/4713206     Color::Color(float, float, float) [24]
-                0.00    0.00 1843200/1843200     Camera::getPoint() const [27]
+                                 899             Renderer::compute_task() <cycle 1> [39]
+[1]     99.8    0.02   68.63     899         std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) <cycle 1> [1]
+                0.00   68.63   61972/61972       Scene::renderPixel(int, int) [3]
+                0.00    0.00    6447/6468        void std::vector<Color, std::allocator<Color> >::_M_insert_aux<Color const&>(__gnu_cxx::__normal_iterator<Color*, std::vector<Color, std::allocator<Color> > >, Color const&) [30]
+                0.00    0.00    2107/5089        _fini <cycle 2> [31]
+                                   6             Renderer::compute_task() <cycle 1> [39]
 -----------------------------------------------
-                0.02    0.23  513398/2869996     Scene::renderRay(Ray&) <cycle 1> [8]
-                0.02    0.23  513398/2869996     Scene::visibleLights(Vec3<float>) [7]
-                0.06    0.82 1843200/2869996     Scene::renderPixel(int, int) [1]
-[2]     76.8    0.10    1.27 2869996         SceneLoader::readVec3Float(TiXmlElement*) [2]
-                0.68    0.16 11479984/11479984     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [3]
-                0.38    0.05 11479984/11479984     Sphere::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
+                0.00   68.63   61972/61972       std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) <cycle 1> [1]
+[3]     99.8    0.00   68.63   61972         Scene::renderPixel(int, int) [3]
+                5.04   51.02   30964/37851       SceneLoader::readVec3Float(TiXmlElement*) [4]
+                0.01   12.54    7633/7633        PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+                0.02    0.00   84189/84189       Camera::getDirection(int, int) [12]
+                0.00    0.00   85742/704929733     Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [6]
+                0.00    0.00   52644/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
+                0.00    0.00   95947/95947       Camera::setNormal(Vec3<float>) [28]
 -----------------------------------------------
-                0.68    0.16 11479984/11479984     SceneLoader::readVec3Float(TiXmlElement*) [2]
-[3]     47.1    0.68    0.16 11479984         Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [3]
-                0.12    0.00 73366206/86427554     Ray::getDirection() const [10]
-                0.04    0.00 16313508/29534388     Ray::getOrigin() const [12]
+                1.12   11.35    6887/37851       Scene::visibleLights(Vec3<float>) [8]
+                5.04   51.02   30964/37851       Scene::renderPixel(int, int) [3]
+[4]     99.6    6.16   62.37   37851         SceneLoader::readVec3Float(TiXmlElement*) [4]
+               43.98   18.39 41472752/41497962     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
 -----------------------------------------------
-[4]     34.8    0.04    0.58  513212+513584  <cycle 1 as a whole> [4]
-                0.04    0.34  513398             PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.00    0.25  513398             Scene::renderRay(Ray&) <cycle 1> [8]
+                0.01    0.00    7530/41497962     Scene::visibleLights(Vec3<float>) [8]
+                0.02    0.01   17680/41497962     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+               43.98   18.39 41472752/41497962     SceneLoader::readVec3Float(TiXmlElement*) [4]
+[5]     90.7   44.01   18.40 41497962         Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
+               18.40    0.00 704732408/704929733     Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [6]
 -----------------------------------------------
-                0.38    0.05 11479984/11479984     SceneLoader::readVec3Float(TiXmlElement*) [2]
-[5]     24.1    0.38    0.05 11479984         Sphere::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
-                0.03    0.00 12194084/29534388     Ray::getOrigin() const [12]
-                0.02    0.00 11479984/86427554     Ray::getDirection() const [10]
+                0.00    0.00       1/704929733     SceneLoader::load(std::string, Scene**, int, int) [11]
+                0.00    0.00   29069/704929733     Scene::visibleLights(Vec3<float>) [8]
+                0.00    0.00   82513/704929733     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+                0.00    0.00   85742/704929733     Scene::renderPixel(int, int) [3]
+               18.40    0.00 704732408/704929733     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
+[6]     26.8   18.40    0.00 704929733         Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [6]
 -----------------------------------------------
-                                 186             Scene::renderRay(Ray&) <cycle 1> [8]
-                0.04    0.58  513212/513212      Scene::renderPixel(int, int) [1]
-[6]     21.1    0.04    0.34  513398         PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.01    0.29  513398/513398      Scene::visibleLights(Vec3<float>) [7]
-                0.01    0.00  513398/3383394     Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [11]
-                0.01    0.00  308608/822006      DirectionalLight::getDirection() [13]
-                0.01    0.00 2516504/4559836     Color::getG() [15]
-                0.00    0.00 1026796/29534388     Ray::getOrigin() const [12]
-                0.00    0.00 1181100/86427554     Ray::getDirection() const [10]
-                0.00    0.00 2516504/4559836     Color::getR() [26]
-                0.00    0.00 2516504/4559836     Color::getB() [25]
-                0.00    0.00 1026796/4713206     Color::Color(float, float, float) [24]
-                0.00    0.00  976310/976310      Light::getColor() [28]
-                0.00    0.00  513398/513398      Scene::getAmbientLight() [30]
-                              513398             Scene::renderRay(Ray&) <cycle 1> [8]
+                0.01   12.54    7633/7633        Scene::renderPixel(int, int) [3]
+[7]     18.2    0.01   12.54    7633         PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+                0.03   12.48    5545/5545        Scene::visibleLights(Vec3<float>) [8]
+                0.02    0.01   17680/41497962     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
+                0.00    0.00   82513/704929733     Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [6]
+                0.00    0.00  211044/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
+                0.00    0.00   14569/14569       Scene::renderRay(Ray&) [29]
 -----------------------------------------------
-                0.01    0.29  513398/513398      PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[7]     16.9    0.01    0.29  513398         Scene::visibleLights(Vec3<float>) [7]
-                0.02    0.23  513398/2869996     SceneLoader::readVec3Float(TiXmlElement*) [2]
-                0.03    0.00 1026796/3383394     Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [11]
-                0.02    0.00  513398/822006      DirectionalLight::getDirection() [13]
-                0.00    0.00  513398/513399      Color::Color(float) [29]
------------------------------------------------
-                              513398             PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[8]     13.7    0.00    0.25  513398         Scene::renderRay(Ray&) <cycle 1> [8]
-                0.02    0.23  513398/2869996     SceneLoader::readVec3Float(TiXmlElement*) [2]
-                0.00    0.00      70/200132      UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00  513142/4713206     Color::Color(float, float, float) [24]
-                                 186             PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
------------------------------------------------
-                0.19    0.00 1843200/1843200     Scene::renderPixel(int, int) [1]
-[9]     10.6    0.19    0.00 1843200         Camera::getDirection(int, int) [9]
------------------------------------------------
-                0.00    0.00  400264/86427554     UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00 1181100/86427554     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.02    0.00 11479984/86427554     Sphere::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
-                0.12    0.00 73366206/86427554     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [3]
-[10]     7.8    0.14    0.00 86427554         Ray::getDirection() const [10]
------------------------------------------------
-                0.01    0.00  513398/3383394     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.03    0.00 1026796/3383394     Scene::visibleLights(Vec3<float>) [7]
-                0.05    0.00 1843200/3383394     Scene::renderPixel(int, int) [1]
-[11]     5.0    0.09    0.00 3383394         Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [11]
------------------------------------------------
-                0.00    0.00 1026796/29534388     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.03    0.00 12194084/29534388     Sphere::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
-                0.04    0.00 16313508/29534388     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [3]
-[12]     4.5    0.08    0.00 29534388         Ray::getOrigin() const [12]
------------------------------------------------
-                0.01    0.00  308608/822006      PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.02    0.00  513398/822006      Scene::visibleLights(Vec3<float>) [7]
-[13]     1.7    0.03    0.00  822006         DirectionalLight::getDirection() [13]
+                0.03   12.48    5545/5545        PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+[8]     18.2    0.03   12.48    5545         Scene::visibleLights(Vec3<float>) [8]
+                1.12   11.35    6887/37851       SceneLoader::readVec3Float(TiXmlElement*) [4]
+                0.01    0.00    7530/41497962     Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**) [5]
+                0.00    0.00   29069/704929733     Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [6]
+                0.00    0.00   48471/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
 -----------------------------------------------
                                                  <spontaneous>
-[14]     1.1    0.02    0.00                 DirectionalLight::DirectionalLight(float, float, float, Vec3<float> const&) [14]
------------------------------------------------
-                0.00    0.00  200132/4559836     UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00 1843200/4559836     Display::add_pixel(int, int, Color) [17]
-                0.01    0.00 2516504/4559836     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[15]     0.6    0.01    0.00 4559836         Color::getG() [15]
+[9]      0.1    0.04    0.00                 Camera::translateForward() [9]
 -----------------------------------------------
                                                  <spontaneous>
-[16]     0.6    0.01    0.00                 Server::unstack_message() [16]
+[10]     0.0    0.03    0.00                 Camera::horizontalProj(Vec3<float>) [10]
 -----------------------------------------------
                                                  <spontaneous>
-[17]     0.2    0.00    0.00                 Display::add_pixel(int, int, Color) [17]
-                0.00    0.00 1843200/4559836     Color::getG() [15]
-                0.00    0.00 1843200/4559836     Color::getB() [25]
-                0.00    0.00 1843200/4559836     Color::getR() [26]
+[11]     0.0    0.00    0.02                 SceneLoader::load(std::string, Scene**, int, int) [11]
+                0.02    0.00       1/1           Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*) [13]
+                0.00    0.00     968/968         SceneLoader::readMaterial(TiXmlElement*) [19]
+                0.00    0.00     968/968         SceneLoader::readShape(TiXmlElement*, Material*) [20]
+                0.00    0.00       1/704929733     Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [6]
+                0.00    0.00       3/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
+                0.00    0.00       2/6           LoggerStreambuf::~LoggerStreambuf() [38]
+                0.00    0.00       2/970         SceneLoader::readColor(TiXmlElement*) [33]
+                0.00    0.00       1/1           Ray::getColor() const [53]
+                0.00    0.00       1/1           AmbientLight::AmbientLight(float, float, float) [50]
+                0.00    0.00       1/1           DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&) [51]
+                0.00    0.00       1/2           Ray::getDirection() const [40]
+                0.00    0.00       1/1           AmbientLight::AmbientLight(float) [49]
 -----------------------------------------------
-                0.00    0.00      70/200132      Scene::renderRay(Ray&) <cycle 1> [8]
-                0.00    0.00  200062/200132      Scene::renderPixel(int, int) [1]
-[18]     0.1    0.00    0.00  200132         UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00  400264/86427554     Ray::getDirection() const [10]
-                0.00    0.00  200132/4559836     Color::getG() [15]
-                0.00    0.00  200132/4559836     Color::getR() [26]
-                0.00    0.00  200132/4559836     Color::getB() [25]
-                0.00    0.00  200132/4713206     Color::Color(float, float, float) [24]
+                0.02    0.00   84189/84189       Scene::renderPixel(int, int) [3]
+[12]     0.0    0.02    0.00   84189         Camera::getDirection(int, int) [12]
 -----------------------------------------------
-                0.00    0.00      10/4713206     SceneLoader::readColor(TiXmlElement*) [32]
-                0.00    0.00  200132/4713206     UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00  513142/4713206     Scene::renderRay(Ray&) <cycle 1> [8]
-                0.00    0.00 1026796/4713206     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-                0.00    0.00 2973126/4713206     Scene::renderPixel(int, int) [1]
-[24]     0.0    0.00    0.00 4713206         Color::Color(float, float, float) [24]
+                0.02    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [11]
+[13]     0.0    0.02    0.00       1         Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*) [13]
 -----------------------------------------------
-                0.00    0.00  200132/4559836     UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00 1843200/4559836     Display::add_pixel(int, int, Color) [17]
-                0.00    0.00 2516504/4559836     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[25]     0.0    0.00    0.00 4559836         Color::getB() [25]
+                0.00    0.00       3/3079868     SceneLoader::load(std::string, Scene**, int, int) [11]
+                0.00    0.00     968/3079868     Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*) [21]
+                0.00    0.00     968/3079868     Plane::getIntersection(Ray&, float*, Vec3<float>*, Material**) [22]
+                0.00    0.00     970/3079868     SceneLoader::readMaterial(TiXmlElement*) [19]
+                0.00    0.00   48471/3079868     Scene::visibleLights(Vec3<float>) [8]
+                0.00    0.00   52644/3079868     Scene::renderPixel(int, int) [3]
+                0.00    0.00  211044/3079868     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+                0.01    0.00 2764800/3079868     Display::~Display() [18]
+[14]     0.0    0.01    0.00 3079868         Display::register_keyhook(std::function<void ()>, SDLKey) [14]
+                0.00    0.00      14/28          Renderer::~Renderer() [36]
 -----------------------------------------------
-                0.00    0.00  200132/4559836     UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [18]
-                0.00    0.00 1843200/4559836     Display::add_pixel(int, int, Color) [17]
-                0.00    0.00 2516504/4559836     PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[26]     0.0    0.00    0.00 4559836         Color::getR() [26]
+                                                 <spontaneous>
+[15]     0.0    0.01    0.00                 Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [15]
 -----------------------------------------------
-                0.00    0.00 1843200/1843200     Scene::renderPixel(int, int) [1]
-[27]     0.0    0.00    0.00 1843200         Camera::getPoint() const [27]
+                                                 <spontaneous>
+[16]     0.0    0.01    0.00                 Light::getColor() [16]
 -----------------------------------------------
-                0.00    0.00  976310/976310      PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[28]     0.0    0.00    0.00  976310         Light::getColor() [28]
+                                                 <spontaneous>
+[17]     0.0    0.01    0.00                 Renderer::render(int, int, int, int, int) [17]
+                0.00    0.00      21/6468        void std::vector<Color, std::allocator<Color> >::_M_insert_aux<Color const&>(__gnu_cxx::__normal_iterator<Color*, std::vector<Color, std::allocator<Color> > >, Color const&) [30]
+                0.00    0.00       1/5089        _fini <cycle 2> [31]
+                0.00    0.00       1/1403        std::vector<std::vector<Color, std::allocator<Color> >*, std::allocator<std::vector<Color, std::allocator<Color> >*> >::_M_fill_assign(unsigned long, std::vector<Color, std::allocator<Color> >* const&) [32]
+                0.00    0.00       1/6           LoggerStreambuf::~LoggerStreambuf() [38]
 -----------------------------------------------
-                0.00    0.00       1/513399      SceneLoader::load(std::string, Scene**, int, int) [72]
-                0.00    0.00  513398/513399      Scene::visibleLights(Vec3<float>) [7]
-[29]     0.0    0.00    0.00  513399         Color::Color(float) [29]
+                                                 <spontaneous>
+[18]     0.0    0.00    0.01                 Display::~Display() [18]
+                0.01    0.00 2764800/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
 -----------------------------------------------
-                0.00    0.00  513398/513398      PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) <cycle 1> [6]
-[30]     0.0    0.00    0.00  513398         Scene::getAmbientLight() [30]
+                0.00    0.00     968/968         SceneLoader::load(std::string, Scene**, int, int) [11]
+[19]     0.0    0.00    0.00     968         SceneLoader::readMaterial(TiXmlElement*) [19]
+                0.00    0.00     970/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
+                0.00    0.00     968/970         SceneLoader::readColor(TiXmlElement*) [33]
+                0.00    0.00     968/968         PhongMaterial::getShininess() [34]
 -----------------------------------------------
-                0.00    0.00      14/28          Display::register_keyhook(std::function<void ()>, SDLKey) [145]
-                0.00    0.00      14/28          Display::~Display() [150]
-[31]     0.0    0.00    0.00      28         std::_Function_base::_Base_manager<std::_Bind<std::_Mem_fn<void (Camera::*)()> (Camera*)> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [31]
+                0.00    0.00     968/968         SceneLoader::load(std::string, Scene**, int, int) [11]
+[20]     0.0    0.00    0.00     968         SceneLoader::readShape(TiXmlElement*, Material*) [20]
+                0.00    0.00     968/968         Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*) [21]
 -----------------------------------------------
-                0.00    0.00       2/10          SceneLoader::load(std::string, Scene**, int, int) [72]
-                0.00    0.00       8/10          SceneLoader::readMaterial(TiXmlElement*) [37]
-[32]     0.0    0.00    0.00      10         SceneLoader::readColor(TiXmlElement*) [32]
-                0.00    0.00      10/4713206     Color::Color(float, float, float) [24]
+                0.00    0.00     968/968         SceneLoader::readShape(TiXmlElement*, Material*) [20]
+[21]     0.0    0.00    0.00     968         Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*) [21]
+                0.00    0.00     968/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
 -----------------------------------------------
-                0.00    0.00       1/10          LoggerStreambuf::~LoggerStreambuf() [65]
-                0.00    0.00       9/10          LoggerStreambuf::sync() [82]
-[33]     0.0    0.00    0.00      10         LoggerStreambuf::flushBuffer() [33]
-                0.00    0.00       9/9           Mutex::lock() [35]
+                                                 <spontaneous>
+[22]     0.0    0.00    0.00                 Plane::getIntersection(Ray&, float*, Vec3<float>*, Material**) [22]
+                0.00    0.00     968/3079868     Display::register_keyhook(std::function<void ()>, SDLKey) [14]
 -----------------------------------------------
-                0.00    0.00       1/10          LoggerStreambuf::~LoggerStreambuf() [65]
-                0.00    0.00       9/10          LoggerStreambuf::sync() [82]
-[34]     0.0    0.00    0.00      10         Mutex::unlock() [34]
+[23]     0.0    0.00    0.00    5089+9       <cycle 2 as a whole> [23]
+                0.00    0.00    5097+1           _fini <cycle 2> [31]
+                0.00    0.00       1+8           Logger::init(std::string) <cycle 2> [52]
 -----------------------------------------------
-                0.00    0.00       9/9           LoggerStreambuf::flushBuffer() [33]
-[35]     0.0    0.00    0.00       9         Mutex::lock() [35]
+                0.00    0.00       7/7           _fini <cycle 2> [31]
+[24]     0.0    0.00    0.00       7         main [24]
 -----------------------------------------------
-                0.00    0.00       9/9           Logger::log(Log_Type) [42]
-[36]     0.0    0.00    0.00       9         Logger::logtype_to_prefix(Log_Type) [36]
+                0.00    0.00   95947/95947       Scene::renderPixel(int, int) [3]
+[28]     0.0    0.00    0.00   95947         Camera::setNormal(Vec3<float>) [28]
 -----------------------------------------------
-                0.00    0.00       8/8           SceneLoader::load(std::string, Scene**, int, int) [72]
-[37]     0.0    0.00    0.00       8         SceneLoader::readMaterial(TiXmlElement*) [37]
-                0.00    0.00       8/10          SceneLoader::readColor(TiXmlElement*) [32]
-                0.00    0.00       7/7           PhongMaterial::PhongMaterial(Color const&, float, float, float, float) [41]
-                0.00    0.00       1/1           UglyMaterial::UglyMaterial(Color const&) [64]
+                0.00    0.00   14569/14569       PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [7]
+[29]     0.0    0.00    0.00   14569         Scene::renderRay(Ray&) [29]
 -----------------------------------------------
-                0.00    0.00       8/8           SceneLoader::load(std::string, Scene**, int, int) [72]
-[38]     0.0    0.00    0.00       8         SceneLoader::readShape(TiXmlElement*, Material*) [38]
-                0.00    0.00       4/4           Sphere::Sphere(Vec3<float> const&, float, Material*) [43]
-                0.00    0.00       4/4           Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*) [45]
+                0.00    0.00      21/6468        Renderer::render(int, int, int, int, int) [17]
+                0.00    0.00    6447/6468        std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) <cycle 1> [1]
+[30]     0.0    0.00    0.00    6468         void std::vector<Color, std::allocator<Color> >::_M_insert_aux<Color const&>(__gnu_cxx::__normal_iterator<Color*, std::vector<Color, std::allocator<Color> > >, Color const&) [30]
 -----------------------------------------------
-                0.00    0.00       4/8           Sphere::Sphere(Vec3<float> const&, float, Material*) [43]
-                0.00    0.00       4/8           Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*) [45]
-[39]     0.0    0.00    0.00       8         Object::Object(Material*) [39]
+                                   1             _fini <cycle 2> [31]
+                                   8             Logger::init(std::string) <cycle 2> [52]
+                0.00    0.00       1/5089        Renderer::Renderer(Scene*) [157]
+                0.00    0.00       1/5089        Renderer::render(int, int, int, int, int) [17]
+                0.00    0.00       1/5089        Color::getB() [80]
+                0.00    0.00       1/5089        Logger::~Logger() [126]
+                0.00    0.00       1/5089        LoggerStreambuf::LoggerStreambuf(std::string&, std::basic_fstream<char, std::char_traits<char> >&, Mutex&) [74]
+                0.00    0.00       1/5089        Logger::close() [123]
+                0.00    0.00       8/5089        LoggerStreambuf::~LoggerStreambuf() [38]
+                0.00    0.00    2107/5089        std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) <cycle 1> [1]
+                0.00    0.00    2968/5089        Renderer::compute_task() <cycle 1> [39]
+[31]     0.0    0.00    0.00    5097+1       _fini <cycle 2> [31]
+                0.00    0.00       7/7           main [24]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN5MutexC2Ev [41]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN6Logger10logger_ptrE [43]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN9TCPSocketC2Ev [47]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN7Display11display_ptrE [45]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN6ObjectC2EP8Material [44]
+                0.00    0.00       1/1           _GLOBAL__sub_I_main [48]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode [42]
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN8RendererC2EP5Scene [46]
+                                   1             Logger::init(std::string) <cycle 2> [52]
+                                   1             _fini <cycle 2> [31]
 -----------------------------------------------
-                0.00    0.00       4/8           Sphere::~Sphere() [44]
-                0.00    0.00       4/8           Triangle::~Triangle() [46]
-[40]     0.0    0.00    0.00       8         Object::~Object() [40]
+                0.00    0.00       1/1403        Renderer::render(int, int, int, int, int) [17]
+                0.00    0.00    1402/1403        Renderer::compute_task() <cycle 1> [39]
+[32]     0.0    0.00    0.00    1403         std::vector<std::vector<Color, std::allocator<Color> >*, std::allocator<std::vector<Color, std::allocator<Color> >*> >::_M_fill_assign(unsigned long, std::vector<Color, std::allocator<Color> >* const&) [32]
 -----------------------------------------------
-                0.00    0.00       7/7           SceneLoader::readMaterial(TiXmlElement*) [37]
-[41]     0.0    0.00    0.00       7         PhongMaterial::PhongMaterial(Color const&, float, float, float, float) [41]
+                0.00    0.00       2/970         SceneLoader::load(std::string, Scene**, int, int) [11]
+                0.00    0.00     968/970         SceneLoader::readMaterial(TiXmlElement*) [19]
+[33]     0.0    0.00    0.00     970         SceneLoader::readColor(TiXmlElement*) [33]
 -----------------------------------------------
-                0.00    0.00       1/5           Display::init(int, int) [146]
-                0.00    0.00       2/5           SceneLoader::load(std::string, Scene**, int, int) [72]
-                0.00    0.00       2/5           Display::~Display() [150]
-[42]     0.0    0.00    0.00       5         Logger::log(Log_Type) [42]
-                0.00    0.00       9/9           Logger::logtype_to_prefix(Log_Type) [36]
+                0.00    0.00     968/968         SceneLoader::readMaterial(TiXmlElement*) [19]
+[34]     0.0    0.00    0.00     968         PhongMaterial::getShininess() [34]
 -----------------------------------------------
-                0.00    0.00       4/4           SceneLoader::readShape(TiXmlElement*, Material*) [38]
-[43]     0.0    0.00    0.00       4         Sphere::Sphere(Vec3<float> const&, float, Material*) [43]
-                0.00    0.00       4/8           Object::Object(Material*) [39]
+                0.00    0.00     968/968         Scene::~Scene() [103]
+[35]     0.0    0.00    0.00     968         Triangle::~Triangle() [35]
 -----------------------------------------------
-                0.00    0.00       4/4           Scene::~Scene() [100]
-[44]     0.0    0.00    0.00       4         Sphere::~Sphere() [44]
-                0.00    0.00       4/8           Object::~Object() [40]
+                0.00    0.00      14/28          Display::register_keyhook(std::function<void ()>, SDLKey) [14]
+                0.00    0.00      14/28          Display::Display(int, int) [155]
+[36]     0.0    0.00    0.00      28         Renderer::~Renderer() [36]
 -----------------------------------------------
-                0.00    0.00       4/4           SceneLoader::readShape(TiXmlElement*, Material*) [38]
-[45]     0.0    0.00    0.00       4         Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*) [45]
-                0.00    0.00       4/8           Object::Object(Material*) [39]
+                0.00    0.00       8/8           LoggerStreambuf::~LoggerStreambuf() [38]
+[37]     0.0    0.00    0.00       8         Logger::sigsegv_newhandler(int) [37]
 -----------------------------------------------
-                0.00    0.00       4/4           Scene::~Scene() [100]
-[46]     0.0    0.00    0.00       4         Triangle::~Triangle() [46]
-                0.00    0.00       4/8           Object::~Object() [40]
+                0.00    0.00       1/6           Renderer::render(int, int, int, int, int) [17]
+                0.00    0.00       1/6           TCPSocket::bind_to_port(int) [163]
+                0.00    0.00       2/6           SceneLoader::load(std::string, Scene**, int, int) [11]
+                0.00    0.00       2/6           Display::Display(int, int) [155]
+[38]     0.0    0.00    0.00       6         LoggerStreambuf::~LoggerStreambuf() [38]
+                0.00    0.00       8/5089        _fini <cycle 2> [31]
+                0.00    0.00       8/8           Logger::sigsegv_newhandler(int) [37]
 -----------------------------------------------
-                0.00    0.00       1/2           SceneLoader::load(std::string, Scene**, int, int) [72]
-                0.00    0.00       1/2           DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&) [66]
-[47]     0.0    0.00    0.00       2         Light::Light(Color const&) [47]
+                                   6             std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) <cycle 1> [1]
+[39]     0.0    0.00    0.00       6         Renderer::compute_task() <cycle 1> [39]
+                0.00    0.00    2968/5089        _fini <cycle 2> [31]
+                0.00    0.00    1402/1403        std::vector<std::vector<Color, std::allocator<Color> >*, std::allocator<std::vector<Color, std::allocator<Color> >*> >::_M_fill_assign(unsigned long, std::vector<Color, std::allocator<Color> >* const&) [32]
+                                 899             std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) <cycle 1> [1]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[48]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN11SceneLoader4loadESsPP5Sceneii [48]
+                0.00    0.00       1/2           SceneLoader::load(std::string, Scene**, int, int) [11]
+                0.00    0.00       1/2           DirectionalLight::DirectionalLight(float, Vec3<float> const&) [77]
+[40]     0.0    0.00    0.00       2         Ray::getDirection() const [40]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[49]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN12UglyMaterialC2ERK5Color [49]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[41]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5MutexC2Ev [41]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[50]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN13PhongMaterialC2ERK5Colorffff [50]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[42]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode [42]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[51]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5MutexC2Ev [51]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[43]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6Logger10logger_ptrE [43]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[52]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5SceneC2ESt4listIP6ObjectSaIS2_EERKS0_I16DirectionalLightSaIS5_EERK12AmbientLightP6Camera [52]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[44]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6ObjectC2EP8Material [44]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[53]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode [53]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[45]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7Display11display_ptrE [45]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[54]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6Logger10logger_ptrE [54]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[46]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN8RendererC2EP5Scene [46]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[55]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6ObjectC2EP8Material [55]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[47]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN9TCPSocketC2Ev [47]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[56]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6ServerC2EPKci [56]
+                0.00    0.00       1/1           _fini <cycle 2> [31]
+[48]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [48]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[57]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6SphereC2ERK4Vec3IfEfP8Material [57]
+                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [11]
+[49]     0.0    0.00    0.00       1         AmbientLight::AmbientLight(float) [49]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[58]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7Display11display_ptrE [58]
+                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [11]
+[50]     0.0    0.00    0.00       1         AmbientLight::AmbientLight(float, float, float) [50]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[59]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN8TriangleC2ER4Vec3IfES2_S2_P8Material [59]
+                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [11]
+[51]     0.0    0.00    0.00       1         DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&) [51]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[60]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN9TCPSocketC2Ev [60]
+                                   8             Logger::init(std::string) <cycle 2> [52]
+                                   1             _fini <cycle 2> [31]
+[52]     0.0    0.00    0.00       1+8       Logger::init(std::string) <cycle 2> [52]
+                                   8             _fini <cycle 2> [31]
+                                   8             Logger::init(std::string) <cycle 2> [52]
 -----------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [179]
-[61]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [61]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [72]
-[62]     0.0    0.00    0.00       1         AmbientLight::AmbientLight(float) [62]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [72]
-[63]     0.0    0.00    0.00       1         AmbientLight::AmbientLight(Color const&) [63]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::readMaterial(TiXmlElement*) [37]
-[64]     0.0    0.00    0.00       1         UglyMaterial::UglyMaterial(Color const&) [64]
------------------------------------------------
-                0.00    0.00       1/1           Logger::~Logger() [127]
-[65]     0.0    0.00    0.00       1         LoggerStreambuf::~LoggerStreambuf() [65]
-                0.00    0.00       1/10          LoggerStreambuf::flushBuffer() [33]
-                0.00    0.00       1/1           Mutex::~Mutex() [69]
-                0.00    0.00       1/10          Mutex::unlock() [34]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [72]
-[66]     0.0    0.00    0.00       1         DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&) [66]
-                0.00    0.00       1/2           Light::Light(Color const&) [47]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [72]
-[67]     0.0    0.00    0.00       1         Light::Light(float) [67]
------------------------------------------------
-                0.00    0.00       1/1           Logger::init(std::string) [122]
-[68]     0.0    0.00    0.00       1         Mutex::Mutex() [68]
------------------------------------------------
-                0.00    0.00       1/1           LoggerStreambuf::~LoggerStreambuf() [65]
-[69]     0.0    0.00    0.00       1         Mutex::~Mutex() [69]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [72]
-[70]     0.0    0.00    0.00       1         Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*) [70]
------------------------------------------------
-                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [72]
-[71]     0.0    0.00    0.00       1         Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [71]
+                0.00    0.00       1/1           SceneLoader::load(std::string, Scene**, int, int) [11]
+[53]     0.0    0.00    0.00       1         Ray::getColor() const [53]
 -----------------------------------------------
 
  This table describes the call tree of the program, and was sorted by
@@ -475,25 +412,19 @@ index % time    self  children    called     name
 
 Index by function name
 
-  [48] _GLOBAL__sub_I__ZN11SceneLoader4loadESsPP5Sceneii (sceneLoader.cpp) [6] PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [30] Scene::getAmbientLight()
-  [49] _GLOBAL__sub_I__ZN12UglyMaterialC2ERK5Color (uglyMaterial.cpp) [41] PhongMaterial::PhongMaterial(Color const&, float, float, float, float) [8] Scene::renderRay(Ray&)
-  [50] _GLOBAL__sub_I__ZN13PhongMaterialC2ERK5Colorffff (phongMaterial.cpp) [33] LoggerStreambuf::flushBuffer() [70] Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*)
-  [51] _GLOBAL__sub_I__ZN5MutexC2Ev (mutex.cpp) [65] LoggerStreambuf::~LoggerStreambuf() [9] Camera::getDirection(int, int)
-  [52] _GLOBAL__sub_I__ZN5SceneC2ESt4listIP6ObjectSaIS2_EERKS0_I16DirectionalLightSaIS5_EERK12AmbientLightP6Camera (scene.cpp) [13] DirectionalLight::getDirection() [71] Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode)
-  [53] _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode (camera.cpp) [66] DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&) [36] Logger::logtype_to_prefix(Log_Type)
-  [54] _GLOBAL__sub_I__ZN6Logger10logger_ptrE (logger.cpp) [14] DirectionalLight::DirectionalLight(float, float, float, Vec3<float> const&) [42] Logger::log(Log_Type)
-  [55] _GLOBAL__sub_I__ZN6ObjectC2EP8Material (object.cpp) [11] Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [39] Object::Object(Material*)
-  [56] _GLOBAL__sub_I__ZN6ServerC2EPKci (server.cpp) [25] Color::getB() [40] Object::~Object()
-  [57] _GLOBAL__sub_I__ZN6SphereC2ERK4Vec3IfEfP8Material (sphere.cpp) [15] Color::getG() [16] Server::unstack_message()
-  [58] _GLOBAL__sub_I__ZN7Display11display_ptrE (display.cpp) [26] Color::getR() [5] Sphere::getIntersection(Ray&, float*, Vec3<float>*, Material**)
-  [59] _GLOBAL__sub_I__ZN8TriangleC2ER4Vec3IfES2_S2_P8Material (triangle.cpp) [29] Color::Color(float) [43] Sphere::Sphere(Vec3<float> const&, float, Material*)
-  [60] _GLOBAL__sub_I__ZN9TCPSocketC2Ev (tcpsock.cpp) [24] Color::Color(float, float, float) [44] Sphere::~Sphere()
-  [61] _GLOBAL__sub_I_main (main.cpp) [28] Light::getColor() [3] Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**)
-  [37] SceneLoader::readMaterial(TiXmlElement*) [47] Light::Light(Color const&) [45] Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*)
-   [2] SceneLoader::readVec3Float(TiXmlElement*) [67] Light::Light(float) [46] Triangle::~Triangle()
-  [32] SceneLoader::readColor(TiXmlElement*) [35] Mutex::lock() [10] Ray::getDirection() const
-  [38] SceneLoader::readShape(TiXmlElement*, Material*) [34] Mutex::unlock() [12] Ray::getOrigin() const
-  [62] AmbientLight::AmbientLight(float) [68] Mutex::Mutex() [27] Camera::getPoint() const
-  [63] AmbientLight::AmbientLight(Color const&) [69] Mutex::~Mutex() [31] std::_Function_base::_Base_manager<std::_Bind<std::_Mem_fn<void (Camera::*)()> (Camera*)> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation)
-  [18] UglyMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [1] Scene::renderPixel(int, int) [4] <cycle 1>
-  [64] UglyMaterial::UglyMaterial(Color const&) [7] Scene::visibleLights(Vec3<float>)
+  [41] _GLOBAL__sub_I__ZN5MutexC2Ev [38] LoggerStreambuf::~LoggerStreambuf() [39] Renderer::compute_task()
+  [42] _GLOBAL__sub_I__ZN6CameraC2E4Vec3IfES1_S1_fffiiii10cameraMode [51] DirectionalLight::DirectionalLight(Color const&, Vec3<float> const&) [17] Renderer::render(int, int, int, int, int)
+  [43] _GLOBAL__sub_I__ZN6Logger10logger_ptrE [15] Ray::Ray(Vec3<float> const&, Vec3<float> const&, Color&) [36] Renderer::~Renderer()
+  [44] _GLOBAL__sub_I__ZN6ObjectC2EP8Material [16] Light::getColor() [5] Triangle::getIntersection(Ray&, float*, Vec3<float>*, Material**)
+  [45] _GLOBAL__sub_I__ZN7Display11display_ptrE [3] Scene::renderPixel(int, int) [21] Triangle::Triangle(Vec3<float>&, Vec3<float>&, Vec3<float>&, Material*)
+  [46] _GLOBAL__sub_I__ZN8RendererC2EP5Scene [8] Scene::visibleLights(Vec3<float>) [35] Triangle::~Triangle()
+  [47] _GLOBAL__sub_I__ZN9TCPSocketC2Ev [29] Scene::renderRay(Ray&) [40] Ray::getDirection() const
+  [48] _GLOBAL__sub_I_main    [13] Scene::Scene(std::list<Object*, std::allocator<Object*> >, std::list<DirectionalLight, std::allocator<DirectionalLight> > const&, AmbientLight const&, Camera*) [53] Ray::getColor() const
+  [19] SceneLoader::readMaterial(TiXmlElement*) [12] Camera::getDirection(int, int) [30] void std::vector<Color, std::allocator<Color> >::_M_insert_aux<Color const&>(__gnu_cxx::__normal_iterator<Color*, std::vector<Color, std::allocator<Color> > >, Color const&)
+   [4] SceneLoader::readVec3Float(TiXmlElement*) [10] Camera::horizontalProj(Vec3<float>) [32] std::vector<std::vector<Color, std::allocator<Color> >*, std::allocator<std::vector<Color, std::allocator<Color> >*> >::_M_fill_assign(unsigned long, std::vector<Color, std::allocator<Color> >* const&)
+  [33] SceneLoader::readColor(TiXmlElement*) [9] Camera::translateForward() [1] std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::operator=(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&)
+  [20] SceneLoader::readShape(TiXmlElement*, Material*) [28] Camera::setNormal(Vec3<float>) [31] _fini
+  [49] AmbientLight::AmbientLight(float) [6] Camera::Camera(Vec3<float>, Vec3<float>, Vec3<float>, float, float, float, int, int, int, int, cameraMode) [24] main
+  [50] AmbientLight::AmbientLight(float, float, float) [37] Logger::sigsegv_newhandler(int) (2) <cycle 1>
+  [34] PhongMaterial::getShininess() [52] Logger::init(std::string) [23] <cycle 2>
+   [7] PhongMaterial::renderRay(Ray const&, float, Vec3<float> const&, Scene*) [14] Display::register_keyhook(std::function<void ()>, SDLKey)

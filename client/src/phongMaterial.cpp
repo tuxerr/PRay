@@ -72,14 +72,17 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
   g += color.getG()*ambiantReflection*ambientColor.getG();
   b += color.getB()*ambiantReflection*ambientColor.getB();
 
-  for(DirectionalLight l : lights) {
+  list<DirectionalLight>::iterator itLight;
+  
+  for (itLight = lights.begin(); itLight != lights.end(); itLight++)
+  {
 
-    diffuse = diffuseReflection*fabs(l.getDirection().scalar(normal));
-    specular = specularReflection*fabs(pow(l.getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), shininess));
+    diffuse = diffuseReflection*fabs(itLight->getDirection().scalar(normal));
+    specular = specularReflection*fabs(pow(itLight->getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), shininess));
 
-    rr = l.getColor().getR();
-    rg = l.getColor().getG();
-    rb = l.getColor().getB();
+    rr = itLight->getColor().getR();
+    rg = itLight->getColor().getG();
+    rb = itLight->getColor().getB();
 
     r += color.getR()*diffuse*rr;
     g += color.getG()*diffuse*rg;

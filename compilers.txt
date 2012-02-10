@@ -1,0 +1,7 @@
+Rendering time per frame (in seconds) on Intel Core i5 450M
+
+                    GNU G++ 4.6.2   Intel C++ Compiler 12.1
+
+suzanne_242.xml     6.085           4.05
+suzanne_968.xml     24.077          15.853
+fa-37_talon.xml     372.26          193.49
