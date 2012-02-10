@@ -1,7 +1,7 @@
 #ifndef DEF_Vec3
 #define DEF_Vec3
 
-#include <math.h>
+#include <cmath>
 
 template <class number>
 class Vec3 {
@@ -117,11 +117,16 @@ number Vec3<number>::scalar(Vec3<number> n) const {
     return n.x*x+n.y*y+n.z*z;
 }
 
+// Rodrigues' rotation formula
 // phi : angle in degrees
+// axis : must be of norm 1
 template <class number>
 Vec3<number> Vec3<number>::rotate(float phi, Vec3<number> axis) {
-    phi = phi * 3.14159265  / 180; // angle in radians
-    return (*this) * (float)(cos(phi)) + (float)(1-cos(phi)) * this->scalar(axis) + axis.cross(*this) * (float)(sin(phi));
+    phi = phi * 3.14159265  / 180.0; // angle in radians
+    return (*this) * cos(phi)
+        + axis * (*this) * sin(phi)
+        + axis * axis.scalar(*this) * ((float)1.0 - cos(phi)) ;
+       
 }
 
 template <class number>

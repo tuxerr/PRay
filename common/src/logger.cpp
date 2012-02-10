@@ -6,8 +6,8 @@ Logger* Logger::logger_ptr;
 
 void (*Logger::sigsegv_handlerptr)(int);
 
-LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
-    prefix(prefix), file(file), firstflush(true)
+LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file,Mutex &mut) :
+    prefix(prefix), file(file), write_mut(mut), firstflush(true)
 {
     setp (buffer, buffer+(bufferSize-1));
 }
@@ -15,7 +15,6 @@ LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file) :
 int LoggerStreambuf::flushBuffer () {
     int num = pptr()-pbase();
     if(firstflush && num!=0) {
-        write_mut.lock();
         file<<prefix;
         std::cout<<prefix;
         firstflush=false;
@@ -61,6 +60,7 @@ void Logger::sigsegv_newhandler(int sig) {
 
 Logger& Logger::log(Log_Type type) {
     if(logger_ptr!=NULL) {
+
 	logger_ptr->set_logtype(type);
         return *logger_ptr;
     } else {
@@ -76,7 +76,7 @@ void Logger::close() {
 }
 
 Logger::Logger(string file_path) :
-    ios(0), ostream(new LoggerStreambuf(current_prefix,m_file)), current_prefix("[INF]")
+    ios(0), ostream(new LoggerStreambuf(current_prefix,m_file,write_mut)), current_prefix("[INF]")
 {
     m_file.open(file_path.c_str(),ios::out|ios::trunc);
     if(!m_file) {
@@ -92,6 +92,7 @@ Logger::~Logger() {
 }
 
 void Logger::set_logtype(Log_Type type) {
+    write_mut.lock();
     current_prefix=logtype_to_prefix(type);
 }
 
