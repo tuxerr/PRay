@@ -9,7 +9,7 @@
 #include "phongMaterial.h"
 #include "uglyMaterial.h"
 
-//#define SCENELOADER_DEBUG 
+//#define SCENELOADER_DEBUG
 
 using namespace std;
 
@@ -39,6 +39,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
                 Vec3<float> position, target, normal;
+                float d = 35;
 
                 tmp_node = node->FirstChildElement("position");
                 if (tmp_node == NULL) {
@@ -61,11 +62,18 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                     normal = readVec3Float(tmp_node);
                 }
 
+                tmp_node = node->FirstChildElement("viewplane");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <viewplane> near line "<<node->Row()<<endl;
+                } else {
+                    tmp_node->QueryFloatAttribute("d", &d);
+                }
+
                 camera = new Camera(position,
                                     target-position,
                                     normal,
                                     16/2, 9/2,
-                                    35,
+                                    d,
                                     xRes, yRes);
             } else if ( nodeName.compare("directionalLight")==0 ) {
                 Color color;
@@ -77,7 +85,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 } else {
                     color = readColor(tmp_node);
                 }
-                
+
                 tmp_node = node->FirstChildElement("direction");
                 if (tmp_node == NULL) {
                     Logger::log(LOG_ERROR)<<"Missing <direction> near line "<<node->Row()<<endl;
@@ -141,7 +149,7 @@ Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
         float radius = 0;
         child->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
-#ifdef SCENELOADER_DEBUG        
+#ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Sphere : ("<<center.x<<","<<center.y<<","<<center.z<<") "
                               <<radius<<endl;
 #endif
@@ -151,7 +159,7 @@ Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
         Vec3<float> b = readVec3Float(child->FirstChildElement("b"));
         Vec3<float> c = readVec3Float(child->FirstChildElement("c"));
 
-#ifdef SCENELOADER_DEBUG  
+#ifdef SCENELOADER_DEBUG
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
@@ -173,7 +181,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         Color color = readColor(child->FirstChildElement("color"));
         float specular=0, diffuse=0, ambiant=0, shininess=0, reflexivity=0;
         TiXmlElement* child2;
-        
+
         child2 = child->FirstChildElement("specular");
         if (child2) child2->QueryFloatAttribute("v", &specular);
         child2 = child->FirstChildElement("diffuse");
@@ -185,7 +193,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         child2 = child->FirstChildElement("reflexivity");
         if (child2) child2->QueryFloatAttribute("v", &reflexivity);
 
-#ifdef SCENELOADER_DEBUG 
+#ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "reflexivity<<endl;
 #endif
@@ -217,7 +225,7 @@ Color SceneLoader::readColor(TiXmlElement* node) {
 
 Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {
     float x=0, y=0, z=0;
-    
+
     node->QueryFloatAttribute("x", &x);
     node->QueryFloatAttribute("y", &y);
     node->QueryFloatAttribute("z", &z);

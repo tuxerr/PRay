@@ -31,11 +31,9 @@ from mathutils import Color
 
 def writeTriangle(f, verts, verts_id, col):
     l = ['a', 'b', 'c']
-    print(col)
     f.write("\t<object>\n")
     f.write('\t\t<shape>\n\t\t\t<triangle>\n')
     for i,v in enumerate(verts_id):
-        print('%s %f %f %f' % (l[i], verts[v].co.x, verts[v].co.y, verts[v].co.z))
         f.write('\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].co.x, verts[v].co.y, verts[v].co.z))
     f.write('\t\t\t</triangle>\n\t\t</shape>\n')
     f.write('\t\t<material>\n\t\t\t<phong>\n')
@@ -45,26 +43,23 @@ def writeTriangle(f, verts, verts_id, col):
     f.write("\t</object>\n")
 
 def main(filename):
-    print(filename)
     sce = bpy.context.scene
     obs = sce.objects
     f = open(filename, 'w')
     f.write('<?xml version="1.0" encoding="utf-8"?>\n<scene>\n\t<directionalLight>\n\t\t<color r="255" g="255" b="255"/>\n\t\t<direction x="-1" y="-1" z="-1"/>\n\t</directionalLight>\n\t<ambientLight>\n\t\t<color r="255" g="255" b="255"/>\n\t</ambientLight>\n')
     for ob in obs:
-        print('ob',ob.name)
         if ob.type == 'CAMERA':
             f.write('\t<camera>\n')
             f.write('\t\t<position x="%f" y="%f" z="%f"/>\n' %(ob.location.x, ob.location.y, ob.location.z))
             f.write('\t\t<target x="0" y="0" z="0"/>\n')
             f.write('\t\t<normal x="0" y="0" z="1"/>')
-            f.write('\n\t\t<viewplane w="16/2" h="9/2" d="%f"/>\n\t</camera>\n' %(ob.data.lens/16))
+            f.write('\n\t\t<viewplane w="16/2" h="9/2" d="%f"/>\n\t</camera>\n' %(ob.data.lens/4))
         if ob.type == 'MESH':        
             
             mesh = ob.data
             verts = mesh.vertices
             faces = mesh.faces
             for face in faces:
-                print('face')
                 vs = face.vertices
                 if len(ob.material_slots) < 1:
                     col = Color()
@@ -88,7 +83,8 @@ def main(filename):
     
     f.write("</scene>")
     f.close()          
-    print('endend')        
+    print ("\nExport to PRay xml completed.")
+    return {'FINISHED'}        
             
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty
@@ -105,14 +101,14 @@ class Export(bpy.types.Operator, ExportHelper):
 
     @classmethod
     def poll(cls, context):
-        return context.active_object is not None
+        return True
 
     def execute(self, context):
         return main(self.filepath)
 
 
 def menu_func(self, context):
-    self.layout.operator(Export.bl_idname, text=info)
+    self.layout.operator(Export.bl_idname, text='Export to PRay xml (.xml)')
 
 
 def register():

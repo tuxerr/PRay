@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
         Logger::log(LOG_ERROR) << "Missing argument" << endl;
         Logger::log(LOG_INFO) << "Usage: " << argv[0] << " scene.xml" << endl;
 	return EXIT_FAILURE;
-    } 
-    
+    }
+
     filename = string(argv[1]);
 
     const string standaloneMode ("--test");
@@ -32,14 +32,14 @@ int main(int argc, char* argv[])
     {
         Display::init(WIDTH,HEIGHT);
         Display *disp = &(Display::getInstance());
-        
+
         Color pixel;
         int width = disp->get_width();
         int height = disp->get_height();
 
         SceneLoader sceneLoader;
         Scene* scene;
-	
+
 	if ( sceneLoader.load(filename, &scene, width, height) != 0 ) {
 	    return EXIT_FAILURE;
 	}
@@ -65,9 +65,9 @@ int main(int argc, char* argv[])
 
         while ( !disp->quit() )
         {
+
 	  std::vector<Color> res = renderer.render(0,0,width,height);
             disp->add_surface(0,0,width,height,res);  
-
             disp->refresh_display();
             disp->refresh_controls();
         }
