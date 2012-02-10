@@ -5,8 +5,6 @@
 #include <tinyxml.h>
 #include "scene.h"
 
-#define TIXML_USE_STL
-
 class SceneLoader {
 public:
     int load(std::string nom, Scene** scene, int xRes, int yRes);
