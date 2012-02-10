@@ -30,7 +30,7 @@ class LoggerStreambuf : public std::streambuf
 private:
     std::string &prefix;
     std::fstream &file;
-    Mutex write_mut;
+    Mutex &write_mut;
 
 protected:
     static const int bufferSize = 100;   // size of data buffer
@@ -38,7 +38,7 @@ protected:
     bool firstflush;
 
 public:
-    LoggerStreambuf(std::string &prefix,std::fstream &file);
+    LoggerStreambuf(std::string &prefix,std::fstream &file,Mutex &mut);
 
     virtual ~LoggerStreambuf() { sync(); }
 
@@ -67,6 +67,7 @@ private:
     std::string logtype_to_prefix(Log_Type type);
     std::string current_prefix;
     std::fstream m_file;
+    Mutex write_mut;
 
     static Logger *logger_ptr;
     static void (*sigsegv_handlerptr)(int);
