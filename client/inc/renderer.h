@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "color.h"
 #include "mutex.h"
+#include <SDL/SDL.h>
 #include <vector>
 #include <iostream>
 #include <algorithm>

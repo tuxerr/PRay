@@ -5,6 +5,8 @@ Renderer::Renderer(Scene *scene) : scene(scene)
 }
 
 std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_number) {
+    Uint32 initial_tick = SDL_GetTicks();
+
     tasks.clear();
     results.clear();
     results.assign((width*height/PIXEL_GROUPS)+1,NULL);
@@ -54,6 +56,8 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_
         }
         delete taskres;
     }
+
+    Logger::log()<<"Frame rendered in "<<SDL_GetTicks()-initial_tick<<" milliseconds"<<std::endl;
     return res;
 }
 
