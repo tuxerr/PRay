@@ -67,10 +67,12 @@ int main(int argc, char* argv[])
 
         Renderer renderer(scene);
 
+        int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
+        Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
+
         while ( !disp->quit() )
         {
-
-	  std::vector<Color> res = renderer.render(0,0,width,height);
+            std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
             disp->add_surface(0,0,width,height,res);  
             disp->refresh_display();
             disp->refresh_controls();
