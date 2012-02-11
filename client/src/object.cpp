@@ -10,8 +10,8 @@ Object::Object(Material* material) :
 
 Object::~Object()
 {
-  // TODO: improve to enable shared materials
-  delete material;
+  // materials are shared
+  //delete material;
 }
 
 Material* Object::getMaterial() {
