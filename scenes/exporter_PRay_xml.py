@@ -27,9 +27,21 @@ bl_info = {
 # TODO: fix the exported camera data
 
 import bpy 
-from mathutils import Color, Matrix
+from mathutils import Color, Matrix, Vector
 
-def writeTriangle(f, verts, verts_id, col):
+class Material:
+    def __init__(self):
+        self.color       = Color()
+        self.color.r     = 1
+        self.color.g     = 1
+        self.color.b     = 1
+        self.specular    = 0.6
+        self.diffuse     = 0.5
+        self.ambiant     = 0
+        self.shininess   = 100
+        self.reflexivity = 0
+
+def writeTriangle(f, verts, verts_id, material):
     l = ['a', 'b', 'c']
     f.write("\t<object>\n")
     f.write('\t\t<shape>\n\t\t\t<triangle>\n')
@@ -37,8 +49,12 @@ def writeTriangle(f, verts, verts_id, col):
         f.write('\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].x, verts[v].y, verts[v].z))
     f.write('\t\t\t</triangle>\n\t\t</shape>\n')
     f.write('\t\t<material>\n\t\t\t<phong>\n')
-    f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*col.r), int(255*col.g), int(255*col.b)))
-    f.write('\t\t\t\t<specular v="0.6"/>\n\t\t\t\t<diffuse v="0.5"/>\n\t\t\t\t<ambiant v="0"/>\n\t\t\t\t<shininess v="100"/>\n')
+    f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*material.color.r), int(255*material.color.g), int(255*material.color.b)))
+    f.write('\t\t\t\t<specular v="%f"/>\n' % (material.specular))
+    f.write('\t\t\t\t<diffuse v="%f"/>\n' % (material.diffuse))
+    f.write('\t\t\t\t<ambiant v="%f"/>\n' % (material.ambiant))
+    f.write('\t\t\t\t<shininess v="%f"/>\n' % (material.shininess))
+    f.write('\t\t\t\t<reflexivity v="%f"/>\n' % (material.reflexivity))
     f.write('\t\t\t</phong>\n\t\t</material>\n')
     f.write("\t</object>\n")
 
@@ -49,47 +65,50 @@ def main(filename):
     f.write('<?xml version="1.0" encoding="utf-8"?>\n<scene>\n\t<directionalLight>\n\t\t<color r="255" g="255" b="255"/>\n\t\t<direction x="-1" y="-1" z="-1"/>\n\t</directionalLight>\n\t<ambientLight>\n\t\t<color r="255" g="255" b="255"/>\n\t</ambientLight>\n')
     for ob in obs:
         if ob.type == 'CAMERA':
+            camz = Vector().to_4d()
+            camy = Vector().to_4d()
+            camy.y = 1
+            camz.z = -10
+            target = ob.matrix_world * camz
+            normal = ob.matrix_world*camy - ob.matrix_world[3]
             f.write('\t<camera>\n')
             f.write('\t\t<position x="%f" y="%f" z="%f"/>\n' %(ob.location.x, ob.location.y, ob.location.z))
-            f.write('\t\t<target x="0" y="0" z="0"/>\n')
-            f.write('\t\t<normal x="0" y="0" z="1"/>')
+            f.write('\t\t<target x="%f" y="%f" z="%f"/>\n' %(target.x, target.y, target.z))
+            f.write('\t\t<normal x="%f" y="%f" z="%f"/>' % (normal.x, normal.y, normal.z))
             f.write('\n\t\t<viewplane w="16/2" h="9/2" d="%f"/>\n\t</camera>\n' %(ob.data.lens/4))
         if ob.type == 'MESH':        
             
             mesh = ob.data
-            verts = mesh.vertices[:]
+            verts = mesh.vertices
             ob_mat = ob.matrix_world
             scale = Matrix()
             scale[0][0] = ob.scale.x
             scale[1][1] = ob.scale.y
             scale[2][2] = ob.scale.z
-            print(verts[0].co)
-            #if bpy.app.version[1] < 62:
-            #    ob_mat.transpose()
-            print(ob_mat * scale * verts[0].co.to_4d())
             verts = [ob_mat * scale * vert.co.to_4d() for vert in verts]
-            print(ob_mat * scale)
-            print(verts[0])
             faces = mesh.faces
             for face in faces:
+                material = Material()
                 vs = face.vertices
-                if len(ob.material_slots) < 1:
-                    col = Color()
-                    col.r=1
-                    col.g=1
-                    col.b=1
-                else:
-                    if ob.material_slots[0].material.use_vertex_color_paint:
-                        col = mesh.vertex_colors[0].data[face.index].color1
+                if len(ob.material_slots) > 0:
+                    mat = ob.material_slots[0].material
+                    if mat.use_vertex_color_paint:
+                        material.color = mesh.vertex_colors[0].data[face.index].color1
                     else:
-                        col = ob.material_slots[0].material.diffuse_color
+                        material.col = mat.diffuse_color
+                        if mat.use_raytrace:
+                            material.reflexivity = mat.raytrace_mirror.reflect_factor
+                            material.ambiant     = mat.ambient
+                            material.diffuse     = mat.diffuse_intensity
+                            material.specular    = mat.specular_intensity
+                            material.shininess   = mat.specular_hardness
                 if len(vs)==3:
-                    writeTriangle(f, verts, vs, col)
+                    writeTriangle(f, verts, vs, material)
                 elif len(vs)==4:
                     vs1 = vs[:3]
                     vs2 = [vs[0],vs[2], vs[3]]
-                    writeTriangle(f, verts, vs1, col)
-                    writeTriangle(f, verts, vs2, col)
+                    writeTriangle(f, verts, vs1, material)
+                    writeTriangle(f, verts, vs2, material)
                 else:
                     print("Pas de face")
     
