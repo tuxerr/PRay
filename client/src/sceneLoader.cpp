@@ -39,7 +39,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
                 Vec3<float> position, target, normal;
-                float d = 35;
+                float w = 8, h = 4.5, d = 35;
 
                 tmp_node = node->FirstChildElement("position");
                 if (tmp_node == NULL) {
@@ -66,14 +66,21 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 if (tmp_node == NULL) {
                     Logger::log(LOG_ERROR)<<"Missing <viewplane> near line "<<node->Row()<<endl;
                 } else {
+                    tmp_node->QueryFloatAttribute("w", &w);
+                    tmp_node->QueryFloatAttribute("h", &h);
                     tmp_node->QueryFloatAttribute("d", &d);
+                }
+
+                if ( w / h - (float)xRes / (float)yRes  > 1e-4 ) {
+                    Logger::log(LOG_WARNING)<<"The camera and the screen have not the same ratio"<<endl;
+                    Logger::log(LOG_INFO)<<"Camera ratio : "<<(float)yRes / (float)xRes<<endl;
+                    Logger::log(LOG_INFO)<<"Screen ratio : "<<w / h<<endl;
                 }
 
                 camera = new Camera(position,
                                     target-position,
                                     normal,
-                                    16/2, 9/2,
-                                    d,
+                                    w, h, d,
                                     xRes, yRes);
             } else if ( nodeName.compare("directionalLight")==0 ) {
                 Color color;
@@ -107,7 +114,6 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
 		ambientLight = AmbientLight(color);
 	    } else if ( nodeName.compare("object")==0 ) {
                 Material* material = 0;
-                Object* object = 0;
 
                 tmp_node = node->FirstChildElement("material");
                 if (tmp_node == NULL) {
@@ -120,10 +126,8 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 if (tmp_node == NULL) {
                     Logger::log(LOG_ERROR)<<"Missing <shape> near line "<<node->Row()<<endl;
                 } else {
-                    object = readShape(tmp_node, material);
+                    readShape(tmp_node->FirstChildElement(), &objects, material);
                 }
-
-                objects.push_back(object);
             } else {
                 Logger::log(LOG_ERROR)<<"Unknown primary node line "<<node->Row()<<endl;
             }
@@ -139,37 +143,40 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
     }
 }
 
-Object* SceneLoader::readShape(TiXmlElement* node, Material* material) {
-    Object* object = 0;
-    TiXmlElement* child = node->FirstChildElement();
-    string childName(child->Value());
+void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material* material) {
+    string nodeName(node->Value());
 
-    if (childName.compare("sphere")==0 ) {
-        Vec3<float> center = readVec3Float(child->FirstChildElement("center"));
+    if ( nodeName.compare("sphere")==0 ) {
+        Vec3<float> center = readVec3Float(node->FirstChildElement("center"));
         float radius = 0;
-        child->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
+        node->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
 #ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Sphere : ("<<center.x<<","<<center.y<<","<<center.z<<") "
                               <<radius<<endl;
 #endif
-        object = new Sphere(center, radius, material);
-    } else if (childName.compare("triangle")==0 ){
-        Vec3<float> a = readVec3Float(child->FirstChildElement("a"));
-        Vec3<float> b = readVec3Float(child->FirstChildElement("b"));
-        Vec3<float> c = readVec3Float(child->FirstChildElement("c"));
+        objects->push_back(new Sphere(center, radius, material));
+    } else if ( nodeName.compare("triangle")==0 ) {
+        Vec3<float> a = readVec3Float(node->FirstChildElement("a"));
+        Vec3<float> b = readVec3Float(node->FirstChildElement("b"));
+        Vec3<float> c = readVec3Float(node->FirstChildElement("c"));
 
 #ifdef SCENELOADER_DEBUG
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
-        object = new Triangle(a, b, c, material);
+        Triangle* tr = new Triangle(a, b, c, material);
+        objects->push_back(tr);
+    } else if ( nodeName.compare("list")==0 ) {
+        TiXmlElement* child = node->FirstChildElement();
+        while ( child ) {
+            readShape(child,  objects, material);
+            child = child->NextSiblingElement();
+        }
     } else {
-        Logger::log(LOG_ERROR)<<"Unknown shape"<<endl;
+        Logger::log(LOG_ERROR)<<"Unknown shape : "<<nodeName<<" (line "<<node->Row()<<")"<<endl;
     }
-
-    return object;
 }
 
 Material* SceneLoader::readMaterial(TiXmlElement* node) {
@@ -195,7 +202,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 
 #ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
-                              <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "reflexivity<<endl;
+                              <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "<<reflexivity<<endl;
 #endif
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity);
     } else if (childName.compare("ugly")==0 ) {

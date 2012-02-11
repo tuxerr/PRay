@@ -4,7 +4,7 @@
     <position x="-50" y="-50" z="0"/>
     <target x="0" y="0" z="0"/>
     <normal x="0" y="0" z="1"/>
-    <viewplane w="16/2" h="9/2" d="35"/>
+    <viewplane w="8" h="4.5" d="35"/>
   </camera>
   <directionalLight>
     <color r="255" g="255" b="255"/>

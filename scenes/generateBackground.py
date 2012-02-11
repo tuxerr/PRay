@@ -49,7 +49,7 @@ def generateRefractionScene():
     result+= '\t\t<position x="15" y="10" z="3"/>\n'
     result+= '\t\t<target x="1" y="1" z="1"/>\n'
     result+= '\t\t<normal x="0" y="0" z="1"/>\n'
-    result+= '\t\t<viewplane w="16/2" h="9/2" d="35"/>\n'
+    result+= '\t\t<viewplane w="8" h="4.5" d="35"/>\n'
     result+= '\t</camera>\n'
     result+= '\t<directionalLight>\n'
     result+= '\t\t<color r="255" g="255" b="255"/>\n'
