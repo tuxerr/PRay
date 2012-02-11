@@ -27,14 +27,14 @@ bl_info = {
 # TODO: fix the exported camera data
 
 import bpy 
-from mathutils import Color
+from mathutils import Color, Matrix
 
 def writeTriangle(f, verts, verts_id, col):
     l = ['a', 'b', 'c']
     f.write("\t<object>\n")
     f.write('\t\t<shape>\n\t\t\t<triangle>\n')
     for i,v in enumerate(verts_id):
-        f.write('\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].co.x, verts[v].co.y, verts[v].co.z))
+        f.write('\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].x, verts[v].y, verts[v].z))
     f.write('\t\t\t</triangle>\n\t\t</shape>\n')
     f.write('\t\t<material>\n\t\t\t<phong>\n')
     f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*col.r), int(255*col.g), int(255*col.b)))
@@ -57,7 +57,19 @@ def main(filename):
         if ob.type == 'MESH':        
             
             mesh = ob.data
-            verts = mesh.vertices
+            verts = mesh.vertices[:]
+            ob_mat = ob.matrix_world
+            scale = Matrix()
+            scale[0][0] = ob.scale.x
+            scale[1][1] = ob.scale.y
+            scale[2][2] = ob.scale.z
+            print(verts[0].co)
+            #if bpy.app.version[1] < 62:
+            #    ob_mat.transpose()
+            print(ob_mat * scale * verts[0].co.to_4d())
+            verts = [ob_mat * scale * vert.co.to_4d() for vert in verts]
+            print(ob_mat * scale)
+            print(verts[0])
             faces = mesh.faces
             for face in faces:
                 vs = face.vertices
