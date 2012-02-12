@@ -39,7 +39,7 @@ class PhongMaterial : public Material {
 
   float transparency;
 
-  float refractionIndice;
+  float refractiveIndex;
 
  public :
   PhongMaterial(const Color &color, 
@@ -47,16 +47,9 @@ class PhongMaterial : public Material {
 		float diffuseReflection, 
 		float ambiantReflection, 
 		float shininess,
-		float reflectivity);
-
-  PhongMaterial(const Color &color, 
-		float specularReflection, 
-		float diffuseReflection, 
-		float ambiantReflection, 
-		float shininess,
 		float reflectivity,
-		float transparency,
-		float refractionIndice);
+		float transparency=1,
+		float refractiveIndex=2.419);
 
   /*  Color getColor();
   float getSpecularReflection();
