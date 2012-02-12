@@ -30,3 +30,7 @@ void Mutex::trylock() {
 void Mutex::unlock() {
     pthread_mutex_unlock(&mutex);    
 }
+
+pthread_mutex_t* Mutex::get_mutex() {
+    return &mutex;
+}

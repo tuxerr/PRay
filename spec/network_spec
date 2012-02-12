@@ -8,15 +8,11 @@ Send calculations :
   RESULT vector<r,g,b>
 
 ## Server spec ##
-Init : 
-  ACCEPTED
-  REFUSED
-
 Launch calculations :
   SETSCENE $file.xml (-> all)
 
 Send calculations :
-  CALCULATE $x $y $width $height
+  CALCULATE $y $width $height
 
 Modify camera :
   CAM $camoperation

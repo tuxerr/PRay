@@ -8,12 +8,13 @@
 #include <vector>
 #include <string>
 #include <pthread.h>
+#include <sstream>
 
 #define CLIENT_TASK_LINES 2
 
 typedef enum {
-    WAITING,
-    RENDERING
+    RENDERER_WAITING,
+    RENDERER_RENDERING
 } Render_Status;
 
 typedef struct {
@@ -50,6 +51,9 @@ private:
     Network &network;
     Render_Status rstatus;
     std::vector<Task> network_tasks;
+
+    void send_task_to_client(int id);
+
 };
 
 #endif

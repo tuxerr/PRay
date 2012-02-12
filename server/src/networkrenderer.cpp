@@ -13,13 +13,22 @@ void *NetworkRenderer::launch_renderer_thread(void *This) {
 }
 
 void NetworkRenderer::renderer_thread() {
-    
+    while(1) {
+        int id = network.get_first_nonempty_client();
+        while (id==-1) {
+            network.get_recv_cond().wait();
+            id = network.get_first_nonempty_client();
+        }
+        Client *cl = network.get_client(id);
+        string recv = cl->unstack_message();
+        
+    }
 }
 
 void NetworkRenderer::set_rendering_file(string xmlfile) {
-    if(rstatus==RENDERING) {
+    if(rstatus==RENDERER_RENDERING) {
         Logger::log(LOG_WARNING)<<"A render is in progress"<<std::endl;
-    } else {
+    } else if(rstatus==RENDERER_WAITING) {
         string tosend("SETSCENE ");
         tosend.append(xmlfile);
         network.send_to_all(tosend);
@@ -27,9 +36,10 @@ void NetworkRenderer::set_rendering_file(string xmlfile) {
 }
 
 std::vector<Color> NetworkRenderer::render(int width,int height) {
-    if(rstatus==RENDERING) {
+    if(rstatus==RENDERER_RENDERING) {
         Logger::log(LOG_WARNING)<<"A render is in progress"<<std::endl;
-    } else {
+    } else if(rstatus==RENDERER_WAITING) {
+        rstatus=RENDERER_RENDERING;
         network_tasks.clear();
         for(int i=0;i<height;i+=CLIENT_TASK_LINES) {
 
@@ -44,6 +54,22 @@ std::vector<Color> NetworkRenderer::render(int width,int height) {
 
             network_tasks.push_back(currenttask);
         }
+
+        for(int i : network.get_client_ids()) {
+            send_task_to_client(i);
+        }
+    }
+}
+
+void NetworkRenderer::send_task_to_client(int id) {
+    if(!network_tasks.empty()) {
+        Task currenttask = network_tasks.back();
+        network_tasks.erase(network_tasks.end()-1);
+
+        Client* cl = network.get_client(id);
+        stringstream send(stringstream::in | stringstream::out);
+        send<<"CALCULATE "<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
+        cl->send_message(send.str());
     }
 }
 

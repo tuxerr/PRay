@@ -27,9 +27,10 @@ public:
     void purge_clients();
     std::vector<int> get_client_ids();
     int get_last_connected_client_id();
-    Client* get_first_nonempty_client();
+    int get_first_nonempty_client();
     Client* get_client(int id);
     static void* tcp_accept_loop_thread(void *This);
+    Conditional& get_recv_cond();
 
 
 private:
@@ -41,6 +42,7 @@ private:
     bool continue_loop;
     Mutex client_list_mutex;
     int last_id;
+    Conditional recv_cond;
     
 };
 
