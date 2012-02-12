@@ -17,7 +17,7 @@ PhongMaterial::PhongMaterial(const Color &color,
   diffuseReflection(diffuseReflection),
   ambiantReflection(ambiantReflection), 
   shininess(shininess),
-  reflectivity(reflectivity)
+  reflectivity(1)
 {
 
 }

@@ -12,6 +12,11 @@ using namespace std;
 #define NETWORK_CLIENT_SLEEPTIME 30000
 #define RECV_L 3000
 
+typedef enum {
+    WAITING,
+    CALCULATING
+} Client_Status;
+
 class Client {
  public:
     Client(SOCKET sock,sockaddr_in &addr_info,int id_number);

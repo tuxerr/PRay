@@ -1,1 +1,41 @@
 ## PRay network specification ##
+## Client spec ##
+Init : 
+  LOGIN $hostname
+
+Send calculations :
+  CALCULATING
+  RESULT vector<r,g,b>
+
+## Server spec ##
+Init : 
+  ACCEPTED
+  REFUSED
+
+Launch calculations :
+  SETSCENE $file.xml (-> all)
+
+Send calculations :
+  CALCULATE $x $y $width $height
+
+Modify camera :
+  CAM $camoperation
+
+
+## Global spec ##
+camoperations: 
+tF
+tB
+tL
+tR
+tU
+tD
+rL
+rR
+pU
+pD
+yL
+yR
+sM
+
+
