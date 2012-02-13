@@ -57,7 +57,7 @@ Settings::Settings(string path) {
 
 string Settings::getAsString(string name) {
   map<string,string>::iterator it = stringSettings.find(name);
-  if ( it != stringsettings.end() ) {
+  if ( it != stringSettings.end() ) {
     return it->second;
   } else {
     Logger::log(LOG_ERROR)<<"Setting not found : "<<name<<endl;
