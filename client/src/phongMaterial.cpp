@@ -4,7 +4,26 @@
 #include "math.h"
 #include "scene.hpp"
 
-#define MAX_REFLECTIONS 10
+#define MAX_REFLECTIONS 20
+
+PhongMaterial::PhongMaterial(const Color &color, 
+			     float specularReflection, 
+			     float diffuseReflection, 
+			     float ambiantReflection, 
+			     float shininess,
+			     float reflectivity) :
+  color(color), 
+  specularReflection(specularReflection), 
+  diffuseReflection(diffuseReflection),
+  ambiantReflection(ambiantReflection), 
+  shininess(shininess),
+  reflectivity(reflectivity),
+  transparency(0.9),
+  refractiveIn(1.05),
+  refractiveOut(1)
+{
+
+}
 
 PhongMaterial::PhongMaterial(const Color &color, 
 			     float specularReflection, 
@@ -13,7 +32,9 @@ PhongMaterial::PhongMaterial(const Color &color,
 			     float shininess,
 			     float reflectivity,
 			     float transparency,
-			     float refractiveIndex) :
+			     float refractiveIn,
+			     float refractiveOut
+			     ):
   color(color), 
   specularReflection(specularReflection), 
   diffuseReflection(diffuseReflection),
@@ -21,7 +42,8 @@ PhongMaterial::PhongMaterial(const Color &color,
   shininess(shininess),
   reflectivity(reflectivity),
   transparency(transparency),
-  refractiveIndex(refractiveIndex)
+  refractiveIn(refractiveIn),
+  refractiveOut(refractiveOut)
 {
 
 }
@@ -33,6 +55,8 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
   float r = 0;
   float g = 0;
   float b = 0;
+
+  Vec3<float> rayDirection = ray.getDirection();
 
   Vec3<float> point = ray.getOrigin() + ray.getDirection()*distance;
   list<DirectionalLight> lights = scene->visibleLights(point);
@@ -55,32 +79,32 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
   list<DirectionalLight>::iterator itLight;
   
   for (itLight = lights.begin(); itLight != lights.end(); itLight++)
-  {
+    {
 
-    diffuse = diffuseReflection*fabs(itLight->getDirection().scalar(normal));
-    specular = specularReflection*fabs(pow(itLight->getDirection().symmetry(normal).scalar(ray.getDirection()*(-1)), shininess));
+      diffuse = diffuseReflection*fabs(itLight->getDirection().scalar(normal));
+      specular = specularReflection*fabs(pow(itLight->getDirection().symmetry(normal).scalar(rayDirection*(-1)), shininess));
 
-    rr = itLight->getColor().getR();
-    rg = itLight->getColor().getG();
-    rb = itLight->getColor().getB();
+      rr = itLight->getColor().getR();
+      rg = itLight->getColor().getG();
+      rb = itLight->getColor().getB();
 
-    r += color.getR()*diffuse*rr;
-    g += color.getG()*diffuse*rg;
-    b += color.getB()*diffuse*rb;
+      r += color.getR()*diffuse*rr;
+      g += color.getG()*diffuse*rg;
+      b += color.getB()*diffuse*rb;
 
-    r += color.getR()*specular*rr;
-    g += color.getG()*specular*rg;
-    b += color.getB()*specular*rb;
+      r += color.getR()*specular*rr;
+      g += color.getG()*specular*rg;
+      b += color.getB()*specular*rb;
  
-  }
+    }
 
-    Color black = Color(0,0,0);
+  Color black = Color(0,0,0);
 
   if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
     scene->reflections += 1;
 
     Ray reflectedRay = Ray(point,
-			   (ray.getDirection()*(-1)).symmetry(normal),
+			   (rayDirection*(-1)).symmetry(normal),
 			   black);
 
     Color reflectedColor = scene->renderRay(reflectedRay);
@@ -92,23 +116,71 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
   }
 
 
-  if(false && transparency != 0 && scene->reflections < MAX_REFLECTIONS) {
+  if(transparency != 0 && scene->reflections < MAX_REFLECTIONS) {
     scene->reflections += 1;
 
     
+    float n;
+    float cosI;
+    float sinI2;    
+    Vec3<float> direction;
+    Vec3<float> normalol = Vec3<float>(normal);
+    
+    if(normal.scalar(rayDirection) < 0) {
+      n = refractiveIn/refractiveOut;
 
-    Ray reflectedRay = Ray(point,
-			   (ray.getDirection()*(-1)).symmetry(normal),
-			   black);
+      cosI = rayDirection.scalar(normal);
+      sinI2 = 1-cosI*cosI;
+      if(sinI2 <= 1) {
+	direction = rayDirection*n + normalol*(n*cosI+sqrt(1-n*n*sinI2));
+	//	Logger::log(LOG_DEBUG) << "coef = " << (-n*cosI+sqrt(1-n*n*sinI2)) << endl;
+      }
+    } else {
+      n = refractiveOut/refractiveIn;
+      cosI = rayDirection.scalar(normal)*(-1);
+      sinI2 = 1 - cosI*cosI;
+      if(sinI2 <= 1) {
+	direction = rayDirection*n + normalol*(-n*cosI-sqrt(1-n*n*sinI2));
+	//	Logger::log(LOG_DEBUG) << "coef = " << (n*cosI-sqrt(1-n*n*sinI2)) << endl;
+      }
+    }
 
-    Color refractedColor = scene->renderRay(reflectedRay);
+    //    Logger::log(LOG_DEBUG) << "n = " << n << endl;
+    //    Logger::log(LOG_DEBUG) << "cosI = " << cosI << " ou " << sqrt(1-n*n*sinI2)<<  endl;
+    //    Logger::log(LOG_DEBUG) << "coef!!! = " << (n*cosI-sqrt(1-n*n*sinI2)) << endl;
+    Ray refractedRay = ray;
 
+    if(sinI2 <= 1) {
+      /*
+	Logger::log(LOG_DEBUG) << "rayDirection = " 
+	<< rayDirection.x
+	<< rayDirection.y 
+	<< rayDirection.z << endl;
+	
+	
+	Logger::log(LOG_DEBUG) << "direction = " 
+	<< direction.x
+	<< direction.y 
+	<< direction.z << endl;
+      */  
+      refractedRay = Ray(point+direction*0.1,
+			 direction,
+			 black);
+    } else {
+      refractedRay = Ray(point,
+			 (rayDirection*(-1)).symmetry(normal),
+			 black);
+      
+
+    }
+    Color refractedColor = scene->renderRay(refractedRay);
+      
     r += transparency*color.getR()*refractedColor.getR();
     g += transparency*color.getG()*refractedColor.getG();
     b += transparency*color.getB()*refractedColor.getB();
-
+    
   }
-
+  
   if(r>1) {
     r=1;
   }

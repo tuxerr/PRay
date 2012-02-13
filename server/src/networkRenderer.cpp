@@ -13,6 +13,7 @@ void *NetworkRenderer::launch_renderer_thread(void *This) {
 }
 
 void NetworkRenderer::renderer_thread() {
+    int result_number=0;
     while(1) {
         int id = network.get_first_nonempty_client();
         while (id==-1) {
@@ -22,6 +23,41 @@ void NetworkRenderer::renderer_thread() {
         Client *cl = network.get_client(id);
         string recv = cl->unstack_message();
         
+        if(recv=="CALCULATING") {
+            rendering_client[id].status=CLIENT_CALCULATING;
+        } else if(recv.cut(6)=="RESULT") {
+
+            sstream recv_ss(stringstream::in | stringstream::out);
+            recv_ss<<recv.cut(6);
+
+            int packet_number;
+            recv_ss>>packet_number;
+            std::vector<Color>* result = new std::vector<Color>;
+            while(recv_ss.size()!=0) {
+                float r,g,b;
+                recv_ss>>r>>g>>b;
+                Color c(r,g,b);
+                result->push_back(c);
+            }
+            results[packet_number]=result;
+
+            rendering_client[id].status=CLIENT_WAITING;
+            if(!network_tasks.empty()) {
+                send_task_to_client(id);
+            }
+
+            result_number++;
+            if(result_number==rendering_task_number) {
+                rstatus=RENDERER_WAITING;
+            }
+        } else if(recv.cut(5)=="LOGIN") {
+            Rendering_Client newcl;
+            newcl.status=CLIENT_WAITING;
+            newcl.hostname=recv.cut(6,-1);
+            rendering_clients.insert(rendering_clients.begin()+id,newcl);
+        }
+
+
     }
 }
 
@@ -54,6 +90,8 @@ std::vector<Color> NetworkRenderer::render(int width,int height) {
 
             network_tasks.push_back(currenttask);
         }
+        rendering_task_number=network_tasks.size();
+        results.assign(rendering_task_number,NULL);
 
         for(int i : network.get_client_ids()) {
             send_task_to_client(i);
@@ -68,9 +106,9 @@ void NetworkRenderer::send_task_to_client(int id) {
 
         Client* cl = network.get_client(id);
         stringstream send(stringstream::in | stringstream::out);
-        send<<"CALCULATE "<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
+        send<<"CALCULATE "<<network_tasks.size()<<""<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
         cl->send_message(send.str());
-    }
+    } 
 }
 
 // functions to bind to display keys

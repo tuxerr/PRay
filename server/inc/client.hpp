@@ -14,11 +14,6 @@ using namespace std;
 #define NETWORK_CLIENT_SLEEPTIME 30000
 #define RECV_L 3000
 
-typedef enum {
-    CLIENT_WAITING,
-    CLIENT_CALCULATING
-} Client_Status;
-
 class Client {
  public:
     Client(SOCKET sock,sockaddr_in &addr_info,int id_number,Conditional &recv_cond);

@@ -32,6 +32,7 @@ bool Display::refresh_controls() {
                 if(bindings[i].second == event.key.keysym.sym) {
                     (bindings[i].first)();
                     change=true;
+                    new_press=true;
                 }
                 if(event.key.keysym.sym == SDLK_ESCAPE) {
                     quit_pressed=true;
@@ -52,12 +53,21 @@ bool Display::refresh_controls() {
     return change;
 }
 
+bool Display::new_control_press() {
+    if(new_press) {
+        new_press=false;
+        return true;
+    } else {
+        return new_press;
+    }
+}
+
 bool Display::quit() {
     return quit_pressed;
 }
 
 Display::Display(int p_width,int p_height) : 
-    height(p_height),width(p_width), quit_pressed(false), screen(NULL)
+    height(p_height),width(p_width), quit_pressed(false), screen(NULL), new_press(true)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {

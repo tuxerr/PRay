@@ -5,14 +5,14 @@ Init :
 
 Send calculations :
   CALCULATING
-  RESULT vector<r,g,b>
+  RESULT $task_number vector<r,g,b>
 
 ## Server spec ##
 Launch calculations :
   SETSCENE $file.xml (-> all)
 
 Send calculations :
-  CALCULATE $y $width $height
+  CALCULATE $task_number $y $width $height
 
 Modify camera :
   CAM $camoperation

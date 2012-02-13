@@ -6,8 +6,8 @@
 #include "sceneLoader.hpp"
 #include "renderer.hpp"
 
-#define WIDTH 1280
-#define HEIGHT 720
+#define WIDTH 128*3
+#define HEIGHT 72*3
 
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
@@ -72,9 +72,13 @@ int main(int argc, char* argv[])
 
         while ( !disp->quit() )
         {
-            std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
-            disp->add_surface(0,0,width,height,res);  
-            disp->refresh_display();
+            if(disp->new_control_press()) {
+                std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
+                disp->add_surface(0,0,width,height,res);  
+                disp->refresh_display();
+            } else {
+                usleep(30000);
+            }
             disp->refresh_controls();
         }
 
