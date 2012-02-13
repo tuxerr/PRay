@@ -2,9 +2,9 @@
 #define DEF_DIRECTIONALLIGHT
 
 
-#include "vec3.h"
-#include "color.h"
-#include "light.h"
+#include "vec3.hpp"
+#include "color.hpp"
+#include "light.hpp"
 
 class DirectionalLight : public Light {
 private :

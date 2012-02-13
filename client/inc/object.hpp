@@ -1,9 +1,9 @@
 #ifndef DEF_OBJECT
 #define DEF_OBJECT
 
-#include "ray.h"
-#include "material.h"
-#include "vec3.h"
+#include "ray.hpp"
+#include "material.hpp"
+#include "vec3.hpp"
 
 class Object {
 protected :

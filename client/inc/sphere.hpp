@@ -1,10 +1,10 @@
 #ifndef DEF_SPHERE
 #define DEF_SPHERE
 
-#include "vec3.h"
-#include "material.h"
-#include "ray.h"
-#include "object.h"
+#include "vec3.hpp"
+#include "material.hpp"
+#include "ray.hpp"
+#include "object.hpp"
 
 using namespace std;
 

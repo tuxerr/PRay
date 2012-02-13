@@ -3,13 +3,13 @@
 
 #include <list>
 
-#include "vec3.h"
-#include "camera.h"
-#include "color.h"
-#include "ambientLight.h"
-#include "directionalLight.h"
-#include "ray.h"
-#include "object.h"
+#include "vec3.hpp"
+#include "camera.hpp"
+#include "color.hpp"
+#include "ambientLight.hpp"
+#include "directionalLight.hpp"
+#include "ray.hpp"
+#include "object.hpp"
 
 
 using namespace std;

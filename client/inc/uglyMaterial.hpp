@@ -1,10 +1,10 @@
 #ifndef DEF_UGLYMATERIAL
 #define DEF_UGLYMATERIAL
 
-#include "color.h"
-#include "ray.h"
-#include "material.h"
-#include "vec3.h"
+#include "color.hpp"
+#include "ray.hpp"
+#include "material.hpp"
+#include "vec3.hpp"
 
 class UglyMaterial : public Material {
 private:

@@ -1,10 +1,10 @@
 #ifndef DEF_RENDERER
 #define DEF_RENDERER
 
-#include "logger.h"
-#include "scene.h"
-#include "color.h"
-#include "mutex.h"
+#include "logger.hpp"
+#include "scene.hpp"
+#include "color.hpp"
+#include "mutex.hpp"
 #include <SDL/SDL.h>
 #include <vector>
 #include <iostream>

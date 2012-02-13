@@ -1,9 +1,9 @@
 #ifndef DEF_MATERIAL
 #define DEF_MATERIAL
 
-#include "vec3.h"
-#include "ray.h"
-#include "color.h"
+#include "vec3.hpp"
+#include "ray.hpp"
+#include "color.hpp"
 //#include "scene.h"
 
 class Scene;

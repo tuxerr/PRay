@@ -1,7 +1,7 @@
 #ifndef DEF_AMBIENTLIGHT
 #define DEF_AMBIENTLIGHT
 
-#include "light.h"
+#include "light.hpp"
 
 class AmbientLight : public Light {
 public :

@@ -6,8 +6,8 @@
 #include <list>
 #include <string>
 #include <errno.h>
-#include "logger.h"
-#include "tcpsock.h"
+#include "logger.hpp"
+#include "tcpsock.hpp"
 
 #define DEFAULT_LISTENING_PORT 12345
 #define RECV_L 3000

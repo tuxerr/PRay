@@ -1,10 +1,10 @@
 #ifndef DEF_PHONGMATERIAL
 #define DEF_PHONGMATERIAL
 
-#include "color.h"
-#include "ray.h"
-#include "material.h"
-#include "vec3.h"
+#include "color.hpp"
+#include "ray.hpp"
+#include "material.hpp"
+#include "vec3.hpp"
 
 class PhongMaterial : public Material {
  private :
