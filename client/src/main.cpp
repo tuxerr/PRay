@@ -72,9 +72,13 @@ int main(int argc, char* argv[])
 
         while ( !disp->quit() )
         {
-            std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
-            disp->add_surface(0,0,width,height,res);  
-            disp->refresh_display();
+            if(disp->new_control_press()) {
+                std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
+                disp->add_surface(0,0,width,height,res);  
+                disp->refresh_display();
+            } else {
+                usleep(30000);
+            }
             disp->refresh_controls();
         }
 
