@@ -5,6 +5,7 @@
 #define DEFAULT_WIDTH 720
 #define DEFAULT_FULLSCREEN false
 #define DEFAULT_NAME "PRay Renderer"
+#define MINIMUM_REFRESH_TIME 30
 
 #include "logger.hpp"
 #include <vector>
@@ -27,6 +28,7 @@ public:
     void register_keyhook(std::function<void(void)> met,SDLKey key);
 #endif
     void refresh_display();
+    void refresh_display_timecheck();
     bool refresh_controls();
     bool new_control_press();
     bool quit();
@@ -49,6 +51,7 @@ private:
 #endif
     SDL_Surface *screen;
     bool new_press;
+    Uint32 last_refresh;
 };
 
 #endif
