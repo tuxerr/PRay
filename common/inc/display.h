@@ -29,6 +29,7 @@ public:
 #endif
     void refresh_display();
     bool refresh_controls();
+    bool new_control_press();
     bool quit();
     int get_width();
     int get_height();
@@ -48,6 +49,7 @@ private:
     std::vector< std::pair< std::function<void(void)>,SDLKey > > bindings;
 #endif
     SDL_Surface *screen;
+    bool new_press;
 };
 
 #endif
