@@ -34,7 +34,7 @@ PhongMaterial::PhongMaterial(const Color &color,
 			     float transparency,
 			     float refractiveIn,
 			     float refractiveOut
-			     ) :
+			     ):
   color(color), 
   specularReflection(specularReflection), 
   diffuseReflection(diffuseReflection),
@@ -152,16 +152,16 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
 
     if(sinI2 <= 1) {
       /*
-      Logger::log(LOG_DEBUG) << "rayDirection = " 
-			     << rayDirection.x
-			     << rayDirection.y 
-			     << rayDirection.z << endl;
+	Logger::log(LOG_DEBUG) << "rayDirection = " 
+	<< rayDirection.x
+	<< rayDirection.y 
+	<< rayDirection.z << endl;
 	
 	
-      Logger::log(LOG_DEBUG) << "direction = " 
-			     << direction.x
-			     << direction.y 
-			     << direction.z << endl;
+	Logger::log(LOG_DEBUG) << "direction = " 
+	<< direction.x
+	<< direction.y 
+	<< direction.z << endl;
       */  
       refractedRay = Ray(point+direction*0.1,
 			 direction,

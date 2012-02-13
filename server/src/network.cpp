@@ -20,6 +20,10 @@ int Network::launch() {
     return 1;
 }
 
+Conditional& Network::get_recv_cond() {
+    return recv_cond;
+}
+
 void Network::purge_clients() {
     client_list_mutex.lock();
 
@@ -57,7 +61,7 @@ void Network::tcp_accept_loop() {
 	sockaddr_in info;
 	socklen_t info_size=sizeof(info);
 
-	fd_set fd_sock; FD_ZERO(&fd_sock); FD_SET(accept_sock.sock,&fd_sock);
+        fd_set fd_sock; FD_ZERO(&fd_sock); FD_SET(accept_sock.sock,&fd_sock);
 
 	struct timeval rp_time;	
 	rp_time.tv_sec=0; rp_time.tv_usec=NETWORK_CLIENT_SLEEPTIME;
@@ -76,7 +80,7 @@ void Network::tcp_accept_loop() {
             SOCKET new_socket=accept(accept_sock.sock,(sockaddr*)&info,&info_size); 
 
             if(new_socket>0) { 	// a new client has been found
-                Client act_client(new_socket,info,last_id+1);
+                Client act_client(new_socket,info,last_id+1,recv_cond);
                 connected_clients.insert(pair<int,Client>(last_id+1,act_client));
                 connected_clients.find(last_id+1)->second.launch_thread();
                 last_id++;
@@ -134,12 +138,12 @@ Client* Network::get_client(int id) {
     }
 }
 
-Client* Network::get_first_nonempty_client() {
+int Network::get_first_nonempty_client() {
     for(std::map<int,Client>::iterator it=connected_clients.begin();
         it!=connected_clients.end();it++) {
         if(it->second.has_messages()) {
-            return &(it->second);
+            return it->first;
         }
     }
-    return NULL;
+    return -1;
 }

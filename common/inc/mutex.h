@@ -15,6 +15,7 @@ class Mutex {
     void lock();
     void trylock();
     void unlock();
+    pthread_mutex_t* get_mutex();
 
  private:
     pthread_mutex_t mutex;

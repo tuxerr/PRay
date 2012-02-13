@@ -4,6 +4,8 @@
 #include <string>
 #include <list>
 #include "tcpsock.h"
+#include "mutex.h"
+#include "conditional.h"
 #include "logger.h"
 #include <pthread.h>
 
@@ -12,9 +14,14 @@ using namespace std;
 #define NETWORK_CLIENT_SLEEPTIME 30000
 #define RECV_L 3000
 
+typedef enum {
+    CLIENT_WAITING,
+    CLIENT_CALCULATING
+} Client_Status;
+
 class Client {
  public:
-    Client(SOCKET sock,sockaddr_in &addr_info,int id_number);
+    Client(SOCKET sock,sockaddr_in &addr_info,int id_number,Conditional &recv_cond);
     ~Client();
     int send_message(string mes);
     void launch_thread();
@@ -37,6 +44,7 @@ class Client {
     bool continue_loop;
     bool islaunched;
     int id_number;
+    Conditional &recv_cond;
 };
 
 #endif
