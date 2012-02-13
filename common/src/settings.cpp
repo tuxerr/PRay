@@ -77,7 +77,7 @@ double Settings::getAsDouble(string name) {
 
 float Settings::getAsFloat(string name) {
   map<string,float>::iterator it = floatSettings.find(name);
-  if ( it != stringSettings.end() ) {
+  if ( it != floatSettings.end() ) {
     return it->second;
   } else {
     Logger::log(LOG_ERROR)<<"Setting not found : "<<name<<endl;
@@ -87,7 +87,7 @@ float Settings::getAsFloat(string name) {
 
 int Settings::getAsInt(string name) {
   map<string,int>::iterator it = intSettings.find(name);
-  if ( it != stringSettings.end() ) {
+  if ( it != intSettings.end() ) {
     return it->second;
   } else {
     Logger::log(LOG_ERROR)<<"Setting not found : "<<name<<endl;
