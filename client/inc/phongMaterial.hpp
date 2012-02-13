@@ -43,6 +43,8 @@ class PhongMaterial : public Material {
 
   float refractiveOut;
 
+  int max_reflections;
+
  public :
   PhongMaterial(const Color &color, 
 		float specularReflection, 

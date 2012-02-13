@@ -1,8 +1,6 @@
 #include "triangle.hpp"
 #include "logger.hpp"
 
-
-
 Triangle::Triangle(Vec3<float> &a, Vec3<float> &b, Vec3<float> &c, Material *material) :
     Object(material), a(a), b(b), c(c), normal(((b - a) * (b - c)).normalize())
 {

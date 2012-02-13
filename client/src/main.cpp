@@ -12,8 +12,7 @@
 int main(int argc, char* argv[])
 {
     Logger::init(LOG_PATH);
-
-    Settings settings("settings.xml");
+    Settings::init("settings.xml");
 
     if (argc != 2) {
         Logger::log(LOG_ERROR) << "Missing argument" << endl;
@@ -27,8 +26,8 @@ int main(int argc, char* argv[])
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        Display::init(settings.getAsInt("window_width"),
-		      settings.getAsInt("window_height"));
+        Display::init(Settings::getAsInt("window_width"),
+		      Settings::getAsInt("window_height"));
         Display *disp = &(Display::getInstance());
 
         Color pixel;
@@ -60,7 +59,7 @@ int main(int argc, char* argv[])
         disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
         disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
 #else
-        Logger::log(LOG_INFO)<<"Camera movement keys are disabled"<<endl;
+        Logger::log(LOG_INFO)<<"Keys are disabled"<<endl;
 #endif
 
         Renderer renderer(scene);

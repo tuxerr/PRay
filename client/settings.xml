@@ -2,9 +2,7 @@
 <settings>
   <window_width i="1280"/>
   <window_height i="720"/>
-  <camera_translation_factor i="5"/>
-  <camera_rotation_angle i="2"/>
+  <camera_translation_factor f="5"/>
+  <camera_rotation_angle f="2"/>
   <max_reflections i="20"/>
-  <listening_port i="12345"/>
-  <fullscreen b="false"/>
 </settings>

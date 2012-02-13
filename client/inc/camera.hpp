@@ -19,8 +19,8 @@ private :
     float viewplaneDist;
     int xResolution;
     int yResolution;
-    int transFactor;
-    int rotatAngle;
+    float transFactor;
+    float rotatAngle;
     cameraMode mode;
     Vec3<float> horizontalProj(Vec3<float> vec);
     void rotate(float angle, Vec3<float> axis);
@@ -34,8 +34,8 @@ public :
            float viewplaneDist,
            int xResolution,
            int yResolution,
-	   int transFactor = DEFAULT_CAM_TRANS_FACTOR,
-	   int rotatAngle = DEFAULT_CAM_ROT_ANGLE,
+	   float transFactor = DEFAULT_CAM_TRANS_FACTOR,
+	   float rotatAngle = DEFAULT_CAM_ROT_ANGLE,
 	   cameraMode mode = CAMERA);
     Vec3<float> getPoint() const;
     Vec3<float> getDirection() const;

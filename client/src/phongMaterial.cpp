@@ -1,10 +1,9 @@
 #include "phongMaterial.hpp"
 #include "logger.hpp"
+#include "settings.hpp"
 #include "directionalLight.hpp"
 #include "math.h"
 #include "scene.hpp"
-
-#define MAX_REFLECTIONS 20
 
 PhongMaterial::PhongMaterial(const Color &color, 
 			     float specularReflection, 
@@ -20,7 +19,8 @@ PhongMaterial::PhongMaterial(const Color &color,
   reflectivity(reflectivity),
   transparency(0.9),
   refractiveIn(1.05),
-  refractiveOut(1)
+  refractiveOut(1),
+  max_reflections(Settings::getAsInt("max_reflections"))
 {
 
 }
@@ -43,7 +43,8 @@ PhongMaterial::PhongMaterial(const Color &color,
   reflectivity(reflectivity),
   transparency(transparency),
   refractiveIn(refractiveIn),
-  refractiveOut(refractiveOut)
+  refractiveOut(refractiveOut),
+  max_reflections(Settings::getAsInt("max_reflections"))
 {
 
 }
@@ -100,7 +101,7 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
 
   Color black = Color(0,0,0);
 
-  if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
+  if(reflectivity != 0 && scene->reflections < max_reflections) {
     scene->reflections += 1;
 
     Ray reflectedRay = Ray(point,
@@ -116,7 +117,7 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
   }
 
 
-  if(transparency != 0 && scene->reflections < MAX_REFLECTIONS) {
+  if(transparency != 0 && scene->reflections < max_reflections) {
     scene->reflections += 1;
 
     

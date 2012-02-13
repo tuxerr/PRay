@@ -3,7 +3,6 @@
 
 #define DEFAULT_HEIGHT 1280
 #define DEFAULT_WIDTH 720
-#define DEFAULT_FULLSCREEN false
 #define DEFAULT_NAME "PRay Renderer"
 #define MINIMUM_REFRESH_TIME 30
 
