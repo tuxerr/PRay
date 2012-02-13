@@ -1,4 +1,4 @@
-#include "directionalLight.h"
+#include "directionalLight.hpp"
 
 DirectionalLight::DirectionalLight(const Color &color, const Vec3<float> &direction) :
   Light(color), direction(direction)

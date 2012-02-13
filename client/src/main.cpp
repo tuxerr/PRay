@@ -1,10 +1,10 @@
 #include <string>
-#include "logger.h"
-#include "server.h"
-#include "color.h"
-#include "display.h"
-#include "sceneLoader.h"
-#include "renderer.h"
+#include "logger.hpp"
+#include "server.hpp"
+#include "color.hpp"
+#include "display.hpp"
+#include "sceneLoader.hpp"
+#include "renderer.hpp"
 
 #define WIDTH 1280
 #define HEIGHT 720

@@ -1,4 +1,4 @@
-#include "display.h"
+#include "display.hpp"
 
 Display* Display::display_ptr;
 

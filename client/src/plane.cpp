@@ -1,4 +1,4 @@
-#include "plane.h"
+#include "plane.hpp"
 
 Plane::Plane(const Vec3<float> &normal, float originDistance, Material &material) :
   Object(&material), normal(normal), originDistance(originDistance)

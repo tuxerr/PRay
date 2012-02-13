@@ -1,5 +1,5 @@
-#include "uglyMaterial.h"
-#include "logger.h"
+#include "uglyMaterial.hpp"
+#include "logger.hpp"
 #include <cmath>
 
 UglyMaterial::UglyMaterial(const Color &color) :

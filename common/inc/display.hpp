@@ -6,15 +6,14 @@
 #define DEFAULT_FULLSCREEN false
 #define DEFAULT_NAME "PRay Renderer"
 
-#include "logger.h"
+#include "logger.hpp"
 #include <vector>
 #include <map>
 #include <iostream>
 #include <functional>
-#include "method.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_version.h>
-#include "color.h"
+#include "color.hpp"
 #include <algorithm>
 
 

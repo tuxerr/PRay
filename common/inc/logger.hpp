@@ -8,7 +8,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include "mutex.h"
+#include "mutex.hpp"
 #include <signal.h>
 
 #define DEFAULT_LOG_PATH "pray_log.log"

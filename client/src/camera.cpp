@@ -1,5 +1,5 @@
-#include "logger.h"
-#include "camera.h"
+#include "logger.hpp"
+#include "camera.hpp"
 
 Camera::Camera(Vec3<float> point,
                Vec3<float> direction,

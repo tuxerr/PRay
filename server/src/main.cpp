@@ -1,11 +1,11 @@
-#include "logger.h"
-#include "ncursesui.h"
-#include "network.h"
+#include "logger.hpp"
+#include "ncursesui.hpp"
+#include "network.hpp"
 #include <ostream>
 #include <unistd.h>
 #include <signal.h>
-#include "color.h"
-#include "display.h"
+#include "color.hpp"
+#include "display.hpp"
 
 using namespace std;
 

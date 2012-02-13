@@ -8,9 +8,9 @@
 #include <list>
 #include <string>
 #include <errno.h>
-#include "client.h"
-#include "logger.h"
-#include "tcpsock.h"
+#include "client.hpp"
+#include "logger.hpp"
+#include "tcpsock.hpp"
 
 #define DEFAULT_LISTENING_PORT 12345
 #define NETWORK_MAX_CLIENTS 80

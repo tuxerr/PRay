@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "renderer.hpp"
 
 Renderer::Renderer(Scene *scene) : scene(scene), frameNumber(0)
 {
