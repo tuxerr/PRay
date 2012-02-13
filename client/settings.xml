@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <camera_width i="1280"/>
+  <window_height i="720"/>
+  <camera_translation_factor i="5"/>
+  <camera_rotation_angle i="2"/>
+  <max_reflections i="20"/>
+  <listening_port i="12345"/>
+  <fullscreen b="false"/>
+  <log_path s="pray_log.log"/>
+</settings>

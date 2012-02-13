@@ -20,7 +20,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         Logger::log(LOG_ERROR) << "Error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
 	return -1;
     } else {
-        Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
+        Logger::log(LOG_INFO) << "Start loading scene : " << scene_file << endl;
 
         list<Object*> objects;
         list<DirectionalLight> lDirLights;
