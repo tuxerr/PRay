@@ -5,18 +5,15 @@
 #include "display.hpp"
 #include "sceneLoader.hpp"
 #include "renderer.hpp"
+#include "settings.hpp"
 
-#define WIDTH 128*3
-#define HEIGHT 72*3
-
-#define CAM_TRANS_FACTOR  5
-#define CAM_ROT_ANGLE     2
+#define LOG_PATH "pray_client.log"
 
 int main(int argc, char* argv[])
 {
-    string filename;
+    Logger::init(LOG_PATH);
 
-    Logger::init("pray_client.log");
+    Settings settings("settings.xml");
 
     if (argc != 2) {
         Logger::log(LOG_ERROR) << "Missing argument" << endl;
@@ -24,13 +21,14 @@ int main(int argc, char* argv[])
 	return EXIT_FAILURE;
     }
 
-    filename = string(argv[1]);
+    string filename = string(argv[1]);
 
     const string standaloneMode ("--test");
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        Display::init(WIDTH,HEIGHT);
+        Display::init(settings.getAsInt("window_width"),
+		      settings.getAsInt("window_height"));
         Display *disp = &(Display::getInstance());
 
         Color pixel;

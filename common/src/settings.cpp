@@ -30,22 +30,22 @@ Settings::Settings(string path) {
       if ( attributeName.compare("s")==0 ) {
 	string value;
 	node->QueryStringAttribute(attributeName.c_str(), &value);
-	stringSettings.insert(pair<string,string>(attributeName, value));
+	stringSettings.insert(pair<string,string>(node->Value(), value));
 
       } else if ( attributeName.compare("d")==0 ) {
 	double value;
 	node->QueryDoubleAttribute(attributeName.c_str(), &value);
-	doubleSettings.insert(pair<string,double>(attributeName, value));
+	doubleSettings.insert(pair<string,double>(node->Value(), value));
 
       } else if ( attributeName.compare("f")==0 ) {
 	float value;
 	node->QueryFloatAttribute(attributeName.c_str(), &value);
-	doubleSettings.insert(pair<string,float>(attributeName, value));
+	doubleSettings.insert(pair<string,float>(node->Value(), value));
 
       } else if ( attributeName.compare("i")==0 ) {
 	int value;
 	node->QueryIntAttribute(attributeName.c_str(), &value);
-	intSettings.insert(pair<string,int>(attributeName, value));
+	intSettings.insert(pair<string,int>(node->Value(), value));
       }
 
       node = node->NextSiblingElement();
