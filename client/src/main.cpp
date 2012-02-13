@@ -6,8 +6,8 @@
 #include "sceneLoader.h"
 #include "renderer.h"
 
-#define WIDTH 1280
-#define HEIGHT 720
+#define WIDTH 128*3
+#define HEIGHT 72*3
 
 #define CAM_TRANS_FACTOR  5
 #define CAM_ROT_ANGLE     2
