@@ -3,6 +3,7 @@
 
 #include "network.h"
 #include "logger.h"
+#include "display.h"
 #include <iostream>
 #include "color.h"
 #include <vector>
@@ -35,11 +36,10 @@ typedef struct {
 
 class NetworkRenderer {
 public:
-    NetworkRenderer(Network &network);
+    NetworkRenderer(Network &network,Display &disp);
     void renderer_thread();
     void set_rendering_file(string xmlfile);
-    void send_task_to_client(int id);
-    std::vector<Color> render(int width,int height);
+    void render(int width,int height);
 
     static void* launch_renderer_thread(void *This);
 
@@ -60,10 +60,12 @@ public:
 private:    
     pthread_t thread;
     Network &network;
+    Display &display;
     Render_Status rstatus;
+    int rendering_width;
+    int rendering_height;
     std::vector<Task> network_tasks;
     std::vector<Rendering_Client> rendering_clients;
-    std::vector< std::vector < Color >* > results;
     int rendering_task_number;
 
     void send_task_to_client(int id);

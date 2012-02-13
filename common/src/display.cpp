@@ -19,6 +19,14 @@ void Display::register_keyhook(std::function< void(void) > met,SDLKey key) {
 
 void Display::refresh_display() {
     SDL_Flip(screen);
+    last_refresh=SDL_GetTicks();
+}
+
+void Display::refresh_display_timecheck() {
+    if(SDL_GetTicks()-last_refresh>MINIMUM_REFRESH_TIME) {
+        SDL_Flip(screen);
+        last_refresh=SDL_GetTicks();
+    }
 }
 
 bool Display::refresh_controls() {
@@ -67,7 +75,7 @@ bool Display::quit() {
 }
 
 Display::Display(int p_width,int p_height) : 
-    height(p_height),width(p_width), quit_pressed(false), screen(NULL), new_press(true)
+    height(p_height),width(p_width), quit_pressed(false), screen(NULL), new_press(true), last_refresh(0)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
