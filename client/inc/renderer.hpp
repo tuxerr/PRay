@@ -5,6 +5,7 @@
 #include "scene.hpp"
 #include "color.hpp"
 #include "mutex.hpp"
+#include "display.hpp"
 #include <SDL/SDL.h>
 #include <vector>
 #include <iostream>
@@ -20,7 +21,7 @@ typedef struct {
 
 class Renderer {
 public:
-    Renderer(Scene *scene);
+    Renderer(Scene *scene,Display *disp=NULL);
     std::vector<Color> render(int x,int y,int width,int height,int thread_number=DEFAULT_THREAD_NUMBER);
     void compute_task();
     static void *computing_thread(void *This);
@@ -34,9 +35,10 @@ private:
     Mutex results_mut;
     std::vector< std::vector < Color >* > results;
     Scene *scene;
+    unsigned int frameNumber;
     Display *display;
 
-    unsigned int frameNumber;
+
 };
 
 #endif
