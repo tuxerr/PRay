@@ -1,6 +1,6 @@
 #include "renderer.hpp"
 
-Renderer::Renderer(Scene *scene) : scene(scene), frameNumber(0)
+Renderer::Renderer(Scene *scene,Display *disp) : scene(scene), frameNumber(0) , display(disp)
 {
 }
 
