@@ -1,7 +1,7 @@
 #ifndef DEF_CAMERA
 #define DEF_CAMERA
 
-#include "vec3.h"
+#include "vec3.hpp"
 
 #define DEFAULT_CAM_TRANS_FACTOR  5
 #define DEFAULT_CAM_ROT_ANGLE     1

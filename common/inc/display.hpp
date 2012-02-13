@@ -7,15 +7,14 @@
 #define DEFAULT_NAME "PRay Renderer"
 #define MINIMUM_REFRESH_TIME 30
 
-#include "logger.h"
+#include "logger.hpp"
 #include <vector>
 #include <map>
 #include <iostream>
 #include <functional>
-#include "method.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_version.h>
-#include "color.h"
+#include "color.hpp"
 #include <algorithm>
 
 

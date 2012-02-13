@@ -1,4 +1,4 @@
-#include "networkrenderer.h"
+#include "networkRenderer.hpp"
 
 NetworkRenderer::NetworkRenderer(Network &network,Display &disp) : network(network), display(disp) {
     if(pthread_create(&thread,NULL,launch_renderer_thread,(void*)this)!=0) {

@@ -5,8 +5,7 @@
 #include <ncurses.h>
 #include <functional>
 #include <string>
-#include <string.h>
-#include "logger.h"
+#include "logger.hpp"
 #include <queue>
 
 using namespace std;

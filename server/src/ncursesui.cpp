@@ -1,4 +1,4 @@
-#include "ncursesui.h"
+#include "ncursesui.hpp"
 
 NcursesUI::NcursesUI()
 {

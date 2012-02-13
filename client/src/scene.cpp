@@ -1,7 +1,7 @@
-#include "logger.h"
-#include "scene.h"
-#include "material.h"
-#include "uglyMaterial.h"
+#include "logger.hpp"
+#include "scene.hpp"
+#include "material.hpp"
+#include "uglyMaterial.hpp"
 
 Scene::Scene(const list<Object*> objects,
 	     const list<DirectionalLight> &directionalLights,

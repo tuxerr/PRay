@@ -1,5 +1,5 @@
-#include "triangle.h"
-#include "logger.h"
+#include "triangle.hpp"
+#include "logger.hpp"
 
 
 

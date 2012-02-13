@@ -2,7 +2,7 @@
 #define DEF_CONDITIONAL
 
 #include <iostream>
-#include "mutex.h"
+#include "mutex.hpp"
 #include <pthread.h>
 #include <stdlib.h>
 

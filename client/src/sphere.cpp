@@ -1,5 +1,5 @@
-#include "logger.h"
-#include "sphere.h"
+#include "logger.hpp"
+#include "sphere.hpp"
 #include <math.h>
 
 Sphere::Sphere(const Vec3<float> &center,

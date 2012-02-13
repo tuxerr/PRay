@@ -1,4 +1,4 @@
-#include "ambientLight.h"
+#include "ambientLight.hpp"
 
 AmbientLight::AmbientLight(const Color &color) :
   Light(color)

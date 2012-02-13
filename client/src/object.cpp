@@ -1,6 +1,6 @@
-#include "object.h"
-#include "logger.h"
-#include "material.h"
+#include "object.hpp"
+#include "logger.hpp"
+#include "material.hpp"
 
 Object::Object(Material* material) :
   material(material)

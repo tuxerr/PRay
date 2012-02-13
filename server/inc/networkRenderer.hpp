@@ -1,11 +1,11 @@
 #ifndef NETWORK_RENDERER
 #define NETWORK_RENDERER
 
-#include "network.h"
-#include "logger.h"
-#include "display.h"
+#include "network.hpp"
+#include "logger.hpp"
+#include "display.hpp"
 #include <iostream>
-#include "color.h"
+#include "color.hpp"
 #include <vector>
 #include <string>
 #include <pthread.h>

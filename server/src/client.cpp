@@ -1,4 +1,4 @@
-#include "client.h"
+#include "client.hpp"
 
 Client::Client(SOCKET sock,sockaddr_in &addr_info,int id_number,Conditional &recv_cond) : 
     sock(sock), addr_info(addr_info), continue_loop(true),

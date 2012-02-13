@@ -1,7 +1,7 @@
 #ifndef DEF_LIGHT
 #define DEF_LIGHT
 
-#include "color.h"
+#include "color.hpp"
 
 class Light {
 private :

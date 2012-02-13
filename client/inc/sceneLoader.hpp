@@ -3,7 +3,7 @@
 
 #include <string>
 #include <tinyxml.h>
-#include "scene.h"
+#include "scene.hpp"
 
 class SceneLoader {
 public:

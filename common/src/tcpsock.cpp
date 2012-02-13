@@ -1,4 +1,4 @@
-#include "tcpsock.h"
+#include "tcpsock.hpp"
 
 TCPSocket::TCPSocket() {
     sock=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);

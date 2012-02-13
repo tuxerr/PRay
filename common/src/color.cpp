@@ -1,4 +1,4 @@
-#include "color.h"
+#include "color.hpp"
 
 Color::Color(float grey) :
   r(grey), g(grey), b(grey)

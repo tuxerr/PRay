@@ -1,7 +1,7 @@
 #ifndef DEF_TCPSOCK
 #define DEF_TCPSOCK
 
-#include "logger.h"
+#include "logger.hpp"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>

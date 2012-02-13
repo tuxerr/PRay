@@ -1,8 +1,8 @@
-#include "phongMaterial.h"
-#include "logger.h"
-#include "directionalLight.h"
+#include "phongMaterial.hpp"
+#include "logger.hpp"
+#include "directionalLight.hpp"
 #include "math.h"
-#include "scene.h"
+#include "scene.hpp"
 
 #define MAX_REFLECTIONS 20
 

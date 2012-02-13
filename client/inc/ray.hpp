@@ -1,8 +1,8 @@
 #ifndef DEF_RAY
 #define DEF_RAY
 
-#include "vec3.h"
-#include "color.h"
+#include "vec3.hpp"
+#include "color.hpp"
 
 class Ray {
  private :

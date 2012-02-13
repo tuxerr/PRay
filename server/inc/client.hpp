@@ -3,10 +3,10 @@
 
 #include <string>
 #include <list>
-#include "tcpsock.h"
-#include "mutex.h"
-#include "conditional.h"
-#include "logger.h"
+#include "tcpsock.hpp"
+#include "mutex.hpp"
+#include "conditional.hpp"
+#include "logger.hpp"
 #include <pthread.h>
 
 using namespace std;

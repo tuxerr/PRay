@@ -1,13 +1,13 @@
-#include "sceneLoader.h"
-#include "logger.h"
+#include "sceneLoader.hpp"
+#include "logger.hpp"
 
-#include "sphere.h"
-#include "triangle.h"
-#include "directionalLight.h"
-#include "ambientLight.h"
-#include "vec3.h"
-#include "phongMaterial.h"
-#include "uglyMaterial.h"
+#include "sphere.hpp"
+#include "triangle.hpp"
+#include "directionalLight.hpp"
+#include "ambientLight.hpp"
+#include "vec3.hpp"
+#include "phongMaterial.hpp"
+#include "uglyMaterial.hpp"
 
 //#define SCENELOADER_DEBUG
 

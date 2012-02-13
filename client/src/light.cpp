@@ -1,4 +1,4 @@
-#include "light.h"
+#include "light.hpp"
 
 
 Light::Light(const Color &color) :

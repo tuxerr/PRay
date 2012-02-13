@@ -1,4 +1,4 @@
-#include "network.h"
+#include "network.hpp"
 
 Network::Network(int port) : 
     listening_port(port), continue_loop(true), last_id(-1)
