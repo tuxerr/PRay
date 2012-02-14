@@ -10,10 +10,11 @@ class Ray {
   Vec3<float> direction;
   Color color;
  public :
-  Ray(const Vec3<float> &origin, const Vec3<float> &direction, Color &color);
+  Ray(const Vec3<float> &origin, const Vec3<float> &direction, Color &color, int reflections = 0);
   Vec3<float> getOrigin() const;
   Vec3<float> getDirection() const;
   Color getColor() const;
+  int reflections;
 };
 
 #endif

@@ -199,7 +199,8 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "<<reflexivity<<endl;
 #endif
-        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity);
+        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity,
+				     Settings::getAsInt("max_reflections"));
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 

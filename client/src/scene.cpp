@@ -15,8 +15,6 @@ Scene::Scene(const list<Object*> objects,
 
 }
 
-int Scene::reflections;
-
 Scene::~Scene()
 {
     list<Object*>::iterator iter;
@@ -84,7 +82,7 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
         (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
 	// Fixes the precision problem for shadows.
-	if(tempDistance < 0 && tempDistance > -0.1) {
+	if(tempDistance < 0 && tempDistance > -0.001) {
 	  tempDistance = -tempDistance;
       	}
 	// ----------------------------------------
@@ -112,7 +110,7 @@ Color Scene::renderPixel(int x, int y) {
     Vec3<float> origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
     //    Logger::log(LOG_DEBUG) << "before scene::renderRay" << endl;
-    reflections = 0;
+    r.reflections = 0;
     return renderRay(r);
 }
 
