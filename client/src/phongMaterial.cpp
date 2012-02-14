@@ -17,7 +17,7 @@ PhongMaterial::PhongMaterial(const Color &color,
   ambiantReflection(ambiantReflection), 
   shininess(shininess),
   reflectivity(reflectivity),
-  transparency(0.9),
+  transparency(0),
   refractiveIn(1.05),
   refractiveOut(1),
   max_reflections(Settings::getAsInt("max_reflections"))
