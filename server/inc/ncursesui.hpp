@@ -31,12 +31,26 @@ public:
 private:
     WINDOW *ptr;
     std::deque<std::string> messages;
-    unsigned int max_size;
+    unsigned int line_size;
     unsigned int col_size;
 };
 
-class NcursesTextWindow {
+class NcursesScrollingWindow {
+public:
+    NcursesScrollingWindow(string title,int height,int width,int starty,int startx,int scroll_up,int scroll_down);
+    ~NcursesScrollingWindow();
+    int add_string(string text);
+    void remove_string(int id);
+    void refresh(int enter_char);
     
+private:    
+    WINDOW *ptr;
+    std::map<int,std::string> messages;
+    unsigned int line_size;
+    unsigned int col_size;
+    int scroll_up_char;
+    int scroll_down_char;
+    int first_string;
 };
 
 #endif
