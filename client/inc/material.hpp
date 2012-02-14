@@ -10,7 +10,7 @@ class Scene;
 
 class Material {
  public :
-  virtual Color renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) = 0;
+  virtual Color renderRay(Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) = 0;
 };
 
 #endif

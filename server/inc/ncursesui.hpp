@@ -21,10 +21,10 @@ private :
     int mode_ch;
 };
 
-class NcursesWindow {
+class NcursesLogWindow {
 public:
-    NcursesWindow(string title,int height,int width,int starty,int startx);
-    ~NcursesWindow();
+    NcursesLogWindow(string title,int height,int width,int starty,int startx);
+    ~NcursesLogWindow();
     void add_string(string text);
     void refresh();
 
@@ -33,6 +33,10 @@ private:
     std::deque<std::string> messages;
     unsigned int max_size;
     unsigned int col_size;
+};
+
+class NcursesTextWindow {
+    
 };
 
 #endif
