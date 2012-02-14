@@ -2,8 +2,7 @@
 
 Client::Client(SOCKET sock,sockaddr_in &addr_info,int id_number,Conditional &recv_cond) : 
     sock(sock), addr_info(addr_info), continue_loop(true),
-    islaunched(false), id_number(id_number), recv_cond(recv_cond),
-    status(CLIENT_WAITING)
+    islaunched(false), id_number(id_number), recv_cond(recv_cond)
 {
     ip_addr=string(inet_ntoa(addr_info.sin_addr));
     Logger::log()<<"New client connected : "<<ip_addr<<std::endl;

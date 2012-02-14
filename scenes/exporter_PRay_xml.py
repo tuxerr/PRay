@@ -40,27 +40,26 @@ class Material:
         self.ambiant     = 0
         self.shininess   = 100
         self.reflexivity = 0
+    def __eq__(self, mat): return self.color == mat.color and self.specular == mat.specular and self.diffuse == mat.diffuse and self.ambiant == mat.ambiant and self.reflexivity == mat.reflexivity and self.shininess == mat.shininess
+    
+    def __hash__(self):
+        return hash(self.specular) + hash(self.diffuse) + hash(self.ambiant) + hash(self.shininess) + hash(self.reflexivity) + hash(self.color.r) + hash(self.color.g) + hash(self.color.b)
 
 def writeTriangle(f, verts, verts_id, material):
     l = ['a', 'b', 'c']
-    f.write("\t<object>\n")
-    f.write('\t\t<shape>\n\t\t\t<triangle>\n')
+    
     for i,v in enumerate(verts_id):
-        f.write('\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].x, verts[v].y, verts[v].z))
-    f.write('\t\t\t</triangle>\n\t\t</shape>\n')
-    f.write('\t\t<material>\n\t\t\t<phong>\n')
-    f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*material.color.r), int(255*material.color.g), int(255*material.color.b)))
-    f.write('\t\t\t\t<specular v="%f"/>\n' % (material.specular))
-    f.write('\t\t\t\t<diffuse v="%f"/>\n' % (material.diffuse))
-    f.write('\t\t\t\t<ambiant v="%f"/>\n' % (material.ambiant))
-    f.write('\t\t\t\t<shininess v="%f"/>\n' % (material.shininess))
-    f.write('\t\t\t\t<reflexivity v="%f"/>\n' % (material.reflexivity))
-    f.write('\t\t\t</phong>\n\t\t</material>\n')
-    f.write("\t</object>\n")
+        f.write('\t\t\t<shape>\n')
+        f.write('\t\t\t\t<triangle>\n')
+        f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].x, verts[v].y, verts[v].z))
+        f.write('\t\t\t\t</triangle>\n')
+        f.write('\t\t\t</shape>\n')
+    
 
 def main(filename):
     sce = bpy.context.scene
     obs = sce.objects
+    dfaces = {}
     f = open(filename, 'w')
     f.write('<?xml version="1.0" encoding="utf-8"?>\n<scene>\n\t<directionalLight>\n\t\t<color r="255" g="255" b="255"/>\n\t\t<direction x="-1" y="-1" z="-1"/>\n\t</directionalLight>\n\t<ambientLight>\n\t\t<color r="255" g="255" b="255"/>\n\t</ambientLight>\n')
     for ob in obs:
@@ -89,7 +88,7 @@ def main(filename):
             faces = mesh.faces
             for face in faces:
                 material = Material()
-                vs = face.vertices
+                
                 if len(ob.material_slots) > 0:
                     mat = ob.material_slots[0].material
                     if mat.use_vertex_color_paint:
@@ -102,15 +101,37 @@ def main(filename):
                             material.diffuse     = mat.diffuse_intensity
                             material.specular    = mat.specular_intensity
                             material.shininess   = mat.specular_hardness
-                if len(vs)==3:
-                    writeTriangle(f, verts, vs, material)
-                elif len(vs)==4:
-                    vs1 = vs[:3]
-                    vs2 = [vs[0],vs[2], vs[3]]
-                    writeTriangle(f, verts, vs1, material)
-                    writeTriangle(f, verts, vs2, material)
-                else:
-                    print("Pas de face")
+                if not material in dfaces:
+                    print (dfaces)
+                    dfaces[material] = []
+                dfaces[material].append(face)
+                
+            for material in dfaces:
+                f.write("\t<object>\n")
+                f.write('\t\t<list>\n')
+                print ('material ', material, len(dfaces[material]))
+                for face in dfaces[material]:
+                    vs = face.vertices                    
+                    if len(vs)==3:
+                        writeTriangle(f, verts, vs, material)
+                    elif len(vs)==4:
+                        vs1 = vs[:3]
+                        vs2 = [vs[0],vs[2], vs[3]]
+                        writeTriangle(f, verts, vs1, material)
+                        writeTriangle(f, verts, vs2, material)
+                    else:
+                        print("Pas de face")
+                        
+                f.write('\t\t</list>\n')
+                f.write('\t\t<material>\n\t\t\t<phong>\n')
+                f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*material.color.r), int(255*material.color.g), int(255*material.color.b)))
+                f.write('\t\t\t\t<specular v="%f"/>\n' % (material.specular))
+                f.write('\t\t\t\t<diffuse v="%f"/>\n' % (material.diffuse))
+                f.write('\t\t\t\t<ambiant v="%f"/>\n' % (material.ambiant))
+                f.write('\t\t\t\t<shininess v="%f"/>\n' % (material.shininess))
+                f.write('\t\t\t\t<reflexivity v="%f"/>\n' % (material.reflexivity))
+                f.write('\t\t\t</phong>\n\t\t</material>\n')
+                f.write("\t</object>\n")
     
     f.write("</scene>")
     f.close()          

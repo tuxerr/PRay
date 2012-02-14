@@ -1,6 +1,6 @@
 #include "sceneLoader.hpp"
 #include "logger.hpp"
-
+#include "settings.hpp"
 #include "sphere.hpp"
 #include "triangle.hpp"
 #include "directionalLight.hpp"
@@ -20,7 +20,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         Logger::log(LOG_ERROR) << "Error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
 	return -1;
     } else {
-        Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
+        Logger::log(LOG_INFO) << "Start loading scene : " << scene_file << endl;
 
         list<Object*> objects;
         list<DirectionalLight> lDirLights;
@@ -81,7 +81,9 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                                     target-position,
                                     normal,
                                     w, h, d,
-                                    xRes, yRes);
+                                    xRes, yRes,
+                                    Settings::getAsFloat("camera_translation_factor"),
+                                    Settings::getAsFloat("camera_rotation_angle"));
             } else if ( nodeName.compare("directionalLight")==0 ) {
                 Color color;
                 Vec3<float> direction;

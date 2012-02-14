@@ -3,8 +3,8 @@
 
 #define DEFAULT_HEIGHT 1280
 #define DEFAULT_WIDTH 720
-#define DEFAULT_FULLSCREEN false
 #define DEFAULT_NAME "PRay Renderer"
+#define MINIMUM_TIMECHECK_REFRESH_TIME 2000
 
 #include "logger.hpp"
 #include <vector>
@@ -27,6 +27,7 @@ public:
     void register_keyhook(std::function<void(void)> met,SDLKey key);
 #endif
     void refresh_display();
+    void refresh_display_timecheck();
     bool refresh_controls();
     bool new_control_press();
     bool quit();
@@ -34,6 +35,7 @@ public:
     int get_height();
     void add_pixel(int width,int height,Color color);
     void add_surface(int x,int y,int width,int height,std::vector<Color> &pixels);
+    void add_line_group(int x,int y,std::vector<Color> &pixels);
 
 private:
     Display(int height,int width); // constructeur en privé, classe singleton
@@ -49,6 +51,7 @@ private:
 #endif
     SDL_Surface *screen;
     bool new_press;
+    Uint32 last_refresh;
 };
 
 #endif

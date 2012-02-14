@@ -1,5 +1,6 @@
 #include "phongMaterial.hpp"
 #include "logger.hpp"
+#include "settings.hpp"
 #include "directionalLight.hpp"
 #include "math.h"
 #include "scene.hpp"
@@ -21,6 +22,7 @@ PhongMaterial::PhongMaterial(const Color &color,
   transparency(0),
   refractiveIn(1),
   refractiveOut(1)
+
 {
 
 }

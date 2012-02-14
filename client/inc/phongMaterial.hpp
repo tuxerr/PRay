@@ -51,6 +51,7 @@ class PhongMaterial : public Material {
 
   float rSchlick2(Vec3<float> normal, Vec3<float> incident, float n1, float n2);
 
+
  public :
   PhongMaterial(const Color &color, 
 		float specularReflection, 
