@@ -22,7 +22,7 @@ typedef struct {
 class Renderer {
 public:
     Renderer(Scene *scene,Display *disp=NULL);
-    std::vector<Color> render(int x,int y,int width,int height,int thread_number=DEFAULT_THREAD_NUMBER);
+    std::vector<Color> render(int x,int y,int width,int height,int thread_number=DEFAULT_THREAD_NUMBER,bool _onscreen=false);
     void compute_task();
     static void *computing_thread(void *This);
     
@@ -37,8 +37,7 @@ private:
     Scene *scene;
     unsigned int frameNumber;
     Display *display;
-
-
+    bool onscreen;
 };
 
 #endif

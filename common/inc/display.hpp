@@ -4,7 +4,7 @@
 #define DEFAULT_HEIGHT 1280
 #define DEFAULT_WIDTH 720
 #define DEFAULT_NAME "PRay Renderer"
-#define MINIMUM_REFRESH_TIME 30
+#define MINIMUM_TIMECHECK_REFRESH_TIME 2000
 
 #include "logger.hpp"
 #include <vector>
@@ -35,6 +35,7 @@ public:
     int get_height();
     void add_pixel(int width,int height,Color color);
     void add_surface(int x,int y,int width,int height,std::vector<Color> &pixels);
+    void add_line_group(int x,int y,std::vector<Color> &pixels);
 
 private:
     Display(int height,int width); // constructeur en privé, classe singleton
