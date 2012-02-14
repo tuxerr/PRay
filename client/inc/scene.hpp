@@ -33,7 +33,6 @@ class Scene {
   AmbientLight getAmbientLight();
   Camera* getCamera();
   Color renderRay(Ray &ray);
-  static int reflections;
   void computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
                            Material **material);
   Color renderPixel(int x, int y);

@@ -12,7 +12,7 @@ Color UglyMaterial::getColor() {
   return color;
 }
 
-Color UglyMaterial::renderRay(const Ray & ray,
+Color UglyMaterial::renderRay(Ray & ray,
 			      float /*nonUsedParameter*/,
                               const Vec3<float> & normal,
                               Scene* /*nonUsedParameter*/) {

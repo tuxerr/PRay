@@ -1,7 +1,7 @@
 #include "ray.hpp"
 
-Ray::Ray(const Vec3<float> &origin, const Vec3<float> &direction, Color &color) :
-  origin(origin), direction(direction.normalize()), color(color)
+Ray::Ray(const Vec3<float> &origin, const Vec3<float> &direction, Color &color, int reflections) :
+  origin(origin), direction(direction.normalize()), color(color), reflections(reflections)
 {
 
 }

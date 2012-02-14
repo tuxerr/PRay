@@ -15,8 +15,6 @@ Scene::Scene(const list<Object*> objects,
 
 }
 
-int Scene::reflections;
-
 Scene::~Scene()
 {
     list<Object*>::iterator iter;
@@ -112,7 +110,7 @@ Color Scene::renderPixel(int x, int y) {
     Vec3<float> origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
     //    Logger::log(LOG_DEBUG) << "before scene::renderRay" << endl;
-    reflections = 0;
+    r.reflections = 0;
     return renderRay(r);
 }
 

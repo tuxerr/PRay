@@ -2,30 +2,9 @@
 #include "logger.hpp"
 #include "settings.hpp"
 #include "directionalLight.hpp"
-#include "math.h"
+#include <cmath>
 #include "scene.hpp"
 
-#define MAX_REFLECTIONS 20
-
-PhongMaterial::PhongMaterial(const Color &color, 
-			     float specularReflection, 
-			     float diffuseReflection, 
-			     float ambiantReflection, 
-			     float shininess,
-			     float reflectivity) :
-  color(color), 
-  specularReflection(specularReflection), 
-  diffuseReflection(diffuseReflection),
-  ambiantReflection(ambiantReflection), 
-  shininess(shininess),
-  reflectivity(1),
-  transparency(0),
-  refractiveIn(1),
-  refractiveOut(1)
-
-{
-
-}
 
 PhongMaterial::PhongMaterial(const Color &color, 
 			     float specularReflection, 
@@ -33,6 +12,7 @@ PhongMaterial::PhongMaterial(const Color &color,
 			     float ambiantReflection, 
 			     float shininess,
 			     float reflectivity,
+			     int maxReflections,
 			     float transparency,
 			     float refractiveIn,
 			     float refractiveOut
@@ -43,6 +23,7 @@ PhongMaterial::PhongMaterial(const Color &color,
   ambiantReflection(ambiantReflection), 
   shininess(shininess),
   reflectivity(reflectivity),
+  maxReflections(maxReflections),
   transparency(transparency),
   refractiveIn(refractiveIn),
   refractiveOut(refractiveOut)
@@ -50,7 +31,7 @@ PhongMaterial::PhongMaterial(const Color &color,
 
 }
 
-Color PhongMaterial::renderRay2(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
+Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
 
   //  Logger::log(LOG_DEBUG) << "PHONG " << endl;
 
@@ -102,12 +83,13 @@ Color PhongMaterial::renderRay2(const Ray &ray, float distance, const Vec3<float
 
   Color black = Color(0,0,0);
 
-  if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
-    scene->reflections += 1;
+  if(reflectivity != 0 && ray.reflections < maxReflections) {
+    ray.reflections += 1;
 
     Ray reflectedRay = Ray(point,
 			   (rayDirection*(-1)).symmetry(normal),
-			   black);
+			   black,
+			   ray.reflections);
 
     Color reflectedColor = scene->renderRay(reflectedRay);
 
@@ -118,8 +100,8 @@ Color PhongMaterial::renderRay2(const Ray &ray, float distance, const Vec3<float
   }
 
 
-  if(transparency != 0 && scene->reflections < MAX_REFLECTIONS) {
-    scene->reflections += 1;
+  if(transparency != 0 && ray.reflections < maxReflections) {
+    ray.reflections += 1;
 
     
     float n;
@@ -167,11 +149,13 @@ Color PhongMaterial::renderRay2(const Ray &ray, float distance, const Vec3<float
       */  
       refractedRay = Ray(point+direction*0.1,
 			 direction,
-			 black);
+			 black,
+			 ray.reflections);
     } else {
       refractedRay = Ray(point,
 			 (rayDirection*(-1)).symmetry(normal),
-			 black);
+			 black,
+			 ray.reflections);
       
 
     }
@@ -254,14 +238,14 @@ float PhongMaterial::rSchlick2(Vec3<float> normal, Vec3<float> incident,
       cosX = sqrt(1.0 - sinT2);
     }
     float x = 1.0 - cosX;
-    return r0 + (1.0 - r0)*x*x*x*x;
+    return r0 + (1.0 - r0)*x*x*x*x*x;
   } else {
     return 1;
   }
 }
 
-
-Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
+/*
+Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
 
   float r = 0;
   float g = 0;
@@ -315,67 +299,42 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
 
   Color black = Color(0,0,0);
 
-  if(reflectivity != 0 && scene->reflections < MAX_REFLECTIONS) {
-    scene->reflections += 1;
+  if(reflectivity != 0 && ray.reflections < MAX_REFLECTIONS) {
+    ray.reflections += 1;
 
     Vec3<float> reflected = reflect(normal, rayDirection);
 
     Ray reflectedRay = Ray(point,
 			   reflected,
-			   black);
+			   black,
+			   ray.reflections);
   
     Color reflectedColor = scene->renderRay(reflectedRay);
   
-    r += reflectivity*color.getR()*reflectedColor.getR();//*reflectance(normal, rayDirection, refractiveOut, refractiveIn);
-    g += reflectivity*color.getG()*reflectedColor.getG();//*reflectance(normal, rayDirection, refractiveOut, refractiveIn);
-    b += reflectivity*color.getB()*reflectedColor.getB();//*reflectance(normal, rayDirection, refractiveOut, refractiveIn);
+    r += reflectivity*color.getR()*reflectedColor.getR()*reflectance(normal, rayDirection, refractiveOut, refractiveIn);
+    g += reflectivity*color.getG()*reflectedColor.getG()*reflectance(normal, rayDirection, refractiveOut, refractiveIn);
+    b += reflectivity*color.getB()*reflectedColor.getB()*reflectance(normal, rayDirection, refractiveOut, refractiveIn);
 
   }
 
 
-  if(transparency != 0 && scene->reflections < MAX_REFLECTIONS) {
-    scene->reflections += 1;
+  if(transparency != 0 && ray.reflections < MAX_REFLECTIONS) {
+    ray.reflections += 1;
 
     Vec3<float> refracted = refract(normal, rayDirection, refractiveOut, refractiveIn);  
 
     Ray refractedRay = Ray(point+refracted*0.01,
 			   refracted,
-			   black);
+			   black,
+			   ray.reflections);
   
     Color refractedColor = scene->renderRay(refractedRay);
 
-    Logger::log(LOG_DEBUG) << "rayDirection = " 
-			   << rayDirection.x
-			   << rayDirection.y 
-			   << rayDirection.z << endl;
-
-    Logger::log(LOG_DEBUG) << "direction = " 
-			   << refracted.x
-			   << refracted.y 
-			   << refracted.z << endl;
-
-    //  r += transparency*color.getR()*refractedColor.getR()*rSchlick2(normal, rayDirection, refractiveOut, refractiveIn);
-    //  g += transparency*color.getG()*refractedColor.getG()*rSchlick2(normal, rayDirection, refractiveOut, refractiveIn);
-    //  b += transparency*color.getB()*refractedColor.getB()*rSchlick2(normal, rayDirection, refractiveOut, refractiveIn);
+  r += transparency*color.getR()*refractedColor.getR()*rSchlick2(normal, rayDirection, refractiveOut, refractiveIn);
+  g += transparency*color.getG()*refractedColor.getG()*rSchlick2(normal, rayDirection, refractiveOut, refractiveIn);
+  b += transparency*color.getB()*refractedColor.getB()*rSchlick2(normal, rayDirection, refractiveOut, refractiveIn);
 
   }
-  
-  /*
-
-    Logger::log(LOG_DEBUG) << "rayDirection = " 
-    << rayDirection.x
-    << rayDirection.y 
-    << rayDirection.z << endl;
-
-    Logger::log(LOG_DEBUG) << "direction = " 
-    << refracted.x
-    << refracted.y 
-    << refracted.z << endl;
-
-  */
-
-
-
   
 
   if(r>1) {
@@ -391,3 +350,4 @@ Color PhongMaterial::renderRay(const Ray &ray, float distance, const Vec3<float>
   return Color(r, g, b);  
   
 }
+*/
