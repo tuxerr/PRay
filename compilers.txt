@@ -1,6 +1,8 @@
 Rendering time per frame (in seconds) on Intel Core i5 450M
 
-                    GNU G++ 4.6.2   Intel C++ Compiler 12.1
+suzanne_968.xml
 
-suzanne_242.xml     19.87           13.663
-suzanne_968.xml     41.415          28.154
+                    GNU G++ 4.6.2      Intel C++ Compiler 12.1
+
+without SSE         33.034             22.699
+with SSE            10.934             10.452
