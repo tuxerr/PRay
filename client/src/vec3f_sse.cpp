@@ -127,23 +127,31 @@ inline Vec3f Vec3f::cross(Vec3f& n) {
 }
 
 //scalar product (dot product)
-inline float Vec3f::scalar(Vec3f n) const {
-    return _mm_cvtss_f32(sse_dot4_ps(*this, n));
+inline float Vec3f::scalar(Vec3f& n) const {
+    return _mm_cvtss_f32(sse_dot4_ps(this->v, n.v));
 }
 
 // Rodrigues' rotation formula
 // phi : angle in degrees
 // axis : must be of norm 1
-Vec3f Vec3f::rotate(float phi, Vec3f axis) {
+Vec3f Vec3f::rotate(float phi, Vec3f& axis) {
     phi = phi * 3.14159265  / 180.0; // angle in radians
+    Vec3f t1 = (*this) * cos(phi);
+    Vec3f t2 = axis * (*this) * sin(phi);
+    Vec3f t3 = axis * axis.scalar(*this) * ((float)1.0 - cos(phi));
+    return t1 + t2 + t3;
+/*
     return (*this) * cos(phi)
         + axis * (*this) * sin(phi)
         + axis * axis.scalar(*this) * ((float)1.0 - cos(phi)) ;
-       
+*/   
 }
 
-Vec3f Vec3f::symmetry(Vec3f x) {
+Vec3f Vec3f::symmetry(Vec3f& x) {
+    Vec3f t1 = x*(2*(*this).scalar(x));
+    Vec3f t2 = (*this)*(-1);
+    return t1 + t2;
+/*
     return x*(2*(*this).scalar(x)) + (*this)*(-1);
+*/
 }
-
-#endif
