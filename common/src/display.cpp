@@ -22,11 +22,12 @@ void Display::refresh_display() {
     last_refresh=SDL_GetTicks();
 }
 
-void Display::refresh_display_timecheck() {
-    if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
-        SDL_UpdateRect(screen,0,0,0,0);
+void Display::refresh_display_timecheck(int line) {
+//    if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
+    Logger::log()<<"Refreshing line"<<line<<endl;
+        SDL_UpdateRect(screen,0,line,1280,1);
         last_refresh=SDL_GetTicks();
-    }
+//    }
 }
 
 bool Display::refresh_controls() {
@@ -94,7 +95,7 @@ Display::Display(int p_width,int p_height) :
 
     SDL_WM_SetCaption(DEFAULT_NAME,NULL);
 
-    screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
     Logger::log(LOG_INFO)<<"SDL initialised (video and controls) in "<<width<<"x"<<height<<endl;
 }
 
@@ -141,6 +142,7 @@ void Display::add_line_group(int x,int y,std::vector<Color> &pixels) {
     // all pixels are 32b-encoded
     // adds to the display texture a group of lined pixels that can go from line to line (end/beginning)
     SDL_LockSurface(screen);
+    Logger::log()<<"Logging surface : "<<x<<"/"<<y<<std::endl;
     int currentx=x;
     int currenty=y;
     for(unsigned int i=0;i<pixels.size();i++) {

@@ -27,7 +27,7 @@ public:
     void register_keyhook(std::function<void(void)> met,SDLKey key);
 #endif
     void refresh_display();
-    void refresh_display_timecheck();
+    void refresh_display_timecheck(int line=0);
     bool refresh_controls();
     bool new_control_press();
     bool quit();
