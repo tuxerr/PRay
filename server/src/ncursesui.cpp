@@ -25,9 +25,9 @@ void NcursesUI::init()
 
 void NcursesUI::run()
 {
-    NcursesWindow log_win("Logs",LINES-1,COLS/3,0,COLS*2/3);
-    NcursesWindow clients_win("Clients",LINES-1,COLS/3,0,COLS/3);
-    NcursesWindow status_win("Status",LINES-1,COLS/3,0,0);
+    NcursesLogWindow log_win("Logs",LINES-1,COLS/3,0,COLS*2/3);
+    NcursesLogWindow clients_win("Clients",LINES-1,COLS/3,0,COLS/3);
+    NcursesLogWindow status_win("Status",LINES-1,COLS/3,0,0);
 
     while (mode_ch != 'q')
     {
@@ -49,7 +49,7 @@ void NcursesUI::run()
     }
 }
 
-NcursesWindow::NcursesWindow(string title,int height,int width,int starty,int startx) {
+NcursesLogWindow::NcursesLogWindow(string title,int height,int width,int starty,int startx) {
     ptr = newwin(height,width,starty,startx);
     box(ptr,0,0);
     mvwprintw(ptr,0,(width-title.size())/2,title.c_str());
@@ -58,18 +58,18 @@ NcursesWindow::NcursesWindow(string title,int height,int width,int starty,int st
     refresh();
 }
 
-NcursesWindow::~NcursesWindow() {
+NcursesLogWindow::~NcursesLogWindow() {
     delwin(ptr);
 }
 
-void NcursesWindow::add_string(string text) {
+void NcursesLogWindow::add_string(string text) {
     if(messages.size()>=max_size) {
         messages.pop_front();
     }
     messages.push_back(text);
 }
 
-void NcursesWindow::refresh() {
+void NcursesLogWindow::refresh() {
     int col=1;
     for(std::deque<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
         string newstr = (*it).append(col_size-(*it).size(),' ');
