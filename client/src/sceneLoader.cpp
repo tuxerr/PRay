@@ -39,7 +39,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
                 Vec3<float> position, target, normal;
-                float w = 8, h = 4.5, d = 35;
+                float w = 8, d = 35;
 
                 tmp_node = node->FirstChildElement("position");
                 if (tmp_node == NULL) {
@@ -67,20 +67,13 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                     Logger::log(LOG_ERROR)<<"Missing <viewplane> near line "<<node->Row()<<endl;
                 } else {
                     tmp_node->QueryFloatAttribute("w", &w);
-                    tmp_node->QueryFloatAttribute("h", &h);
                     tmp_node->QueryFloatAttribute("d", &d);
                 }
 
-                if ( w / h - (float)xRes / (float)yRes  > 1e-4 ) {
-                    Logger::log(LOG_WARNING)<<"The camera and the screen have not the same ratio"<<endl;
-                    Logger::log(LOG_INFO)<<"Camera ratio : "<<(float)yRes / (float)xRes<<endl;
-                    Logger::log(LOG_INFO)<<"Screen ratio : "<<w / h<<endl;
-                }
-
-                camera = new Camera(position,
+		camera = new Camera(position,
                                     target-position,
                                     normal,
-                                    w, h, d,
+                                    w, d,
                                     xRes, yRes,
                                     Settings::getAsFloat("camera_translation_factor"),
                                     Settings::getAsFloat("camera_rotation_angle"));
