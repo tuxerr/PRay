@@ -22,12 +22,16 @@ void Display::refresh_display() {
     last_refresh=SDL_GetTicks();
 }
 
-void Display::refresh_display_timecheck(int line) {
-//    if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
-    Logger::log()<<"Refreshing line"<<line<<endl;
-        SDL_UpdateRect(screen,0,line,1280,1);
+void Display::refresh_part_display_timecheck() {
+    if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
+        for (std::set<int>::iterator it=new_lines_to_refresh.begin(); 
+             it!=new_lines_to_refresh.end(); 
+             it++) {
+            SDL_UpdateRect(screen,0,*it,width,1);            
+        }
         last_refresh=SDL_GetTicks();
-//    }
+        new_lines_to_refresh.clear();
+    }
 }
 
 bool Display::refresh_controls() {
@@ -122,6 +126,7 @@ void Display::add_pixel(int x,int y,Color color) {
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
     SDL_UnlockSurface(screen);
+    new_lines_to_refresh.insert(y);
 }
 
 void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
@@ -133,7 +138,8 @@ void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &p
             Uint32 *p = (Uint32 *)screen->pixels + (x+w) + (y+h) * (screen->pitch/4);
             *p=SDL_MapRGB(screen->format,pixels[i].getR()*255,pixels[i].getG()*255,pixels[i].getB()*255);
             i++;
-        }        
+        }  
+        new_lines_to_refresh.insert(y+h);
     }
     SDL_UnlockSurface(screen);
 }
@@ -142,9 +148,9 @@ void Display::add_line_group(int x,int y,std::vector<Color> &pixels) {
     // all pixels are 32b-encoded
     // adds to the display texture a group of lined pixels that can go from line to line (end/beginning)
     SDL_LockSurface(screen);
-    Logger::log()<<"Logging surface : "<<x<<"/"<<y<<std::endl;
     int currentx=x;
     int currenty=y;
+    new_lines_to_refresh.insert(currenty);
     for(unsigned int i=0;i<pixels.size();i++) {
         Uint32 *p = (Uint32 *)screen->pixels + currentx  + currenty * screen->pitch/4;
         *p=SDL_MapRGB(screen->format,pixels[i].getR()*255,pixels[i].getG()*255,pixels[i].getB()*255);
@@ -153,6 +159,7 @@ void Display::add_line_group(int x,int y,std::vector<Color> &pixels) {
         } else {
             currentx=0;
             currenty++;
+            new_lines_to_refresh.insert(currenty);
         }
     }
     SDL_UnlockSurface(screen);

@@ -109,7 +109,7 @@ void Renderer::compute_task() {
                 }
                 results_mut.lock();
                 display->add_line_group(currenttask.pixels[0].first,currenttask.pixels[0].second,res);
-                display->refresh_display_timecheck(currenttask.task_number);
+                display->refresh_part_display_timecheck();
                 results_mut.unlock();
             }
         } else {

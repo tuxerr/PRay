@@ -4,7 +4,7 @@
 #define DEFAULT_HEIGHT 1280
 #define DEFAULT_WIDTH 720
 #define DEFAULT_NAME "PRay Renderer"
-#define MINIMUM_TIMECHECK_REFRESH_TIME 2000
+#define MINIMUM_TIMECHECK_REFRESH_TIME 30
 
 #include "logger.hpp"
 #include <vector>
@@ -15,7 +15,7 @@
 #include <SDL/SDL_version.h>
 #include "color.hpp"
 #include <algorithm>
-
+#include <set>
 
 using namespace std;
 
@@ -27,7 +27,7 @@ public:
     void register_keyhook(std::function<void(void)> met,SDLKey key);
 #endif
     void refresh_display();
-    void refresh_display_timecheck(int line=0);
+    void refresh_part_display_timecheck();
     bool refresh_controls();
     bool new_control_press();
     bool quit();
@@ -52,6 +52,7 @@ private:
     SDL_Surface *screen;
     bool new_press;
     Uint32 last_refresh;
+    std::set<int> new_lines_to_refresh;
 };
 
 #endif
