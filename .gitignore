@@ -7,6 +7,8 @@ pray_client
 
 # Images
 *.bmp
+*.jpg
+*.png
 
 # Compiled Object files
 *.slo
