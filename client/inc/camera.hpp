@@ -30,7 +30,6 @@ public :
            Vec3<float> direction,
            Vec3<float> normal,
            float viewplaneWidth,
-           float viewplaneHeight,
            float viewplaneDist,
            int xResolution,
            int yResolution,

@@ -1,4 +1,4 @@
-#include "networkRenderer.hpp"
+#include "networkrenderer.hpp"
 
 NetworkRenderer::NetworkRenderer(Network &network,Display &disp) : network(network), display(disp) {
     if(pthread_create(&thread,NULL,launch_renderer_thread,(void*)this)!=0) {
@@ -40,7 +40,7 @@ void NetworkRenderer::renderer_thread() {
                 result.push_back(c);
             }
             display.add_surface(0,CLIENT_TASK_LINES*packet_number,rendering_width,result.size()/rendering_width,result);
-            display.refresh_display_timecheck();
+            display.refresh_part_display_timecheck();
 
             rendering_clients[id].status=CLIENT_WAITING;
             send_task_to_client(id);

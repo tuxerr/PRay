@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
         Logger::log(LOG_INFO)<<"Keys are disabled"<<endl;
 #endif
 
-        Renderer renderer(scene);
+        Renderer renderer(scene,disp);
 
         int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
         Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
@@ -70,8 +70,7 @@ int main(int argc, char* argv[])
         while ( !disp->quit() )
         {
             if(disp->new_control_press()) {
-                std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
-                disp->add_surface(0,0,width,height,res);  
+                renderer.render(0,0,width,height,numOfCPUs,true);
                 disp->refresh_display();
             } else {
                 usleep(30000);
