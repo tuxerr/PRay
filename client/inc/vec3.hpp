@@ -1,6 +1,14 @@
 #ifndef DEF_Vec3
 #define DEF_Vec3
 
+#define VEC3F Vec3<float>
+
+#define USE_SSE false // true or false
+
+#if USE_SSE
+#include "vec3f_sse.hpp"
+#else
+
 #include <cmath>
 
 template <class number>
@@ -134,4 +142,5 @@ Vec3<number> Vec3<number>::symmetry(Vec3<number> x) {
     return x*(2*(*this).scalar(x)) + (*this)*(-1);
 }
 
+#endif
 #endif

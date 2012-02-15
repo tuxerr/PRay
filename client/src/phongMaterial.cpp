@@ -31,7 +31,7 @@ PhongMaterial::PhongMaterial(const Color &color,
 
 }
 
-Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
+Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene) {
 
   //  Logger::log(LOG_DEBUG) << "PHONG " << endl;
 
@@ -39,9 +39,9 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &norm
   float g = 0;
   float b = 0;
   
-  Vec3<float> rayDirection = ray.getDirection();
+  VEC3F rayDirection = ray.getDirection();
 
-  Vec3<float> point = ray.getOrigin() + ray.getDirection()*distance;
+  VEC3F point = ray.getOrigin() + ray.getDirection()*distance;
   list<DirectionalLight> lights = scene->visibleLights(point);
   //list<DirectionalLight> lights = scene->getDirectionalLights();
   
@@ -107,8 +107,8 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &norm
     float n;
     float cosI;
     float sinI2;    
-    Vec3<float> direction;
-    Vec3<float> normalol = Vec3<float>(normal);
+    VEC3F direction;
+    VEC3F normalol = VEC3F(normal);
     
     if(normal.scalar(rayDirection) < 0) {
       n = refractiveIn/refractiveOut;
@@ -183,12 +183,12 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &norm
 
 
 
-Vec3<float> PhongMaterial::reflect(Vec3<float> normal, Vec3<float> incident) {
+VEC3F PhongMaterial::reflect(VEC3F normal, VEC3F incident) {
   float cosI = -(normal.scalar(incident));
   return incident + normal*(2*cosI);
 }
 
-Vec3<float> PhongMaterial::refract(Vec3<float> normal, Vec3<float> incident, 
+VEC3F PhongMaterial::refract(VEC3F normal, VEC3F incident, 
 				   float n1, float n2) {
   float cosT;
   float n = n1/n2;
@@ -203,7 +203,7 @@ Vec3<float> PhongMaterial::refract(Vec3<float> normal, Vec3<float> incident,
 }
 
 
-float PhongMaterial::reflectance(Vec3<float> normal, Vec3<float> incident,
+float PhongMaterial::reflectance(VEC3F normal, VEC3F incident,
 				 float n1, float n2) {
 
   float n = n1/n2;
@@ -220,7 +220,7 @@ float PhongMaterial::reflectance(Vec3<float> normal, Vec3<float> incident,
 }
 
 
-float PhongMaterial::rSchlick2(Vec3<float> normal, Vec3<float> incident,
+float PhongMaterial::rSchlick2(VEC3F normal, VEC3F incident,
 			       float n1, float n2) {
 
   float r0 = (n1 - n2)/(n1 + n2);
@@ -245,15 +245,15 @@ float PhongMaterial::rSchlick2(Vec3<float> normal, Vec3<float> incident,
 }
 
 /*
-Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &normal, Scene *scene) {
+Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene) {
 
   float r = 0;
   float g = 0;
   float b = 0;
   
-  Vec3<float> rayDirection = ray.getDirection();
+  VEC3F rayDirection = ray.getDirection();
 
-  Vec3<float> point = ray.getOrigin() + ray.getDirection()*distance;
+  VEC3F point = ray.getOrigin() + ray.getDirection()*distance;
   list<DirectionalLight> lights = scene->visibleLights(point);
   //list<DirectionalLight> lights = scene->getDirectionalLights();
   
@@ -302,7 +302,7 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &norm
   if(reflectivity != 0 && ray.reflections < MAX_REFLECTIONS) {
     ray.reflections += 1;
 
-    Vec3<float> reflected = reflect(normal, rayDirection);
+    VEC3F reflected = reflect(normal, rayDirection);
 
     Ray reflectedRay = Ray(point,
 			   reflected,
@@ -321,7 +321,7 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const Vec3<float> &norm
   if(transparency != 0 && ray.reflections < MAX_REFLECTIONS) {
     ray.reflections += 1;
 
-    Vec3<float> refracted = refract(normal, rayDirection, refractiveOut, refractiveIn);  
+    VEC3F refracted = refract(normal, rayDirection, refractiveOut, refractiveIn);  
 
     Ray refractedRay = Ray(point+refracted*0.01,
 			   refracted,

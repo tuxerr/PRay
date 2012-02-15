@@ -1,9 +1,9 @@
 #include "logger.hpp"
 #include "camera.hpp"
 
-Camera::Camera(Vec3<float> point,
-               Vec3<float> direction,
-               Vec3<float> normal,
+Camera::Camera(VEC3F point,
+               VEC3F direction,
+               VEC3F normal,
                float viewplaneWidth,
                float viewplaneDist,
                int xResolution,
@@ -29,27 +29,27 @@ Camera::Camera(Vec3<float> point,
     }
 }
 
-Vec3<float> Camera::getPoint() const {
+VEC3F Camera::getPoint() const {
     return point;
 }
 
-Vec3<float> Camera::getDirection() const {
+VEC3F Camera::getDirection() const {
     return direction;
 }
 
-Vec3<float> Camera::getNormal() const {
+VEC3F Camera::getNormal() const {
     return normal;
 }
 
-void Camera::setPoint(Vec3<float> point_) {
+void Camera::setPoint(VEC3F point_) {
     point = point_;
 }
 
-void Camera::setDirection(Vec3<float> direction_) {
+void Camera::setDirection(VEC3F direction_) {
     direction = direction_.normalize();
 }
 
-void Camera::setNormal(Vec3<float> normal_) {
+void Camera::setNormal(VEC3F normal_) {
     normal = normal_.normalize();
 }
 
@@ -65,13 +65,13 @@ float Camera::getViewplaneDist() const {
     return viewplaneDist;
 }
 
-Vec3<float> Camera::getDirection(int x, int y) {
+VEC3F Camera::getDirection(int x, int y) {
     return (direction*viewplaneDist
             + normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution))
             + direction*normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))).normalize();
 }
 
-Vec3<float> Camera::horizontalProj(Vec3<float> vec) {
+VEC3F Camera::horizontalProj(VEC3F vec) {
     vec.z = 0;
     return vec.normalize();
 }
@@ -143,7 +143,7 @@ void Camera::translateDown() {
 }
 
 // angle : in degrees
-void Camera::rotate(float angle, Vec3<float> axis) {
+void Camera::rotate(float angle, VEC3F axis) {
     direction = direction.rotate(angle, axis);
     normal = normal.rotate(angle, axis);
     lateral = lateral.rotate(angle, axis);
@@ -199,7 +199,7 @@ void Camera::yawLeft() {
         rotate(-rotatAngle, normal);
         break;
     case SCENE:
-        rotate(-rotatAngle, Vec3<float>(0,0,1));
+        rotate(-rotatAngle, VEC3F(0,0,1));
         break;
     }
 }
@@ -210,7 +210,7 @@ void Camera::yawRight() {
         rotate(rotatAngle, normal);
         break;
     case SCENE:
-        rotate(rotatAngle, Vec3<float>(0,0,1));
+        rotate(rotatAngle, VEC3F(0,0,1));
         break;
     }
 }

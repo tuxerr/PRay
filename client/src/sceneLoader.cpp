@@ -38,7 +38,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         while ( node ) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
-                Vec3<float> position, target, normal;
+                VEC3F position, target, normal;
                 float w = 8, d = 35;
 
                 tmp_node = node->FirstChildElement("position");
@@ -79,7 +79,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                                     Settings::getAsFloat("camera_rotation_angle"));
             } else if ( nodeName.compare("directionalLight")==0 ) {
                 Color color;
-                Vec3<float> direction;
+                VEC3F direction;
 
                 tmp_node = node->FirstChildElement("color");
                 if (tmp_node == NULL) {
@@ -142,7 +142,7 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
     string nodeName(node->Value());
 
     if ( nodeName.compare("sphere")==0 ) {
-        Vec3<float> center = readVec3Float(node->FirstChildElement("center"));
+        VEC3F center = readVec3Float(node->FirstChildElement("center"));
         float radius = 0;
         node->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
@@ -152,9 +152,9 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 #endif
         objects->push_back(new Sphere(center, radius, material));
     } else if ( nodeName.compare("triangle")==0 ) {
-        Vec3<float> a = readVec3Float(node->FirstChildElement("a"));
-        Vec3<float> b = readVec3Float(node->FirstChildElement("b"));
-        Vec3<float> c = readVec3Float(node->FirstChildElement("c"));
+        VEC3F a = readVec3Float(node->FirstChildElement("a"));
+        VEC3F b = readVec3Float(node->FirstChildElement("b"));
+        VEC3F c = readVec3Float(node->FirstChildElement("c"));
 
 #ifdef SCENELOADER_DEBUG
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
@@ -226,12 +226,12 @@ Color SceneLoader::readColor(TiXmlElement* node) {
     return Color(r/255, g/255, b/255);
 }
 
-Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {
+VEC3F SceneLoader::readVec3Float(TiXmlElement* node) {
     float x=0, y=0, z=0;
 
     node->QueryFloatAttribute("x", &x);
     node->QueryFloatAttribute("y", &y);
     node->QueryFloatAttribute("z", &z);
 
-    return Vec3<float>(x, y, z);
+    return VEC3F(x, y, z);
 }

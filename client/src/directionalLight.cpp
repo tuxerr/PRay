@@ -1,23 +1,23 @@
 #include "directionalLight.hpp"
 
-DirectionalLight::DirectionalLight(const Color &color, const Vec3<float> &direction) :
+DirectionalLight::DirectionalLight(const Color &color, const VEC3F &direction) :
   Light(color), direction(direction)
 {
 
 }
 
-DirectionalLight::DirectionalLight(float color, const Vec3<float> &direction) :
+DirectionalLight::DirectionalLight(float color, const VEC3F &direction) :
   Light(color), direction(direction)
 {
 
 }
 
-DirectionalLight::DirectionalLight(float r, float g, float b, const Vec3<float> &direction) :
+DirectionalLight::DirectionalLight(float r, float g, float b, const VEC3F &direction) :
   Light(r, g, b), direction(direction)
 {
 
 }
 
-Vec3<float> DirectionalLight::getDirection() {
+VEC3F DirectionalLight::getDirection() {
   return direction;
 }

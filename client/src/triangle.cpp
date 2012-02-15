@@ -1,25 +1,25 @@
 #include "triangle.hpp"
 #include "logger.hpp"
 
-Triangle::Triangle(Vec3<float> &a, Vec3<float> &b, Vec3<float> &c, Material *material) :
+Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c, Material *material) :
     Object(material), a(a), b(b), c(c), normal(((b - a) * (b - c)).normalize())
 {
 
 }
 
-Vec3<float> Triangle::getA() {
+VEC3F Triangle::getA() {
     return a;
 }
 
-Vec3<float> Triangle::getB() {
+VEC3F Triangle::getB() {
     return b;
 }
 
-Vec3<float> Triangle::getC() {
+VEC3F Triangle::getC() {
     return c;
 }
 
-Vec3<float> Triangle::getNormal() {
+VEC3F Triangle::getNormal() {
     return normal;
 }
 
@@ -37,7 +37,7 @@ Vec3<float> Triangle::getNormal() {
     dest.y = v1.y - v2.y;                       \
     dest.z = v1.z - v2.z;
 
-void Triangle::getIntersection(Ray &ray, float *distance, Vec3<float> *normal,
+void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
                                Material **material) {
     
     // ray : R(t) = orig + t * dir
@@ -45,7 +45,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, Vec3<float> *normal,
     // point(u,v) = (1 - u - v) * A + u * B + v * C
     // (u,v) barycentric coordinates
     
-    Vec3<float> edge1, edge2, tvec, pvec, qvec;
+    VEC3F edge1, edge2, tvec, pvec, qvec;
     float det, u, v; /* inv_det, t */
     
     // find vectors for two edges sharing A

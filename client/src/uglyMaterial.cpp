@@ -14,7 +14,7 @@ Color UglyMaterial::getColor() {
 
 Color UglyMaterial::renderRay(Ray & ray,
 			      float /*nonUsedParameter*/,
-                              const Vec3<float> & normal,
+                              const VEC3F & normal,
                               Scene* /*nonUsedParameter*/) {
 
   //  Logger::log(LOG_DEBUG)<< "UGLY\n";  

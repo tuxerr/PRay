@@ -10,10 +10,10 @@ typedef enum { SCENE, CAMERA } cameraMode;
 
 class Camera {
 private :
-    Vec3<float> point;
-    Vec3<float> direction;
-    Vec3<float> normal;
-    Vec3<float> lateral;
+    VEC3F point;
+    VEC3F direction;
+    VEC3F normal;
+    VEC3F lateral;
     float viewplaneWidth;
     float viewplaneHeight;
     float viewplaneDist;
@@ -22,13 +22,13 @@ private :
     float transFactor;
     float rotatAngle;
     cameraMode mode;
-    Vec3<float> horizontalProj(Vec3<float> vec);
-    void rotate(float angle, Vec3<float> axis);
+    VEC3F horizontalProj(VEC3F vec);
+    void rotate(float angle, VEC3F axis);
 
 public :
-    Camera(Vec3<float> point,
-           Vec3<float> direction,
-           Vec3<float> normal,
+    Camera(VEC3F point,
+           VEC3F direction,
+           VEC3F normal,
            float viewplaneWidth,
            float viewplaneDist,
            int xResolution,
@@ -36,18 +36,18 @@ public :
 	   float transFactor = DEFAULT_CAM_TRANS_FACTOR,
 	   float rotatAngle = DEFAULT_CAM_ROT_ANGLE,
 	   cameraMode mode = CAMERA);
-    Vec3<float> getPoint() const;
-    Vec3<float> getDirection() const;
-    Vec3<float> getNormal() const;
-    void setPoint(Vec3<float> point);
-    void setDirection(Vec3<float> direction);
-    void setNormal(Vec3<float> normal);
+    VEC3F getPoint() const;
+    VEC3F getDirection() const;
+    VEC3F getNormal() const;
+    void setPoint(VEC3F point);
+    void setDirection(VEC3F direction);
+    void setNormal(VEC3F normal);
     float getViewplaneWidth() const;
     float getViewplaneHeight() const;
     float getViewplaneDist() const;
     int getXResolution() const;
     int getYResolution() const;
-    Vec3<float> getDirection(int x, int y);
+    VEC3F getDirection(int x, int y);
     void translateForward();
     void translateBackwards();
     void translateLeft();

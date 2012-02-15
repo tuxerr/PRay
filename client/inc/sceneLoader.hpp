@@ -13,7 +13,7 @@ private:
     void readShape(TiXmlElement* node, list<Object*>* objects, Material* material);
     Material* readMaterial(TiXmlElement* node);
     Color readColor(TiXmlElement* node);
-    Vec3<float> readVec3Float(TiXmlElement* node);
+    VEC3F readVec3Float(TiXmlElement* node);
 };
 
 #endif
