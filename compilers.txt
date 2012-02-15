@@ -1,10 +1,15 @@
-Rendering time per frame (in seconds) on 
+commit 867874fa1483ddb5aca7b821e46b4ff8f374530d
 
-Intel(R) Core(TM) i7-2600K CPU @ 3.40GHz (4 hyperthreaded cores)
-
-suzanne_968.xml
+Rendering time per frame (in seconds) : suzanne_968.xml
 
                     GNU G++ 4.6.2      Intel C++ Compiler 12.1
 
+Intel(R) Core(TM) i7-2600K CPU @ 3.40GHz (4 hyperthreaded cores)
+
 without SSE         8.882
 with SSE            5.616
+
+Intel(R) Core(TM) i5 CPU M 450 @ 2.40GHz (2 hyperthreaded cores)
+
+without SSE         29.693             24.848
+with SSE            20.48              19.304
