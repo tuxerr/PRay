@@ -31,6 +31,7 @@ public:
     Vec3<number> operator/(number n);
     Vec3<number> rotate(float angle, Vec3<number> axis);
     Vec3<number> symmetry(Vec3<number> x);
+    void getCoord(float* coord);
 };
 
 template <class number>
@@ -140,6 +141,14 @@ Vec3<number> Vec3<number>::rotate(float phi, Vec3<number> axis) {
 template <class number>
 Vec3<number> Vec3<number>::symmetry(Vec3<number> x) {
     return x*(2*(*this).scalar(x)) + (*this)*(-1);
+}
+
+template <class number>
+void Vec3<number>::getCoord(float* coord) {
+    coord[0] = x;
+    coord[1] = y;
+    coord[2] = z;
+    coord[3] = 0;
 }
 
 #endif

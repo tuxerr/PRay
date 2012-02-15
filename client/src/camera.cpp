@@ -1,9 +1,9 @@
 #include "logger.hpp"
 #include "camera.hpp"
 
-Camera::Camera(Vec3f point,
-               Vec3f direction,
-               Vec3f normal,
+Camera::Camera(VEC3F point,
+               VEC3F direction,
+               VEC3F normal,
                float viewplaneWidth,
                float viewplaneDist,
                int xResolution,
@@ -29,27 +29,27 @@ float rotatAngle,
     }
 }
 
-Vec3f Camera::getPoint() const {
+VEC3F Camera::getPoint() const {
     return point;
 }
 
-Vec3f Camera::getDirection() const {
+VEC3F Camera::getDirection() const {
     return direction;
 }
 
-Vec3f Camera::getNormal() const {
+VEC3F Camera::getNormal() const {
     return normal;
 }
 
-void Camera::setPoint(Vec3f point_) {
+void Camera::setPoint(VEC3F point_) {
     point = point_;
 }
 
-void Camera::setDirection(Vec3f direction_) {
+void Camera::setDirection(VEC3F direction_) {
     direction = direction_.normalize();
 }
 
-void Camera::setNormal(Vec3f normal_) {
+void Camera::setNormal(VEC3F normal_) {
     normal = normal_.normalize();
 }
 
@@ -65,16 +65,16 @@ float Camera::getViewplaneDist() const {
     return viewplaneDist;
 }
 
-Vec3f Camera::getDirection(int x, int y) {
+VEC3F Camera::getDirection(int x, int y) {
     return (direction*viewplaneDist
             + normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution))
             + direction*normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))).normalize();
 }
 
-Vec3f Camera::horizontalProj(Vec3f vec) {
+VEC3F Camera::horizontalProj(VEC3F vec) {
     float coord[4];
     vec.getCoord(coord);
-    Vec3f res = Vec3f(coord[0], coord[1], 0);
+    VEC3F res = VEC3F(coord[0], coord[1], 0);
     return res.normalize();
 }
 
@@ -128,7 +128,7 @@ void Camera::translateUp() {
         point += normal * transFactor;
         break;
     case SCENE:
-        point += Vec3f(0, 0, transFactor);
+        point += VEC3F(0, 0, transFactor);
         break;
     }
 }
@@ -139,13 +139,13 @@ void Camera::translateDown() {
         point -= normal * transFactor;
         break;
     case SCENE:
-        point -= Vec3f(0, 0, transFactor);
+        point -= VEC3F(0, 0, transFactor);
         break;
     }
 }
 
 // angle : in degrees
-void Camera::rotate(float angle, Vec3f axis) {
+void Camera::rotate(float angle, VEC3F axis) {
     direction = direction.rotate(angle, axis);
     normal = normal.rotate(angle, axis);
     lateral = lateral.rotate(angle, axis);
@@ -201,7 +201,7 @@ void Camera::yawLeft() {
         rotate(-rotatAngle, normal);
         break;
     case SCENE:
-        rotate(-rotatAngle, Vec3f(0,0,1));
+        rotate(-rotatAngle, VEC3F(0,0,1));
         break;
     }
 }
@@ -212,7 +212,7 @@ void Camera::yawRight() {
         rotate(rotatAngle, normal);
         break;
     case SCENE:
-        rotate(rotatAngle, Vec3f(0,0,1));
+        rotate(rotatAngle, VEC3F(0,0,1));
         break;
     }
 }

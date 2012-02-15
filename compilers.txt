@@ -1,8 +1,10 @@
-Rendering time per frame (in seconds) on Intel Core i5 450M
+Rendering time per frame (in seconds) on 
+
+Intel(R) Core(TM) i7-2600K CPU @ 3.40GHz (4 hyperthreaded cores)
 
 suzanne_968.xml
 
                     GNU G++ 4.6.2      Intel C++ Compiler 12.1
 
-without SSE         33.034             22.699
-with SSE            10.934             10.452
+without SSE         8.882
+with SSE            5.616

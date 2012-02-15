@@ -36,7 +36,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     // point(u,v) = (1 - u - v) * A + u * B + v * C
     // (u,v) barycentric coordinates
     
-    Vec3f edge1, edge2, tvec, pvec, qvec;
+    VEC3F edge1, edge2, tvec, pvec, qvec;
     float det, u, v; /* inv_det, t */
     
     // find vectors for two edges sharing A
