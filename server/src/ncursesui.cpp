@@ -1,12 +1,16 @@
 #include "ncursesui.hpp"
 
-NcursesUI::NcursesUI()
+NcursesUI::NcursesUI() : 
+    client_ptr(NULL), log_ptr(NULL), status_ptr(NULL)
 {
 }
 
 NcursesUI::~NcursesUI()
 {
     endwin(); // end curses mode
+    delete client_ptr;
+    delete log_ptr;
+    delete status_ptr;
 }
 
 
@@ -20,13 +24,25 @@ void NcursesUI::init()
     Logger::log()<<"Starting ncurses server UI"<<std::endl;
 
     refresh();
+    client_ptr=new NcursesScrollingWindow("Clients",LINES-1,COLS/3,0,COLS/3,KEY_UP,KEY_DOWN);
+    log_ptr=new NcursesLogWindow("Logs",LINES-1,COLS/3,0,COLS*2/3);
+    status_ptr=new NcursesLogWindow("Status",LINES-1,COLS/3,0,0);
+}
+
+NcursesScrollingWindow* NcursesUI::get_clients_win() {
+    return client_ptr;
+}
+
+NcursesLogWindow* NcursesUI::get_log_win() {
+    return log_ptr;
+}
+
+NcursesLogWindow* NcursesUI::get_status_win() {
+    return status_ptr;
 }
 
 void NcursesUI::run()
 {
-    NcursesLogWindow log_win("Logs",LINES-1,COLS/3,0,COLS*2/3);
-    NcursesLogWindow clients_win("Clients",LINES-1,COLS/3,0,COLS/3);
-    NcursesLogWindow status_win("Status",LINES-1,COLS/3,0,0);
 
     while (mode_ch != 'q')
     {
@@ -35,16 +51,8 @@ void NcursesUI::run()
         halfdelay(5);
 
         mode_ch = getch();
-        if(mode_ch=='a') {
-            log_win.add_string("trolol");
-            log_win.refresh();
-        }
 
-        if(mode_ch=='z') {
-            log_win.add_string("trolol2");
-            log_win.refresh();
-        }
-
+        (*client_ptr).refresh(mode_ch);
     }
 }
 
@@ -66,6 +74,7 @@ void NcursesLogWindow::add_string(string text) {
         messages.pop_front();
     }
     messages.push_back(text);
+    refresh();
 }
 
 void NcursesLogWindow::refresh() {
@@ -80,30 +89,58 @@ void NcursesLogWindow::refresh() {
 }
 
 NcursesScrollingWindow::NcursesScrollingWindow(string title,int height,int width,int starty,int startx,int scroll_up,int scroll_down) : 
-    scroll_up_char(scroll_up), scroll_down_char(scroll_down), first_string(0)
+    scroll_up_char(scroll_up), scroll_down_char(scroll_down), 
+    first_string(0), act_id(0)
 {
     ptr = newwin(height,width,starty,startx);
     box(ptr,0,0);
     mvwprintw(ptr,0,(width-title.size())/2,title.c_str());
     line_size=height-2;
     col_size=width-2;
-    refresh();
+    refresh(-1);
 }
 
 NcursesScrollingWindow::~NcursesScrollingWindow() {
     delwin(ptr);
 }
 
-int NcursesScrollWindow::add_string(string text) {
-    
+int NcursesScrollingWindow::add_string(string text) {
+    String_Entry ent;
+    ent.text=text;
+    ent.prop=STRING_NORMAL;
+    messages[act_id]=ent;
+    act_id++;
+    return act_id;
 }
 
-void NcursesScrollWindow::remove_string(int id) {
+string NcursesScrollingWindow::get_string(int id) {
+    if(messages.find(id)==messages.end()) {
+        return "";
+    } else {
+        return messages[id].text;
+    }
+}
+
+void NcursesScrollingWindow::modify_string(int id,string new_text) {
+    if(messages.find(id)!=messages.end()) {
+        messages[id].text=new_text;
+    }
+    refresh(-1);
+}
+
+void NcursesScrollingWindow::remove_string(int id) {
     messages.erase(id);
     refresh(-1);
 }
 
-void NcursesScrollWindow::refresh(int enter_char) {
+void NcursesScrollingWindow::set_string_property(int id,String_Properties prop) {
+    if(messages.find(id)!=messages.end()) {
+        messages[id].prop=prop;
+    }
+    refresh(-1);
+}
+
+void NcursesScrollingWindow::refresh(int enter_char) {
     if(enter_char==scroll_up_char) {
         if(first_string>0)
             first_string--;
@@ -114,11 +151,15 @@ void NcursesScrollWindow::refresh(int enter_char) {
     }
 
     int col=1;
-    for(std::map<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
-        string newstr = (*it).second.append(col_size-(*it).second.size(),' ');
+    int iter_act=0;
+    for(std::map<int,String_Entry>::iterator it = messages.begin() ; it!=messages.end();it++) {
+        if(iter_act>=first_string && iter_act<first_string+(int)line_size) {
+            string newstr = (*it).second.text.append(col_size-(*it).second.text.size(),' ');
         
-        mvwprintw(ptr,col,1,newstr.c_str());
-        col++;
+            mvwprintw(ptr,col,1,newstr.c_str());
+            col++;
+        }
+        iter_act++;
     }
     wrefresh(ptr);
 
