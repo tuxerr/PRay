@@ -1,14 +1,14 @@
 #ifndef DEF_Vec3
 #define DEF_Vec3
 
-#define VEC3F Vec3<float>
-
-#define USE_SSE false // true or false
+#define USE_SSE true // true or false
 
 #if USE_SSE
+#define VEC3F Vec3f
 #include "vec3f_sse.hpp"
 #else
 
+#define VEC3F Vec3<float>
 #include <cmath>
 
 template <class number>

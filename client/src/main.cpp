@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
         disp->register_keyhook(std::bind(&Camera::yawLeft,            scene->getCamera()), SDLK_LEFT);
         disp->register_keyhook(std::bind(&Camera::yawRight,           scene->getCamera()), SDLK_RIGHT);
         disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
-        disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
+        //disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
 #else
         Logger::log(LOG_INFO)<<"Keys are disabled"<<endl;
 #endif

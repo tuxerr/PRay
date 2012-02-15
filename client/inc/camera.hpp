@@ -61,7 +61,7 @@ public :
     void yawLeft();
     void yawRight();
     void switchMode();
-    void logInformations();
+    //void logInformations();
 };
 
 #endif
