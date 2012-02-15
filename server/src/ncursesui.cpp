@@ -17,7 +17,6 @@ void NcursesUI::init()
     keypad(stdscr, TRUE); // reading keys like F1, F2, arrows keys
     noecho(); // no echo() while getch()
 
-
     Logger::log()<<"Starting ncurses server UI"<<std::endl;
 
     refresh();
@@ -100,19 +99,11 @@ int NcursesScrollWindow::add_string(string text) {
 }
 
 void NcursesScrollWindow::remove_string(int id) {
-    
+    messages.erase(id);
+    refresh(-1);
 }
 
 void NcursesScrollWindow::refresh(int enter_char) {
-    int col=1;
-    for(std::deque<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
-        string newstr = (*it).append(col_size-(*it).size(),' ');
-        
-        mvwprintw(ptr,col,1,newstr.c_str());
-        col++;
-    }
-    wrefresh(ptr);
-
     if(enter_char==scroll_up_char) {
         if(first_string>0)
             first_string--;
@@ -121,5 +112,15 @@ void NcursesScrollWindow::refresh(int enter_char) {
             first_string++;
         }
     }
+
+    int col=1;
+    for(std::map<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
+        string newstr = (*it).second.append(col_size-(*it).second.size(),' ');
+        
+        mvwprintw(ptr,col,1,newstr.c_str());
+        col++;
+    }
+    wrefresh(ptr);
+
 }
 
