@@ -155,13 +155,40 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
         VEC3F a = readVec3Float(node->FirstChildElement("a"));
         VEC3F b = readVec3Float(node->FirstChildElement("b"));
         VEC3F c = readVec3Float(node->FirstChildElement("c"));
+	TiXmlElement* child_normal_a = node->FirstChildElement("normal_a");
+	TiXmlElement* child_normal_b = node->FirstChildElement("normal_b");
+	TiXmlElement* child_normal_c = node->FirstChildElement("normal_c");
+
+	VEC3F na;
+        VEC3F nb;
+        VEC3F nc;
+
+	VEC3F normal = ((b - a) * (b - c)).normalize();
+	
+	if(child_normal_a != NULL) {
+	  na = readVec3Float(child_normal_a);
+	} else {
+	  na = normal;
+	}
+	
+	if(child_normal_b != NULL) {
+	  nb = readVec3Float(child_normal_b);
+	} else {
+	  nb = normal;
+	}
+
+	if(child_normal_c != NULL) {
+	  nc = readVec3Float(child_normal_c);
+	} else {
+	  nc = normal;
+	}
 
 #ifdef SCENELOADER_DEBUG
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
-        Triangle* tr = new Triangle(a, b, c, material);
+        Triangle* tr = new Triangle(a, b, c, na, nb, nc, material);
         objects->push_back(tr);
     } else if ( nodeName.compare("list")==0 ) {
         TiXmlElement* child = node->FirstChildElement();
@@ -203,7 +230,6 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 				     Settings::getAsInt("max_reflections"));
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
-
 #ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Ugly : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<")"<<endl;
