@@ -31,9 +31,8 @@ public:
     Vec3<number> operator/(number n);
     Vec3<number> rotate(float angle, Vec3<number> axis);
     Vec3<number> symmetry(Vec3<number> x);
-
-  bool operator==(Vec3<number> n);
-  bool operator!=(Vec3<number> n);
+    bool operator==(Vec3<number> n);
+    bool operator!=(Vec3<number> n);
     void getCoord(float* coord);
 };
 
@@ -91,12 +90,14 @@ void Vec3<number>::operator-=(Vec3<number> n) {
 
 template <class number>
 bool Vec3<number>::operator==(Vec3<number> n) {
-  return fabs(x-n.x)<0.00001 && fabs(y-n.y)<0.00001 && fabs(z-n.z)<0.00001;
+  return fabs(x-n.x) < 1e-5
+      && fabs(y-n.y) < 1e-5
+      && fabs(z-n.z) < 1e-5;
 }
 
 template <class number>
 bool Vec3<number>::operator!=(Vec3<number> n) {
-  return !(operator!=(n));
+  return !(operator==(n));
 }
 
 // vectorial product

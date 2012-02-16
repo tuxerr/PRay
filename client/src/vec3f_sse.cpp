@@ -24,7 +24,7 @@ void Vec3f::printLog() {
     Logger::log(LOG_DEBUG)<<"t="<<coord[3]<<std::endl;
 }
 
-bool Vec3f::equals(Vec3f vec) {
+bool Vec3f::operator==(Vec3f vec) {
     float coord1[4];
     getCoord(coord1);
     float coord2[4];
@@ -33,4 +33,8 @@ bool Vec3f::equals(Vec3f vec) {
         && (abs(coord1[1] - coord2[1]) < 1e-5)
         && (abs(coord1[2] - coord2[2]) < 1e-5)
         && (abs(coord1[3] - coord2[3]) < 1e-5);
+}
+
+bool Vec3f::operator!=(Vec3f vec) {
+    return !(operator==(vec));
 }

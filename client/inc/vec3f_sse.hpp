@@ -40,7 +40,8 @@ public:
     Vec3f symmetry(Vec3f x);
     void getCoord(float* coord);
     void printLog();
-    bool equals(Vec3f vec);
+    bool operator==(Vec3f vec);
+    bool operator!=(Vec3f vec);
 };
 
 /*
