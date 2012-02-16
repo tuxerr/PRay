@@ -48,15 +48,13 @@ class Material:
 def writeTriangle(f, verts, vecs, verts_id, material):
     l = ['a', 'b', 'c']
     
+    f.write('\t\t\t<shape>\n')
+    f.write('\t\t\t\t<triangle>\n')
     for i,v in enumerate(verts_id):
-        f.write('\t\t\t<shape>\n')
-        f.write('\t\t\t\t<triangle>\n')
         f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], vecs[v].x, vecs[v].y, vecs[v].z))
         f.write('\t\t\t\t\t<normal_%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].normal.x, verts[v].normal.y, verts[v].normal.z))
-        f.write('\t\t\t\t</triangle>\n')
-        f.write('\t\t\t</shape>\n')
-        #f.write(
-    
+    f.write('\t\t\t\t</triangle>\n')
+    f.write('\t\t\t</shape>\n')
 
 def main(filename):
     sce = bpy.context.scene
