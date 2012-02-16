@@ -48,13 +48,12 @@ class Material:
 def writeTriangle(f, verts, vecs, verts_id, material):
     l = ['a', 'b', 'c']
     
-    f.write('\t\t\t<shape>\n')
+    
     f.write('\t\t\t\t<triangle>\n')
     for i,v in enumerate(verts_id):
         f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], vecs[v].x, vecs[v].y, vecs[v].z))
         f.write('\t\t\t\t\t<normal_%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].normal.x, verts[v].normal.y, verts[v].normal.z))
     f.write('\t\t\t\t</triangle>\n')
-    f.write('\t\t\t</shape>\n')
 
 def main(filename):
     sce = bpy.context.scene
@@ -69,8 +68,9 @@ def main(filename):
             camy.y = 1
             camy.w = 0
             camz.z = -10
+            #camz.w = 0
             target = ob.matrix_world * camz
-            normal = ob.matrix_world*camy - ob.matrix_world[3]
+            normal = ob.matrix_world*camy
             f.write('\t<camera>\n')
             f.write('\t\t<position x="%f" y="%f" z="%f"/>\n' %(ob.location.x, ob.location.y, ob.location.z))
             f.write('\t\t<target x="%f" y="%f" z="%f"/>\n' %(target.x, target.y, target.z))
@@ -109,7 +109,8 @@ def main(filename):
                 
             for material in dfaces:
                 f.write("\t<object>\n")
-                f.write('\t\t<list>\n')
+                f.write('\t\t<shape>\n')
+                f.write('\t\t\t<list>\n')
                 print ('material ', material, len(dfaces[material]))
                 for face in dfaces[material]:
                     vs = face.vertices                    
@@ -123,7 +124,8 @@ def main(filename):
                     else:
                         print("Pas de face")
                         
-                f.write('\t\t</list>\n')
+                f.write('\t\t\t</list>\n')
+                f.write('\t\t</shape>\n')
                 f.write('\t\t<material>\n\t\t\t<phong>\n')
                 f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*material.color.r), int(255*material.color.g), int(255*material.color.b)))
                 f.write('\t\t\t\t<specular v="%f"/>\n' % (material.specular))
@@ -176,3 +178,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+
