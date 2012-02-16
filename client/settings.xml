@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
-  <window_width i="500"/>
-  <window_height i="200"/>
+  <window_width i="300"/>
+  <window_height i="300"/>
   <camera_translation_factor f="5"/>
   <camera_rotation_angle f="2"/>
   <max_reflections i="20"/>

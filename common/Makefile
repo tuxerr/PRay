@@ -2,7 +2,7 @@
 # source files
 CXX = g++
 #CXX = icpc
-CXXFLAGS = -g -Wall -W -O3 -march=native -I./inc `sdl-config --cflags` -std=c++0x
+CXXFLAGS = -Wall -W -O3 -march=native -I./inc `sdl-config --cflags` -std=c++0x
 SRCS = $(wildcard src/*.cpp)
 OBJS = $(SRCS:.cpp=.o)
 

@@ -8,13 +8,13 @@
 
 class Plane : public Object {
 private :
-    Vec3<float> normal;
+    VEC3F normal;
     float originDistance;
 public :
-    Plane(const Vec3<float> &normal, float originDistance, Material &material);
-    void getIntersection(Ray &ray, float *distance, Vec3<float> *normal,
+    Plane(const VEC3F &normal, float originDistance, Material &material);
+    void getIntersection(Ray &ray, float *distance, VEC3F *normal,
                          Material **material);
-    Vec3<float> getNormal();
+    VEC3F getNormal();
     float getOriginDistance();
 };
 

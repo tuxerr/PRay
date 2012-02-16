@@ -44,7 +44,7 @@ Camera* Scene::getCamera() {
 
 Color Scene::renderRay(Ray &ray) {
   float distance;
-  Vec3<float> normal;
+  VEC3F normal;
   Material* material = 0;
 
   computeIntersection(ray, &distance, &normal, &material);
@@ -68,12 +68,12 @@ Color Scene::renderRay(Ray &ray) {
 /**
  * *distance < 0 if no intersection was found
  */
-void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
+void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
                                 Material **material) {
 
     *distance = -2;
     float tempDistance = -1;
-    Vec3<float> tempNormal;
+    VEC3F tempNormal;
     Material* tempMaterial;
     list<Object*>::iterator iter;
 
@@ -105,9 +105,9 @@ void Scene::computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
 
 Color Scene::renderPixel(int x, int y) {
 
-    Vec3<float> direction  = camera->getDirection(x, y); //.normalize();
+    VEC3F direction  = camera->getDirection(x, y); //.normalize();
     Color color = Color(0,0,0);
-    Vec3<float> origin = camera->getPoint();
+    VEC3F origin = camera->getPoint();
     Ray r = Ray(origin, direction, color);
     //    Logger::log(LOG_DEBUG) << "before scene::renderRay" << endl;
     r.reflections = 0;
@@ -117,10 +117,10 @@ Color Scene::renderPixel(int x, int y) {
 /**
  * Give the lights that are visible from a point. Used for shadows.
  */
-list<DirectionalLight> Scene::visibleLights(Vec3<float> point) {
+list<DirectionalLight> Scene::visibleLights(VEC3F point) {
 
   float distance = -1;
-  Vec3<float> normal;
+  VEC3F normal;
   Material *material;
   Color color = Color(0.0);
   list<DirectionalLight> result;

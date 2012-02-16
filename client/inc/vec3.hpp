@@ -1,30 +1,40 @@
 #ifndef DEF_Vec3
 #define DEF_Vec3
 
+#define USE_SSE true // true or false
+
+#if USE_SSE
+#define VEC3F Vec3f
+#include "vec3f_sse.hpp"
+#else
+
+#define VEC3F Vec3<float>
 #include <cmath>
 
 template <class number>
 class Vec3 {
 public:
-  Vec3(number =0,number =0,number =0);
-  number x;
-  number y;
-  number z;
-  number norm() const;
-  Vec3<number> normalize() const;
-  Vec3<number> cross(Vec3<number> n);
-  number scalar(Vec3<number> n) const;
-  Vec3<number> operator+(Vec3<number> n);
-  void operator+=(Vec3<number> n);
-  Vec3<number> operator-(Vec3<number> n);
-  void operator-=(Vec3<number> n);
-  Vec3<number> operator*(Vec3<number> n);
-  Vec3<number> operator*(number n);
-  Vec3<number> operator/(number n);
+    Vec3(number =0,number =0,number =0);
+    number x;
+    number y;
+    number z;
+    number norm() const;
+    Vec3<number> normalize() const;
+    Vec3<number> cross(Vec3<number> n);
+    number scalar(Vec3<number> n) const;
+    Vec3<number> operator+(Vec3<number> n);
+    void operator+=(Vec3<number> n);
+    Vec3<number> operator-(Vec3<number> n);
+    void operator-=(Vec3<number> n);
+    Vec3<number> operator*(Vec3<number> n);
+    Vec3<number> operator*(number n);
+    Vec3<number> operator/(number n);
+    Vec3<number> rotate(float angle, Vec3<number> axis);
+    Vec3<number> symmetry(Vec3<number> x);
+
   bool operator==(Vec3<number> n);
   bool operator!=(Vec3<number> n);
-  Vec3<number> rotate(float angle, Vec3<number> axis);
-  Vec3<number> symmetry(Vec3<number> x);
+    void getCoord(float* coord);
 };
 
 template <class number>
@@ -146,4 +156,13 @@ Vec3<number> Vec3<number>::symmetry(Vec3<number> x) {
   return x*(2*(*this).scalar(x)) + (*this)*(-1);
 }
 
+template <class number>
+void Vec3<number>::getCoord(float* coord) {
+    coord[0] = x;
+    coord[1] = y;
+    coord[2] = z;
+    coord[3] = 0;
+}
+
+#endif
 #endif
