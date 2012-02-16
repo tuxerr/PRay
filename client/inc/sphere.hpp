@@ -10,17 +10,17 @@ using namespace std;
 
 class Sphere : public Object {
 private :
-    Vec3<float> center;
+    VEC3F center;
     float radius;
 public :
-    Sphere(const Vec3<float>& center,
+    Sphere(const VEC3F& center,
            float radius,
            Material* material);
     void getIntersection(Ray& ray,
                          float* distance,
-                         Vec3<float>* normal,
+                         VEC3F* normal,
                          Material** material);
-    Vec3<float> getCenter() const;
+    VEC3F getCenter() const;
     float getRadius() const;
 };
 

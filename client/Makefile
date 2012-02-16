@@ -3,19 +3,20 @@ EXEC = pray_client
 # source files
 CXX = g++
 #CXX = icpc
-CXXFLAGS = -g -Wall -W -O3 -march=native `sdl-config --cflags` -I./inc -I../common/inc -std=c++0x
+CXXFLAGS = -Wall -W -O3 -march=native `sdl-config --cflags` -I./inc -I../common/inc -std=c++0x
 LDFLAGS = -lm -lrt `sdl-config --libs` -lpthread -ltinyxml
 SRCS = $(wildcard src/*.cpp)
-INCS = $(wildcard inc/*.h)
 OBJS = $(SRCS:.cpp=.o)
 COMMONSRCS = $(wildcard ../common/src/*.cpp)
 COMMONOBJS = $(COMMONSRCS:.cpp=.o)
 
 all: $(EXEC)
 
-$(EXEC) : $(OBJS)
+$(EXEC) : common $(OBJS)
+	$(CXX) -o $@ $(OBJS) $(COMMONOBJS) $(LDFLAGS)
+
+common :
 	cd ../common; make
-	$(CXX) -o $@ $^ $(COMMONOBJS) $(LDFLAGS)
 
 %.o : %.cpp
 	$(CXX) -o $@ -c $< $(CXXFLAGS)

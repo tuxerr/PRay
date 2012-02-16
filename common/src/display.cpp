@@ -18,14 +18,19 @@ void Display::register_keyhook(std::function< void(void) > met,SDLKey key) {
 #endif
 
 void Display::refresh_display() {
-    SDL_Flip(screen);
+    SDL_UpdateRect(screen,0,0,0,0);
     last_refresh=SDL_GetTicks();
 }
 
-void Display::refresh_display_timecheck() {
-    if(SDL_GetTicks()-last_refresh>MINIMUM_REFRESH_TIME) {
-        SDL_Flip(screen);
+void Display::refresh_part_display_timecheck() {
+    if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
+        for (std::set<int>::iterator it=new_lines_to_refresh.begin(); 
+             it!=new_lines_to_refresh.end(); 
+             it++) {
+            SDL_UpdateRect(screen,0,*it,width,1);            
+        }
         last_refresh=SDL_GetTicks();
+        new_lines_to_refresh.clear();
     }
 }
 
@@ -94,7 +99,7 @@ Display::Display(int p_width,int p_height) :
 
     SDL_WM_SetCaption(DEFAULT_NAME,NULL);
 
-    screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
     Logger::log(LOG_INFO)<<"SDL initialised (video and controls) in "<<width<<"x"<<height<<endl;
 }
 
@@ -102,6 +107,7 @@ Display::~Display() {
     SDL_SaveBMP(screen, "image.bmp");
     Logger::log(LOG_INFO)<<"Rendered image saved"<<endl;
 
+    SDL_FreeSurface(screen);
     SDL_Quit();
     Logger::log(LOG_INFO)<<"SDL Quit"<<endl;
 }
@@ -116,12 +122,15 @@ int Display::get_height() {
 
 void Display::add_pixel(int x,int y,Color color) {
     // all pixels are 32b-encoded
-   
+    SDL_LockSurface(screen);
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
+    SDL_UnlockSurface(screen);
+    new_lines_to_refresh.insert(y);
 }
 
 void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
+    SDL_LockSurface(screen);
     // all pixels are 32b-encoded
     int i=0;
     for(int h=0;h<height;h++) {
@@ -129,6 +138,29 @@ void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &p
             Uint32 *p = (Uint32 *)screen->pixels + (x+w) + (y+h) * (screen->pitch/4);
             *p=SDL_MapRGB(screen->format,pixels[i].getR()*255,pixels[i].getG()*255,pixels[i].getB()*255);
             i++;
-        }        
+        }  
+        new_lines_to_refresh.insert(y+h);
     }
+    SDL_UnlockSurface(screen);
+}
+
+void Display::add_line_group(int x,int y,std::vector<Color> &pixels) {
+    // all pixels are 32b-encoded
+    // adds to the display texture a group of lined pixels that can go from line to line (end/beginning)
+    SDL_LockSurface(screen);
+    int currentx=x;
+    int currenty=y;
+    new_lines_to_refresh.insert(currenty);
+    for(unsigned int i=0;i<pixels.size();i++) {
+        Uint32 *p = (Uint32 *)screen->pixels + currentx  + currenty * screen->pitch/4;
+        *p=SDL_MapRGB(screen->format,pixels[i].getR()*255,pixels[i].getG()*255,pixels[i].getB()*255);
+        if(currentx<width-1) {
+            currentx++;
+        } else {
+            currentx=0;
+            currenty++;
+            new_lines_to_refresh.insert(currenty);
+        }
+    }
+    SDL_UnlockSurface(screen);
 }

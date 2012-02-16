@@ -1,6 +1,6 @@
 #include "sceneLoader.hpp"
 #include "logger.hpp"
-
+#include "settings.hpp"
 #include "sphere.hpp"
 #include "triangle.hpp"
 #include "directionalLight.hpp"
@@ -20,7 +20,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         Logger::log(LOG_ERROR) << "Error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
 	return -1;
     } else {
-        Logger::log(LOG_INFO) << "Start loading " << scene_file << endl;
+        Logger::log(LOG_INFO) << "Start loading scene : " << scene_file << endl;
 
         list<Object*> objects;
         list<DirectionalLight> lDirLights;
@@ -38,8 +38,8 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         while ( node ) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
-                Vec3<float> position, target, normal;
-                float w = 8, h = 4.5, d = 35;
+                VEC3F position, target, normal;
+                float w = 8, d = 35;
 
                 tmp_node = node->FirstChildElement("position");
                 if (tmp_node == NULL) {
@@ -67,24 +67,19 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                     Logger::log(LOG_ERROR)<<"Missing <viewplane> near line "<<node->Row()<<endl;
                 } else {
                     tmp_node->QueryFloatAttribute("w", &w);
-                    tmp_node->QueryFloatAttribute("h", &h);
                     tmp_node->QueryFloatAttribute("d", &d);
                 }
 
-                if ( w / h - (float)xRes / (float)yRes  > 1e-4 ) {
-                    Logger::log(LOG_WARNING)<<"The camera and the screen have not the same ratio"<<endl;
-                    Logger::log(LOG_INFO)<<"Camera ratio : "<<(float)yRes / (float)xRes<<endl;
-                    Logger::log(LOG_INFO)<<"Screen ratio : "<<w / h<<endl;
-                }
-
-                camera = new Camera(position,
+		camera = new Camera(position,
                                     target-position,
                                     normal,
-                                    w, h, d,
-                                    xRes, yRes);
+                                    w, d,
+                                    xRes, yRes,
+                                    Settings::getAsFloat("camera_translation_factor"),
+                                    Settings::getAsFloat("camera_rotation_angle"));
             } else if ( nodeName.compare("directionalLight")==0 ) {
                 Color color;
-                Vec3<float> direction;
+                VEC3F direction;
 
                 tmp_node = node->FirstChildElement("color");
                 if (tmp_node == NULL) {
@@ -147,7 +142,7 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
     string nodeName(node->Value());
 
     if ( nodeName.compare("sphere")==0 ) {
-        Vec3<float> center = readVec3Float(node->FirstChildElement("center"));
+        VEC3F center = readVec3Float(node->FirstChildElement("center"));
         float radius = 0;
         node->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
@@ -157,9 +152,9 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 #endif
         objects->push_back(new Sphere(center, radius, material));
     } else if ( nodeName.compare("triangle")==0 ) {
-        Vec3<float> a = readVec3Float(node->FirstChildElement("a"));
-        Vec3<float> b = readVec3Float(node->FirstChildElement("b"));
-        Vec3<float> c = readVec3Float(node->FirstChildElement("c"));
+        VEC3F a = readVec3Float(node->FirstChildElement("a"));
+        VEC3F b = readVec3Float(node->FirstChildElement("b"));
+        VEC3F c = readVec3Float(node->FirstChildElement("c"));
 
 #ifdef SCENELOADER_DEBUG
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
@@ -204,7 +199,8 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "<<reflexivity<<endl;
 #endif
-        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity);
+        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity,
+				     Settings::getAsInt("max_reflections"));
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 
@@ -230,12 +226,12 @@ Color SceneLoader::readColor(TiXmlElement* node) {
     return Color(r/255, g/255, b/255);
 }
 
-Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {
+VEC3F SceneLoader::readVec3Float(TiXmlElement* node) {
     float x=0, y=0, z=0;
 
     node->QueryFloatAttribute("x", &x);
     node->QueryFloatAttribute("y", &y);
     node->QueryFloatAttribute("z", &z);
 
-    return Vec3<float>(x, y, z);
+    return VEC3F(x, y, z);
 }

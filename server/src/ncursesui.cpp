@@ -25,9 +25,9 @@ void NcursesUI::init()
 
 void NcursesUI::run()
 {
-    NcursesWindow log_win("Logs",LINES-1,COLS/3,0,COLS*2/3);
-    NcursesWindow clients_win("Clients",LINES-1,COLS/3,0,COLS/3);
-    NcursesWindow status_win("Status",LINES-1,COLS/3,0,0);
+    NcursesLogWindow log_win("Logs",LINES-1,COLS/3,0,COLS*2/3);
+    NcursesLogWindow clients_win("Clients",LINES-1,COLS/3,0,COLS/3);
+    NcursesLogWindow status_win("Status",LINES-1,COLS/3,0,0);
 
     while (mode_ch != 'q')
     {
@@ -49,27 +49,27 @@ void NcursesUI::run()
     }
 }
 
-NcursesWindow::NcursesWindow(string title,int height,int width,int starty,int startx) {
+NcursesLogWindow::NcursesLogWindow(string title,int height,int width,int starty,int startx) {
     ptr = newwin(height,width,starty,startx);
     box(ptr,0,0);
     mvwprintw(ptr,0,(width-title.size())/2,title.c_str());
-    max_size=height-2;
+    line_size=height-2;
     col_size=width-2;
     refresh();
 }
 
-NcursesWindow::~NcursesWindow() {
+NcursesLogWindow::~NcursesLogWindow() {
     delwin(ptr);
 }
 
-void NcursesWindow::add_string(string text) {
-    if(messages.size()>=max_size) {
+void NcursesLogWindow::add_string(string text) {
+    if(messages.size()>=line_size) {
         messages.pop_front();
     }
     messages.push_back(text);
 }
 
-void NcursesWindow::refresh() {
+void NcursesLogWindow::refresh() {
     int col=1;
     for(std::deque<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
         string newstr = (*it).append(col_size-(*it).size(),' ');
@@ -79,3 +79,47 @@ void NcursesWindow::refresh() {
     }
     wrefresh(ptr);
 }
+
+NcursesScrollingWindow::NcursesScrollingWindow(string title,int height,int width,int starty,int startx,int scroll_up,int scroll_down) : 
+    scroll_up_char(scroll_up), scroll_down_char(scroll_down), first_string(0)
+{
+    ptr = newwin(height,width,starty,startx);
+    box(ptr,0,0);
+    mvwprintw(ptr,0,(width-title.size())/2,title.c_str());
+    line_size=height-2;
+    col_size=width-2;
+    refresh();
+}
+
+NcursesScrollingWindow::~NcursesScrollingWindow() {
+    delwin(ptr);
+}
+
+int NcursesScrollWindow::add_string(string text) {
+    
+}
+
+void NcursesScrollWindow::remove_string(int id) {
+    
+}
+
+void NcursesScrollWindow::refresh(int enter_char) {
+    int col=1;
+    for(std::deque<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
+        string newstr = (*it).append(col_size-(*it).size(),' ');
+        
+        mvwprintw(ptr,col,1,newstr.c_str());
+        col++;
+    }
+    wrefresh(ptr);
+
+    if(enter_char==scroll_up_char) {
+        if(first_string>0)
+            first_string--;
+    } else if(enter_char==scroll_down_char) {
+        if(first_string+line_size<messages.size()) {
+            first_string++;
+        }
+    }
+}
+

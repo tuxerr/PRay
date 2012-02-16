@@ -5,18 +5,14 @@
 #include "display.hpp"
 #include "sceneLoader.hpp"
 #include "renderer.hpp"
+#include "settings.hpp"
 
-#define WIDTH 128*3
-#define HEIGHT 72*3
-
-#define CAM_TRANS_FACTOR  5
-#define CAM_ROT_ANGLE     2
+#define LOG_PATH "pray_client.log"
 
 int main(int argc, char* argv[])
 {
-    string filename;
-
-    Logger::init("pray_client.log");
+    Logger::init(LOG_PATH);
+    Settings::init("settings.xml");
 
     if (argc != 2) {
         Logger::log(LOG_ERROR) << "Missing argument" << endl;
@@ -24,13 +20,14 @@ int main(int argc, char* argv[])
 	return EXIT_FAILURE;
     }
 
-    filename = string(argv[1]);
+    string filename = string(argv[1]);
 
     const string standaloneMode ("--test");
 
     if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
     {
-        Display::init(WIDTH,HEIGHT);
+        Display::init(Settings::getAsInt("window_width"),
+		      Settings::getAsInt("window_height"));
         Display *disp = &(Display::getInstance());
 
         Color pixel;
@@ -60,12 +57,12 @@ int main(int argc, char* argv[])
         disp->register_keyhook(std::bind(&Camera::yawLeft,            scene->getCamera()), SDLK_LEFT);
         disp->register_keyhook(std::bind(&Camera::yawRight,           scene->getCamera()), SDLK_RIGHT);
         disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
-        disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
+        //disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
 #else
-        Logger::log(LOG_INFO)<<"Camera movement keys are disabled"<<endl;
+        Logger::log(LOG_INFO)<<"Keys are disabled"<<endl;
 #endif
 
-        Renderer renderer(scene);
+        Renderer renderer(scene,disp);
 
         int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
         Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
@@ -73,8 +70,7 @@ int main(int argc, char* argv[])
         while ( !disp->quit() )
         {
             if(disp->new_control_press()) {
-                std::vector<Color> res = renderer.render(0,0,width,height,numOfCPUs);
-                disp->add_surface(0,0,width,height,res);  
+                renderer.render(0,0,width,height,numOfCPUs,true);
                 disp->refresh_display();
             } else {
                 usleep(30000);

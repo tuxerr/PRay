@@ -33,11 +33,10 @@ class Scene {
   AmbientLight getAmbientLight();
   Camera* getCamera();
   Color renderRay(Ray &ray);
-  static int reflections;
-  void computeIntersection(Ray &ray, float *distance, Vec3<float> *normal,
+  void computeIntersection(Ray &ray, float *distance, VEC3F *normal,
                            Material **material);
   Color renderPixel(int x, int y);
-  list<DirectionalLight> visibleLights(Vec3<float> point);
+  list<DirectionalLight> visibleLights(VEC3F point);
 };
 
 #endif

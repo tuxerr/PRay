@@ -6,14 +6,15 @@
 
 class Ray {
  private :
-  Vec3<float> origin;
-  Vec3<float> direction;
+  VEC3F origin;
+  VEC3F direction;
   Color color;
  public :
-  Ray(const Vec3<float> &origin, const Vec3<float> &direction, Color &color);
-  Vec3<float> getOrigin() const;
-  Vec3<float> getDirection() const;
+  Ray(const VEC3F &origin, const VEC3F &direction, Color &color, int reflections = 0);
+  VEC3F getOrigin() const;
+  VEC3F getDirection() const;
   Color getColor() const;
+  int reflections;
 };
 
 #endif

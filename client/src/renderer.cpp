@@ -1,10 +1,15 @@
 #include "renderer.hpp"
 
-Renderer::Renderer(Scene *scene) : scene(scene), frameNumber(0)
+Renderer::Renderer(Scene *scene,Display *disp) : scene(scene), frameNumber(0) , display(disp)
 {
 }
 
-std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_number) {
+std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_number,bool _onscreen) {
+    onscreen=_onscreen;
+    if(onscreen && display==NULL) {
+        onscreen=false;
+    }
+
     Uint32 initial_tick = SDL_GetTicks();
 
     tasks.clear();
@@ -46,15 +51,17 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_
     }
 
     std::vector<Color> res;
-    for(unsigned int k=0;k<results.size();k++) {
-        std::vector<Color>* taskres = results[k];
-        if(taskres!=NULL) {
-            for(unsigned int j=0;j<taskres->size();j++) {
-                Color c = (*taskres)[j];
-                res.push_back(c);
+    if(!onscreen) {
+        for(unsigned int k=0;k<results.size();k++) {
+            std::vector<Color>* taskres = results[k];
+            if(taskres!=NULL) {
+                for(unsigned int j=0;j<taskres->size();j++) {
+                    Color c = (*taskres)[j];
+                    res.push_back(c);
+                }
             }
+            delete taskres;
         }
-        delete taskres;
     }
 
     Logger::log()<<"Frame "<< frameNumber++ <<" rendered in "
@@ -84,15 +91,27 @@ void Renderer::compute_task() {
         tasks_mut.unlock();
 
         if(compute) {
-            std::vector<Color> *res = new std::vector<Color>;
-            for(unsigned int i=0;i<currenttask.pixels.size();i++) {
-                Color pixel = scene->renderPixel(currenttask.pixels[i].first,currenttask.pixels[i].second);
-                res->push_back(pixel);
-            }
+            if(!onscreen) {
+                std::vector<Color> *res = new std::vector<Color>;
+                for(unsigned int i=0;i<currenttask.pixels.size();i++) {
+                    Color pixel = scene->renderPixel(currenttask.pixels[i].first,currenttask.pixels[i].second);
+                    res->push_back(pixel);
+                }
 
-            results_mut.lock();
-            results[currenttask.task_number]=res;
-            results_mut.unlock();
+                results_mut.lock();
+                results[currenttask.task_number]=res;
+                results_mut.unlock();
+            } else {
+                std::vector<Color> res;
+                for(unsigned int i=0;i<currenttask.pixels.size();i++) {
+                    Color pixel = scene->renderPixel(currenttask.pixels[i].first,currenttask.pixels[i].second);
+                    res.push_back(pixel);
+                }
+                results_mut.lock();
+                display->add_line_group(currenttask.pixels[0].first,currenttask.pixels[0].second,res);
+                display->refresh_part_display_timecheck();
+                results_mut.unlock();
+            }
         } else {
             cont=false;
         }
