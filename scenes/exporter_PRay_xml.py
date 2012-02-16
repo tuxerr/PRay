@@ -45,15 +45,17 @@ class Material:
     def __hash__(self):
         return hash(self.specular) + hash(self.diffuse) + hash(self.ambiant) + hash(self.shininess) + hash(self.reflexivity) + hash(self.color.r) + hash(self.color.g) + hash(self.color.b)
 
-def writeTriangle(f, verts, verts_id, material):
+def writeTriangle(f, verts, vecs, verts_id, material):
     l = ['a', 'b', 'c']
     
     for i,v in enumerate(verts_id):
         f.write('\t\t\t<shape>\n')
         f.write('\t\t\t\t<triangle>\n')
-        f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].x, verts[v].y, verts[v].z))
+        f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], vecs[v].x, vecs[v].y, vecs[v].z))
+        f.write('\t\t\t\t\t<normal_%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].normal.x, verts[v].normal.y, verts[v].normal.z))
         f.write('\t\t\t\t</triangle>\n')
         f.write('\t\t\t</shape>\n')
+        #f.write(
     
 
 def main(filename):
@@ -113,12 +115,12 @@ def main(filename):
                 for face in dfaces[material]:
                     vs = face.vertices                    
                     if len(vs)==3:
-                        writeTriangle(f, verts, vs, material)
+                        writeTriangle(f, mesh.vertices, verts, vs, material)
                     elif len(vs)==4:
                         vs1 = vs[:3]
                         vs2 = [vs[0],vs[2], vs[3]]
-                        writeTriangle(f, verts, vs1, material)
-                        writeTriangle(f, verts, vs2, material)
+                        writeTriangle(f, mesh.vertices, verts, vs1, material)
+                        writeTriangle(f, mesh.vertices, verts, vs2, material)
                     else:
                         print("Pas de face")
                         
