@@ -24,7 +24,7 @@ float rotatAngle,
     rotatAngle(rotatAngle),
     mode(mode)
 {
-    if (! (direction.scalar(normal) < 1e-6)) {
+    if (! (direction.scalar(normal) < 1e-5)) {
         Logger::log(LOG_WARNING)<<"Incorrect camera : direction and normal are not orthogonal"<<std::endl;
     }
 }
