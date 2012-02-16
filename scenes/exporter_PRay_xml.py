@@ -67,6 +67,7 @@ def main(filename):
             camz = Vector().to_4d()
             camy = Vector().to_4d()
             camy.y = 1
+            camy.w = 0
             camz.z = -10
             target = ob.matrix_world * camz
             normal = ob.matrix_world*camy - ob.matrix_world[3]
