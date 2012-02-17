@@ -188,7 +188,7 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
-        Triangle* tr = new Triangle(a, b, c, na, nb, nc, material);
+        Triangle* tr = new Triangle(a, b, c, na, nb, nc, normal, material);
         objects->push_back(tr);
     } else if ( nodeName.compare("list")==0 ) {
         TiXmlElement* child = node->FirstChildElement();

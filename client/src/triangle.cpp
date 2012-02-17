@@ -4,28 +4,16 @@
 
 Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
 		   VEC3F &na, VEC3F &nb, VEC3F &nc,
+                   VEC3F &normal,
 		   Material *material) :
   Object(material), 
   a(a), 
   b(b), 
   c(c), 
-  normal(((b - a) * (b - c)).normalize()),
+  normal(normal),
   na(na.normalize()), 
   nb(nb.normalize()), 
   nc(nc.normalize())
-{
-
-}
-
-Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c, Material *material) :
-  Object(material), 
-  a(a), 
-  b(b), 
-  c(c), 
-  normal(((b - a) * (b - c)).normalize()), 
-  na(normal), 
-  nb(normal), 
-  nc(normal)
 {
 
 }
