@@ -104,7 +104,9 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 
 
 Color Scene::renderPixel(int x, int y) {
-
+/*
+    std::list<VEC3F> camera->getDirections(x, y, Settings::getAsInt("sampling"));
+*/
     VEC3F direction  = camera->getDirection(x, y); //.normalize();
     Color color = Color(0,0,0);
     VEC3F origin = camera->getPoint();

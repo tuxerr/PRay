@@ -1,5 +1,6 @@
 #include "logger.hpp"
 #include "camera.hpp"
+#include <cstdlib>
 
 Camera::Camera(VEC3F point,
                VEC3F direction,
@@ -8,8 +9,8 @@ Camera::Camera(VEC3F point,
                float viewplaneDist,
                int xResolution,
                int yResolution,
-float transFactor,
-float rotatAngle,
+               float transFactor,
+               float rotatAngle,
                cameraMode mode) :
     point(point),
     direction(direction.normalize()),
@@ -68,9 +69,24 @@ float Camera::getViewplaneDist() const {
 VEC3F Camera::getDirection(int x, int y) {
     return (direction*viewplaneDist
             + normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution))
-            + direction*normal*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))).normalize();
+            + lateral*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))).normalize();
 }
+/*
+std::list<VEC3F> Camera::getDirections(int x, int y, int n) {
+    std::list<VEC3F> directions;
+    VEC3F direction = getDirection(x, y);
+    
+    for (int i = 0 ; i < n ; i++) {
+        float h = -0.5 + rand() / RAND_MAX;
+        float w = -0.5 + rand() / RAND_MAX;
+        directions.push_back((direction*viewplaneDist
+                              + normal*(viewplaneHeight/2 - (h + (float)y)*(viewplaneHeight/yResolution))
+                              + direction*normal*(viewplaneWidth/2 - (w + (float)x)*(viewplaneWidth/xResolution))).normalize());
+    }
 
+    return directions;
+}
+*/
 VEC3F Camera::horizontalProj(VEC3F vec) {
     float coord[4];
     vec.getCoord(coord);
