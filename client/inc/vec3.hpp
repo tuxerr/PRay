@@ -34,6 +34,7 @@ public:
     bool operator==(Vec3<number> n);
     bool operator!=(Vec3<number> n);
     void getCoord(float* coord);
+    void printLog();
 };
 
 template <class number>
@@ -163,6 +164,14 @@ void Vec3<number>::getCoord(float* coord) {
     coord[1] = y;
     coord[2] = z;
     coord[3] = 0;
+}
+
+template <class number>
+void Vec3<number>::printLog() {
+    Logger::log(LOG_DEBUG)<<"x="<<x<<std::endl;
+    Logger::log(LOG_DEBUG)<<"y="<<y<<std::endl;
+    Logger::log(LOG_DEBUG)<<"z="<<z<<std::endl;
+    Logger::log(LOG_DEBUG)<<"t=0"<<std::endl;
 }
 
 #endif

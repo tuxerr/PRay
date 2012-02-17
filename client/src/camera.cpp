@@ -71,22 +71,28 @@ VEC3F Camera::getDirection(int x, int y) {
             + normal*(viewplaneHeight/2 - y*(viewplaneHeight/yResolution))
             + lateral*(viewplaneWidth/2 - x*(viewplaneWidth/xResolution))).normalize();
 }
-/*
+
 std::list<VEC3F> Camera::getDirections(int x, int y, int n) {
     std::list<VEC3F> directions;
     VEC3F direction = getDirection(x, y);
     
     for (int i = 0 ; i < n ; i++) {
-        float h = -0.5 + rand() / RAND_MAX;
-        float w = -0.5 + rand() / RAND_MAX;
-        directions.push_back((direction*viewplaneDist
-                              + normal*(viewplaneHeight/2 - (h + (float)y)*(viewplaneHeight/yResolution))
-                              + direction*normal*(viewplaneWidth/2 - (w + (float)x)*(viewplaneWidth/xResolution))).normalize());
+        float h = -0.5 + (float)rand() / (float)RAND_MAX;
+        float w = -0.5 + (float)rand() / (float)RAND_MAX;
+
+        VEC3F dir = (direction*viewplaneDist
+                     + normal*(viewplaneHeight/2 
+                               - (h + (float)y)*(viewplaneHeight/yResolution))
+                     + lateral*(viewplaneWidth/2 
+                                - (w + (float)x)*(viewplaneWidth/xResolution))
+            ).normalize();
+
+        directions.push_back(dir);
     }
 
     return directions;
 }
-*/
+
 VEC3F Camera::horizontalProj(VEC3F vec) {
     float coord[4];
     vec.getCoord(coord);

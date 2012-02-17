@@ -4,7 +4,7 @@
     <position x="0" y="0" z="0"/>
     <target x="1" y="0" z="0"/>
     <normal x="0" y="0" z="1"/>
-    <viewplane w="8" h="4.5" d="35"/>
+    <viewplane w="5" d="50"/>
   </camera>
   <directionalLight>
     <color r="255" g="255" b="255"/>
@@ -21,9 +21,14 @@
       </sphere>
     </shape>
     <material>
-      <ugly>
-        <color r="255" g="0" b="0"/>
-      </ugly>
+      <phong>
+        <color r="255" g="0" b="0"/>      
+        <specular v="0.6"/>
+        <diffuse v="0.5"/>
+        <ambiant v="0"/>
+        <shininess v="100"/>
+        <reflexivity v="0.1"/>
+      </phong>
     </material>
   </object>
   <object>

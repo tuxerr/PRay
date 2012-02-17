@@ -5,5 +5,5 @@
   <camera_translation_factor f="5"/>
   <camera_rotation_angle f="2"/>
   <max_reflections i="20"/>
-  <sampling i="5"/>
+  <sampling i="9"/>
 </settings>

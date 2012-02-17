@@ -1,7 +1,10 @@
 #include "ray.hpp"
 
 Ray::Ray(const VEC3F &origin, const VEC3F &direction, Color &color, int reflections) :
-  origin(origin), direction(direction.normalize()), color(color), reflections(reflections)
+  origin(origin), 
+  direction(direction.normalize()), 
+  color(color), 
+  reflections(reflections)
 {
 
 }

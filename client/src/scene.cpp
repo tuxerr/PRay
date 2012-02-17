@@ -2,6 +2,7 @@
 #include "scene.hpp"
 #include "material.hpp"
 #include "uglyMaterial.hpp"
+#include "settings.hpp"
 
 Scene::Scene(const list<Object*> objects,
 	     const list<DirectionalLight> &directionalLights,
@@ -104,16 +105,25 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 
 
 Color Scene::renderPixel(int x, int y) {
-/*
-    std::list<VEC3F> camera->getDirections(x, y, Settings::getAsInt("sampling"));
-*/
-    VEC3F direction  = camera->getDirection(x, y); //.normalize();
-    Color color = Color(0,0,0);
+    
+    float r=0, g=0, b=0;
+
     VEC3F origin = camera->getPoint();
-    Ray r = Ray(origin, direction, color);
-    //    Logger::log(LOG_DEBUG) << "before scene::renderRay" << endl;
-    r.reflections = 0;
-    return renderRay(r);
+    std::list<VEC3F> directions = camera->getDirections(x, y, Settings::getAsInt("sampling"));
+    std::list<VEC3F>::iterator iterDir;
+    
+    for (iterDir = directions.begin() ; iterDir != directions.end() ; iterDir++) {
+        Color color;
+        Ray ray = Ray(origin, *iterDir, color);
+        Color res = renderRay(ray);
+        r += res.getR();
+        g += res.getG();
+        b += res.getB();
+    }
+    
+    int n = directions.size();
+
+    return Color(r/n, g/n, b/n);
 }
 
 /**
