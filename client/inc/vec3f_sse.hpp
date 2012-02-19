@@ -42,6 +42,7 @@ public:
     void printLog();
     bool operator==(Vec3f vec);
     bool operator!=(Vec3f vec);
+    bool operator<(Vec3f vec) const;
 };
 
 /*

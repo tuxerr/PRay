@@ -38,3 +38,10 @@ bool Vec3f::operator==(Vec3f vec) {
 bool Vec3f::operator!=(Vec3f vec) {
     return !(operator==(vec));
 }
+
+/**
+ * only exists to be able to call sort an list of pair<float,Vec3f>
+ */
+bool Vec3f::operator<(Vec3f vec) const {
+    return true;
+}

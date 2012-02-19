@@ -103,27 +103,56 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
     
 }
 
-
 Color Scene::renderPixel(int x, int y) {
     
-    float r=0, g=0, b=0;
-
     VEC3F origin = camera->getPoint();
+    
+    // directions
     std::list<VEC3F> directions = camera->getDirections(x, y, Settings::getAsInt("sampling"));
+    int n = directions.size();
     std::list<VEC3F>::iterator iterDir;
     
+    // sub-pixels 
+    std::list<std::pair<float,VEC3F>> colors;
     for (iterDir = directions.begin() ; iterDir != directions.end() ; iterDir++) {
         Color color;
         Ray ray = Ray(origin, *iterDir, color);
         Color res = renderRay(ray);
-        r += res.getR();
-        g += res.getG();
-        b += res.getB();
+        colors.push_back(std::pair<float,VEC3F>(0, VEC3F(res.getR(), res.getG(), res.getB())));
     }
-    
-    int n = directions.size();
 
-    return Color(r/n, g/n, b/n);
+    // mean color
+    VEC3F mean (0,0,0);
+    std::list<std::pair<float,VEC3F>>::iterator iterColor;
+    for (iterColor = colors.begin() ; iterColor != colors.end() ; iterColor++) {
+        mean += iterColor->second;
+    }
+    mean = mean / n;
+
+    // distances
+    for (iterColor = colors.begin() ; iterColor != colors.end() ; iterColor++) {
+        iterColor->first = (mean - iterColor->second).norm();
+    }
+
+    // sorting
+    colors.sort();
+    
+    // result
+    float selection = Settings::getAsFloat("sampling_selection");
+    VEC3F res (0,0,0);
+    iterColor = colors.begin();
+    int i = 0;
+    while ( i < (int)(selection * (float)n) ) {
+        res += iterColor->second;
+        iterColor++;
+        i++;            
+    }
+    res = res / i;
+
+    float ret[4];
+    res.getCoord(ret);
+
+    return Color(ret[0], ret[1], ret[2]);
 }
 
 /**

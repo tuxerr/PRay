@@ -6,4 +6,5 @@
   <camera_rotation_angle f="2"/>
   <max_reflections i="20"/>
   <sampling i="5"/>
+  <sampling_selection f="0.8"/>
 </settings>
