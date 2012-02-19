@@ -105,54 +105,83 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 
 Color Scene::renderPixel(int x, int y) {
     
+    int launchedRays = 0;
     VEC3F origin = camera->getPoint();
-    
-    // directions
-    std::list<VEC3F> directions = camera->getDirections(x, y, Settings::getAsInt("sampling"));
-    int n = directions.size();
-    std::list<VEC3F>::iterator iterDir;
-    
-    // sub-pixels 
-    std::list<std::pair<float,VEC3F>> colors;
-    for (iterDir = directions.begin() ; iterDir != directions.end() ; iterDir++) {
+    std::vector<VEC3F> directions;
+    std::vector<Color> colors;
+    float mean_r=0, mean_g=0, mean_b=0;
+    float old_mean_r, old_mean_g, old_mean_b;
+
+    directions = camera->getFourDirections(x, y);
+    for (int i = 0 ; i < 4 ; i++) {
         Color color;
-        Ray ray = Ray(origin, *iterDir, color);
+        Ray ray = Ray(origin, directions[i], color);
         Color res = renderRay(ray);
-        colors.push_back(std::pair<float,VEC3F>(0, VEC3F(res.getR(), res.getG(), res.getB())));
+        launchedRays++;
+        colors.push_back(res);
+        mean_r += res.getR();
+        mean_g += res.getG();
+        mean_b += res.getB();
+    }
+    mean_r /= 4;
+    mean_g /= 4;
+    mean_b /= 4;
+
+    bool doSupersampling = false;
+
+    for (int i = 0 ; i < 4 ; i++) {
+        if (fabs(mean_r - colors[i].getR())
+            + fabs(mean_g - colors[i].getG())
+            + fabs(mean_b - colors[i].getB()) 
+            > Settings::getAsFloat("supersampling_threshold_start")) {
+            doSupersampling = true;
+            break;
+        }
     }
 
-    // mean color
-    VEC3F mean (0,0,0);
-    std::list<std::pair<float,VEC3F>>::iterator iterColor;
-    for (iterColor = colors.begin() ; iterColor != colors.end() ; iterColor++) {
-        mean += iterColor->second;
+    if (doSupersampling) {
+        do {
+            old_mean_r = mean_r;
+            old_mean_g = mean_g; 
+            old_mean_b = mean_b;
+
+            mean_r *= launchedRays;
+            mean_g *= launchedRays;
+            mean_b *= launchedRays;
+
+            directions.clear();
+            directions = camera->getFourDirections(x, y);
+            for (int i = 0 ; i < 4 ; i++) {
+                Color color;
+                Ray ray = Ray(origin, directions[i], color);
+                Color res = renderRay(ray);
+                launchedRays++;
+                mean_r += res.getR();
+                mean_g += res.getG();
+                mean_b += res.getB();
+            }
+
+            mean_r /= launchedRays;
+            mean_g /= launchedRays;
+            mean_b /= launchedRays;
+
+        } while ((launchedRays < Settings::getAsInt("supersampling_max_rays"))
+                 && (fabs(old_mean_r - mean_r)
+                     + fabs(old_mean_g - mean_g)
+                     + fabs(old_mean_b - mean_b)
+                     > Settings::getAsFloat("supersampling_threshold_end")));
     }
-    mean = mean / n;
-
-    // distances
-    for (iterColor = colors.begin() ; iterColor != colors.end() ; iterColor++) {
-        iterColor->first = (mean - iterColor->second).norm();
+/*
+    if (launchedRays > 4) {
+        Logger::log(LOG_DEBUG)<<"launchedRays="<<launchedRays<<endl;
     }
-
-    // sorting
-    colors.sort();
-    
-    // result
-    float selection = Settings::getAsFloat("sampling_selection");
-    VEC3F res (0,0,0);
-    iterColor = colors.begin();
-    int i = 0;
-    while ( i < (int)(selection * (float)n) ) {
-        res += iterColor->second;
-        iterColor++;
-        i++;            
+*/
+    if (Settings::getAsBool("supersampling_show")) {
+        return Color(min((float)1.0, (float)(launchedRays - 4) 
+                         / Settings::getAsFloat("supersampling_show_limit")));
+    } else {
+        return Color(mean_r, mean_g, mean_b);
     }
-    res = res / i;
-
-    float ret[4];
-    res.getCoord(ret);
-
-    return Color(ret[0], ret[1], ret[2]);
 }
 
 /**

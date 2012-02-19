@@ -87,6 +87,35 @@ std::list<VEC3F> Camera::getDirections(int x, int y, int n) {
     return directions;
 }
 
+std::vector<VEC3F> Camera::getFourDirections(int x, int y) {
+    std::vector<VEC3F> directions;
+    float coordX[4];
+    float coordY[4];
+    
+    coordX[0] = (float)x - 0.5 + 0.5 * (float)rand() / (float)RAND_MAX;
+    coordY[0] = (float)y - 0.5 + 0.5 * (float)rand() / (float)RAND_MAX;
+
+    coordX[1] = (float)x       + 0.5 * (float)rand() / (float)RAND_MAX;
+    coordY[1] = (float)y - 0.5 + 0.5 * (float)rand() / (float)RAND_MAX;
+
+    coordX[2] = (float)x - 0.5 + 0.5 * (float)rand() / (float)RAND_MAX;
+    coordY[2] = (float)y       + 0.5 * (float)rand() / (float)RAND_MAX;
+
+    coordX[3] = (float)x       + 0.5 * (float)rand() / (float)RAND_MAX;
+    coordY[3] = (float)y       + 0.5 * (float)rand() / (float)RAND_MAX;
+
+    for (int i = 0 ; i < 4 ; i++) {
+        directions.push_back((direction * viewplaneDist
+                              + normal * ( viewplaneHeight / 2 
+                                           - coordY[i] * ( viewplaneHeight / yResolution ))
+                              + lateral * ( viewplaneWidth / 2 
+                                            - coordX[i] * ( viewplaneWidth / xResolution ))
+                                 ).normalize());
+    }
+
+    return directions;
+} 
+
 VEC3F Camera::horizontalProj(VEC3F vec) {
     float coord[4];
     vec.getCoord(coord);

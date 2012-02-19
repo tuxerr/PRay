@@ -70,8 +70,6 @@ int main(int argc, char* argv[])
         int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
         Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
         Logger::log(LOG_INFO)<<"Maximum reflections : "<<Settings::getAsInt("max_reflections")<<endl;
-        Logger::log(LOG_INFO)<<"Ray(s) per pixel : "<<Settings::getAsInt("sampling")<<endl;
-
         while ( !disp->quit() )
         {
             if(disp->new_control_press()) {
