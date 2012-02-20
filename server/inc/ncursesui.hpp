@@ -7,18 +7,42 @@
 #include <string>
 #include "logger.hpp"
 #include <queue>
+#include <map>
 
 using namespace std;
 
-class NcursesUI {
-public :
-    NcursesUI();
-    ~NcursesUI();
-    void init();
-    void run();
+typedef enum {
+    STRING_NORMAL,
+    STRING_RED,
+    STRING_GREEN
+} String_Properties;
 
-private :
-    int mode_ch;
+typedef struct {
+    std::string text;
+    String_Properties prop;
+} String_Entry;
+
+class NcursesScrollingWindow {
+public:
+    NcursesScrollingWindow(string title,int height,int width,int starty,int startx,int scroll_up,int scroll_down);
+    ~NcursesScrollingWindow();
+    int add_string(string text);
+    string get_string(int id);
+    void modify_string(int id,string new_text);
+    void set_string_property(int id,String_Properties prop);
+    void remove_string(int id);
+    void refresh(int enter_char);
+    
+private:    
+    WINDOW *ptr;
+    std::map<int,String_Entry> messages;
+    unsigned int line_size;
+    unsigned int col_size;
+    int scroll_up_char;
+    int scroll_down_char;
+    int first_string;
+    int act_id;
+  
 };
 
 class NcursesLogWindow {
@@ -35,22 +59,21 @@ private:
     unsigned int col_size;
 };
 
-class NcursesScrollingWindow {
-public:
-    NcursesScrollingWindow(string title,int height,int width,int starty,int startx,int scroll_up,int scroll_down);
-    ~NcursesScrollingWindow();
-    int add_string(string text);
-    void remove_string(int id);
-    void refresh(int enter_char);
-    
-private:    
-    WINDOW *ptr;
-    std::map<int,std::string> messages;
-    unsigned int line_size;
-    unsigned int col_size;
-    int scroll_up_char;
-    int scroll_down_char;
-    int first_string;
+class NcursesUI {
+public :
+    NcursesUI();
+    ~NcursesUI();
+    void init();
+    void run();
+    NcursesScrollingWindow* get_clients_win();
+    NcursesLogWindow* get_log_win();
+    NcursesLogWindow* get_status_win();
+
+private :
+    int mode_ch;
+    NcursesScrollingWindow *client_ptr;
+    NcursesLogWindow *log_ptr;
+    NcursesLogWindow *status_ptr;
 };
 
 #endif
