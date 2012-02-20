@@ -98,7 +98,6 @@ void NetworkRenderer::render(int width,int height) {
         for(int i : network.get_client_ids()) {
             send_task_to_client(i);
         }
-        
 
     }
 }
