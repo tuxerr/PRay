@@ -4,6 +4,7 @@
 #include "network.hpp"
 #include "logger.hpp"
 #include "display.hpp"
+#include "ncursesui.hpp"
 #include <iostream>
 #include "color.hpp"
 #include <vector>
@@ -32,11 +33,12 @@ typedef struct {
 typedef struct {
     string hostname;
     Client_Status status;
+    int curses_id;
 } Rendering_Client;
 
 class NetworkRenderer {
 public:
-    NetworkRenderer(Network &network,Display &disp);
+    NetworkRenderer(Network &network,Display &disp,NcursesUI &ncursesui);
     void renderer_thread();
     void set_rendering_file(string xmlfile);
     void render(int width,int height);
@@ -61,6 +63,7 @@ private:
     pthread_t thread;
     Network &network;
     Display &display;
+    NcursesUI &ncursesui;
     Render_Status rstatus;
     int rendering_width;
     int rendering_height;
@@ -68,7 +71,8 @@ private:
     std::vector<Rendering_Client> rendering_clients;
     int rendering_task_number;
 
-    void send_task_to_client(int id);
+    int send_task_to_client(int id);
+    void parse_network_result_output(stringstream &recv_ss);
 
 };
 
