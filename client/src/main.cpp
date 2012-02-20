@@ -22,9 +22,7 @@ int main(int argc, char* argv[])
 
     string filename = string(argv[1]);
 
-    const string standaloneMode ("--test");
-
-    if (true) // if (argc > 0 && standaloneMode.compare(argv[0]) == 0)
+    if (argc > 1 && argv[1] == "--standalone" )
     {
         Display::init(Settings::getAsInt("window_width"),
 		      Settings::getAsInt("window_height"));
