@@ -62,7 +62,7 @@ class PhongMaterial : public Material {
 		float shininess,
 		float reflectivity = 0.9,
 		int maxReflections = 9,
-		float transparency = 0.7,
+		float transparency = 0,
 		float refractiveIn = 1.1,
 		float refractiveOut = 1);
 

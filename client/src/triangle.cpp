@@ -123,7 +123,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
 
 
     /* *distance = t;*/
-    //    *normal = this->normal;
-    *normal = getNormal(u,v);
+    *normal = this->normal;
+    //*normal = getNormal(u,v);
     *material = this->material;
 }
