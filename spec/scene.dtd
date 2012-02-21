@@ -1,0 +1,75 @@
+<!ELEMENT scene (camera, directionalLight* ambientLight, object*)>
+<!ELEMENT camera (position, target, normal, viewplane)>
+<!ATTLIST position
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST target
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST normal
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST viewplane
+          w CDATA #required
+          d CDATA #required>
+<!ELEMENT directionalLight (color, direction)>
+<!ATTLIST color
+          r CDATA #required
+          g CDATA #required
+          b CDATA #required>
+<!ATTLIST direction
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ELEMENT ambientLight (color)>
+<!ELEMENT object (shape, material)>
+<!ELEMENT shape (triangle | sphere | list)>
+<!ELEMENT triangle (a, b, c, normal_a+, normal_b+, normal_c+)>
+<!ATTLIST a
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST b
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST c
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST normal_a
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST normal_b
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST normal_c
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ELEMENT sphere (center, radius)>
+<!ATTLIST center
+          x CDATA #required
+          y CDATA #required
+          z CDATA #required>
+<!ATTLIST radius
+          v CDATA #required>
+<!ELEMENT list (triangle*, sphere*)>
+<!ELEMENT material (ugly | phong)>
+<!ELEMENT ugly (color)>
+<!ELEMENT phong (color, specular, diffuse, ambiant, shininess, reflexivity)>
+<!ATTLIST specular
+          v CDATA #required>
+<!ATTLIST diffuse
+          v CDATA #required>
+<!ATTLIST ambiant
+          v CDATA #required>
+<!ATTLIST shininess
+          v CDATA #required>
+<!ATTLIST reflexivity
+          v CDATA #required>

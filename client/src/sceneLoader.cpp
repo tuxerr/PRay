@@ -188,7 +188,7 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
-        Triangle* tr = new Triangle(a, b, c, na, nb, nc, material);
+        Triangle* tr = new Triangle(a, b, c, na, nb, nc, normal, material);
         objects->push_back(tr);
     } else if ( nodeName.compare("list")==0 ) {
         TiXmlElement* child = node->FirstChildElement();
@@ -208,7 +208,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 
     if (childName.compare("phong")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
-        float specular=0, diffuse=0, ambiant=0, shininess=0, reflexivity=0;
+        float specular=0, diffuse=0, ambiant=0, shininess=0, reflexivity=0, transparency=0;
         TiXmlElement* child2;
 
         child2 = child->FirstChildElement("specular");
@@ -221,13 +221,15 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         if (child2) child2->QueryFloatAttribute("v", &shininess);
         child2 = child->FirstChildElement("reflexivity");
         if (child2) child2->QueryFloatAttribute("v", &reflexivity);
+        child2 = child->FirstChildElement("transparency");
+        if (child2) child2->QueryFloatAttribute("v", &transparency);
 
 #ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "<<reflexivity<<endl;
 #endif
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity,
-				     Settings::getAsInt("max_reflections"));
+				     Settings::getAsInt("max_reflections"), transparency);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 #ifdef SCENELOADER_DEBUG

@@ -40,10 +40,22 @@ class Material:
         self.ambiant     = 0
         self.shininess   = 100
         self.reflexivity = 0
-    def __eq__(self, mat): return self.color == mat.color and self.specular == mat.specular and self.diffuse == mat.diffuse and self.ambiant == mat.ambiant and self.reflexivity == mat.reflexivity and self.shininess == mat.shininess
+        self.transparency= 0 
+    def __eq__(self, mat): 
+        return self.color.r == mat.color.r          \
+            and self.color.g == mat.color.g         \
+            and self.color.b == mat.color.b         \
+            and self.specular == mat.specular       \
+            and self.diffuse == mat.diffuse         \
+            and self.ambiant == mat.ambiant         \
+            and self.reflexivity == mat.reflexivity \
+            and self.shininess == mat.shininess
     
     def __hash__(self):
         return hash(self.specular) + hash(self.diffuse) + hash(self.ambiant) + hash(self.shininess) + hash(self.reflexivity) + hash(self.color.r) + hash(self.color.g) + hash(self.color.b)
+        
+    def __str__(self):
+        return "Material:    r: "+str(self.color.r) +", g: "+ str(self.color.g) +", b: "+ str(self.color.b)
 
 def writeTriangle(f, verts, vecs, verts_id, material):
     l = ['a', 'b', 'c']
@@ -91,19 +103,24 @@ def main(filename):
                 material = Material()
                 
                 if len(ob.material_slots) > 0:
-                    mat = ob.material_slots[0].material
+                    #print("index", face.material_index)
+                    mat = ob.material_slots[face.material_index].material
                     if mat.use_vertex_color_paint:
                         material.color = mesh.vertex_colors[0].data[face.index].color1
+                        print("mat", material.color)
                     else:
-                        material.col = mat.diffuse_color
+                        material.color = mat.diffuse_color
+                        if mat.use_transparency:
+                            material.transparency= mat.raytrace_transparency.fresnel_factor
                         if mat.use_raytrace:
                             material.reflexivity = mat.raytrace_mirror.reflect_factor
                             material.ambiant     = mat.ambient
                             material.diffuse     = mat.diffuse_intensity
                             material.specular    = mat.specular_intensity
                             material.shininess   = mat.specular_hardness
+                print ("Blend mat", material.color)
                 if not material in dfaces:
-                    print (dfaces)
+                    print("new mat", material.color)
                     dfaces[material] = []
                 dfaces[material].append(face)
                 
@@ -111,7 +128,7 @@ def main(filename):
                 f.write("\t<object>\n")
                 f.write('\t\t<shape>\n')
                 f.write('\t\t\t<list>\n')
-                print ('material ', material, len(dfaces[material]))
+                print ('material ', material.color)
                 for face in dfaces[material]:
                     vs = face.vertices                    
                     if len(vs)==3:
@@ -133,6 +150,7 @@ def main(filename):
                 f.write('\t\t\t\t<ambiant v="%f"/>\n' % (material.ambiant))
                 f.write('\t\t\t\t<shininess v="%f"/>\n' % (material.shininess))
                 f.write('\t\t\t\t<reflexivity v="%f"/>\n' % (material.reflexivity))
+                f.write('\t\t\t\t<transparency v="%f"/>\n' % (material.transparency))
                 f.write('\t\t\t</phong>\n\t\t</material>\n')
                 f.write("\t</object>\n")
     
@@ -178,4 +196,3 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-

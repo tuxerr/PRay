@@ -2,6 +2,8 @@
 #define DEF_CAMERA
 
 #include "vec3.hpp"
+#include <list>
+#include <vector>
 
 #define DEFAULT_CAM_TRANS_FACTOR  5
 #define DEFAULT_CAM_ROT_ANGLE     1
@@ -48,6 +50,8 @@ public :
     int getXResolution() const;
     int getYResolution() const;
     VEC3F getDirection(int x, int y);
+    std::list<VEC3F> getDirections(int x, int y, int n);
+    std::vector<VEC3F> getFourDirections(int x, int y);
     void translateForward();
     void translateBackwards();
     void translateLeft();

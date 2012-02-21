@@ -15,9 +15,9 @@ private :
   VEC3F nb;
   VEC3F nc;
 public :
-  Triangle(VEC3F &a, VEC3F &b, VEC3F &c, Material *material);
   Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
-	   VEC3F &na, VEC3F &nb, VEC3F &nc, Material *material);
+	   VEC3F &na, VEC3F &nb, VEC3F &nc, 
+           VEC3F &normal, Material *material);
   VEC3F getA() ;
   VEC3F getB() ;
   VEC3F getC() ;
