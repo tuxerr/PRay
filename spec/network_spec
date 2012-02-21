@@ -1,6 +1,7 @@
 ## PRay network specification ##
 ## Client spec ##
 Init : 
+  INFO $width $height
   LOGIN $hostname
 
 Send calculations :

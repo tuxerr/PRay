@@ -3,7 +3,14 @@
 using namespace std;
 
 Server::Server(const char *ip,int port) :
-    ip_addr(ip), dest_port(port), continue_loop(true), islaunched(false)
+    ip_addr(ip), dest_port(port), continue_loop(true), 
+    islaunched(false), failed_connections(0)
+{
+}
+
+Server::Server(string ip,int port) :
+    ip_addr(ip), dest_port(port), continue_loop(true), 
+    islaunched(false), failed_connections(0)
 {
 }
 
@@ -15,10 +22,19 @@ void Server::connect() {
     }
 }
 
+int Server::get_failed_connections() {
+    return failed_connections;
+}
+
+void Server::wait_for_message() {
+    wait_message.wait();
+}
+
 void Server::main_loop() {
  
-    while(sock.connect_to_server(ip_addr.c_str(),dest_port)!=0) {
-        sleep(2);
+    while( sock.connect_to_server(ip_addr.c_str(),dest_port)!=0 && continue_loop ) {
+        sleep(1);
+        failed_connections++;
     }
     Logger::log()<<"Established connection to the server "<<ip_addr<<"("<<dest_port<<")"<<std::endl;
     
@@ -49,7 +65,10 @@ void Server::main_loop() {
                 Logger::log(LOG_ERROR)<<"Server "<<ip_addr<<" : TCP reception error"<<std::endl;
                 continue_loop=false;
             } else {
+                received_messages_mutex.lock();
                 received_messages.push_back(string(recv_str));
+                received_messages_mutex.unlock();
+                wait_message.signal();
             }
 	}
     }
@@ -77,9 +96,7 @@ int Server::send_message(string mes) {
 
 bool Server::has_messages() {
     bool empty;
-    received_messages_mutex.lock();
     empty=received_messages.empty();
-    received_messages_mutex.unlock();
     return !empty;
 }
 
