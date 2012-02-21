@@ -25,7 +25,7 @@ public :
   VEC3F getNB() ;
   VEC3F getNC() ;
   VEC3F getNormal() ;
-  VEC3F getNormal(float u, float v);
+  VEC3F getNormal(VEC3F &point);
   void getIntersection(Ray &ray, float *distance, VEC3F *normal,
 		       Material **material);
 };

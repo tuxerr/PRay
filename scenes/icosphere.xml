@@ -7695,10 +7695,10 @@
 		<material>
 			<phong>
 				<color r="255" g="255" b="255"/>
-				<specular v="0.600000"/>
+				<specular v="0.000000"/>
 				<diffuse v="0.500000"/>
 				<ambiant v="0.000000"/>
-				<shininess v="100.000000"/>
+				<shininess v="0.000000"/>
 				<reflexivity v="0.000000"/>
 			</phong>
 		</material>
