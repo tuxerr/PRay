@@ -69,8 +69,14 @@ Color Scene::renderRay(Ray &ray) {
 /**
  * *distance < 0 if no intersection was found
  */
-void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
-                                Material **material) {
+void Scene::computeIntersection(KDTree node, Ray &ray, float *distance, VEC3F *normal,
+                                Material **material)
+{
+    
+
+
+
+
 
     *distance = -2;
     float tempDistance = -1;
@@ -87,7 +93,6 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 	  tempDistance = -tempDistance;
       	}
 	// ----------------------------------------
-
 
         if (tempDistance >= 0
             && ((*distance >= 0 && tempDistance < *distance)
