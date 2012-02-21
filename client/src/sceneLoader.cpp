@@ -38,7 +38,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         while ( node ) {
             string nodeName(node->Value());
             if ( nodeName.compare("camera")==0 ) {
-                Vec3<float> position, target, normal;
+                VEC3F position, target, normal;
                 float w = 8, d = 35;
 
                 tmp_node = node->FirstChildElement("position");
@@ -79,7 +79,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                                     Settings::getAsFloat("camera_rotation_angle"));
             } else if ( nodeName.compare("directionalLight")==0 ) {
                 Color color;
-                Vec3<float> direction;
+                VEC3F direction;
 
                 tmp_node = node->FirstChildElement("color");
                 if (tmp_node == NULL) {
@@ -142,7 +142,7 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
     string nodeName(node->Value());
 
     if ( nodeName.compare("sphere")==0 ) {
-        Vec3<float> center = readVec3Float(node->FirstChildElement("center"));
+        VEC3F center = readVec3Float(node->FirstChildElement("center"));
         float radius = 0;
         node->FirstChildElement("radius")->QueryFloatAttribute("v", &radius);
 
@@ -152,16 +152,43 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 #endif
         objects->push_back(new Sphere(center, radius, material));
     } else if ( nodeName.compare("triangle")==0 ) {
-        Vec3<float> a = readVec3Float(node->FirstChildElement("a"));
-        Vec3<float> b = readVec3Float(node->FirstChildElement("b"));
-        Vec3<float> c = readVec3Float(node->FirstChildElement("c"));
+        VEC3F a = readVec3Float(node->FirstChildElement("a"));
+        VEC3F b = readVec3Float(node->FirstChildElement("b"));
+        VEC3F c = readVec3Float(node->FirstChildElement("c"));
+	TiXmlElement* child_normal_a = node->FirstChildElement("normal_a");
+	TiXmlElement* child_normal_b = node->FirstChildElement("normal_b");
+	TiXmlElement* child_normal_c = node->FirstChildElement("normal_c");
+
+	VEC3F na;
+        VEC3F nb;
+        VEC3F nc;
+
+	VEC3F normal = ((b - a) * (b - c)).normalize();
+	
+	if(child_normal_a != NULL) {
+	  na = readVec3Float(child_normal_a);
+	} else {
+	  na = normal;
+	}
+	
+	if(child_normal_b != NULL) {
+	  nb = readVec3Float(child_normal_b);
+	} else {
+	  nb = normal;
+	}
+
+	if(child_normal_c != NULL) {
+	  nc = readVec3Float(child_normal_c);
+	} else {
+	  nc = normal;
+	}
 
 #ifdef SCENELOADER_DEBUG
 	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
-        Triangle* tr = new Triangle(a, b, c, material);
+        Triangle* tr = new Triangle(a, b, c, na, nb, nc, normal, material);
         objects->push_back(tr);
     } else if ( nodeName.compare("list")==0 ) {
         TiXmlElement* child = node->FirstChildElement();
@@ -181,7 +208,7 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
 
     if (childName.compare("phong")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
-        float specular=0, diffuse=0, ambiant=0, shininess=0, reflexivity=0;
+        float specular=0, diffuse=0, ambiant=0, shininess=0, reflexivity=0, transparency=0;
         TiXmlElement* child2;
 
         child2 = child->FirstChildElement("specular");
@@ -194,16 +221,17 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         if (child2) child2->QueryFloatAttribute("v", &shininess);
         child2 = child->FirstChildElement("reflexivity");
         if (child2) child2->QueryFloatAttribute("v", &reflexivity);
+        child2 = child->FirstChildElement("transparency");
+        if (child2) child2->QueryFloatAttribute("v", &transparency);
 
 #ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "<<reflexivity<<endl;
 #endif
         material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity,
-				     Settings::getAsInt("max_reflections"));
+				     Settings::getAsInt("max_reflections"), transparency);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
-
 #ifdef SCENELOADER_DEBUG
         Logger::log(LOG_DEBUG)<<"Material : Ugly : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<")"<<endl;
@@ -226,12 +254,12 @@ Color SceneLoader::readColor(TiXmlElement* node) {
     return Color(r/255, g/255, b/255);
 }
 
-Vec3<float> SceneLoader::readVec3Float(TiXmlElement* node) {
+VEC3F SceneLoader::readVec3Float(TiXmlElement* node) {
     float x=0, y=0, z=0;
 
     node->QueryFloatAttribute("x", &x);
     node->QueryFloatAttribute("y", &y);
     node->QueryFloatAttribute("z", &z);
 
-    return Vec3<float>(x, y, z);
+    return VEC3F(x, y, z);
 }

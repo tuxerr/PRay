@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
 {
     Logger::init(LOG_PATH);
     Settings::init("settings.xml");
+    srand ( time(NULL) );
 
     static struct option long_options[] = {
                    {"standalone", no_argument,       0,  's' },
@@ -39,6 +40,7 @@ int main(int argc, char* argv[])
     string server="";
     int port=0;
     string current_option;
+
     while((res=getopt_long(argc,argv,"sf:",long_options,&option_index))!=-1) {
         switch (res) {
         case 0:
@@ -64,8 +66,6 @@ int main(int argc, char* argv[])
             break;
         }
     }
-
-
 
     if( (!standalone && ( server=="" || port==0)) || (standalone && (filename==""))) {
         cout<<usage<<endl;
@@ -103,6 +103,7 @@ void standalone_mode(string filename) {
     Logger::log(LOG_INFO)<<"Rendering started in "<<width<<"x"<<height<<endl;
 
 #ifndef __INTEL_COMPILER
+
     disp->register_keyhook(std::bind(&Camera::translateForward,   scene->getCamera()), SDLK_z);
     disp->register_keyhook(std::bind(&Camera::translateBackwards, scene->getCamera()), SDLK_s);
     disp->register_keyhook(std::bind(&Camera::translateRight,     scene->getCamera()), SDLK_d);
@@ -117,11 +118,13 @@ void standalone_mode(string filename) {
     disp->register_keyhook(std::bind(&Camera::yawRight,           scene->getCamera()), SDLK_RIGHT);
     disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
     disp->register_keyhook(std::bind(&Camera::logInformations,    scene->getCamera()), SDLK_c);
+
 #else
     Logger::log(LOG_INFO)<<"Keys are disabled"<<endl;
 #endif
 
     Renderer renderer(scene,disp);
+
 
     int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
     Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
@@ -134,6 +137,7 @@ void standalone_mode(string filename) {
         } else {
             usleep(30000);
         }
+
         disp->refresh_controls();
     }
 

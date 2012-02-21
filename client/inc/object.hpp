@@ -13,7 +13,7 @@ public :
     virtual ~Object();
     virtual void getIntersection(Ray& ray,
                                  float* distance,
-                                 Vec3<float>* normal,
+                                 VEC3F* normal,
                                  Material** material) = 0;
     Material* getMaterial();
 };

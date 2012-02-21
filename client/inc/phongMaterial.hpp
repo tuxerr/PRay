@@ -45,13 +45,13 @@ class PhongMaterial : public Material {
 
   float refractiveOut;
 
-  Vec3<float> reflect(Vec3<float> normal, Vec3<float> incident);
+  VEC3F reflect(VEC3F normal, VEC3F incident);
 
-  Vec3<float> refract(Vec3<float> normal, Vec3<float> incident, float n1, float n2);
+  VEC3F refract(VEC3F normal, VEC3F incident, float n1, float n2);
 
-  float reflectance(Vec3<float> normal, Vec3<float> incident, float n1, float n2);
+  float reflectance(VEC3F normal, VEC3F incident, float n1, float n2);
 
-  float rSchlick2(Vec3<float> normal, Vec3<float> incident, float n1, float n2);
+  float rSchlick2(VEC3F normal, VEC3F incident, float n1, float n2);
 
 
  public :
@@ -60,13 +60,13 @@ class PhongMaterial : public Material {
 		float diffuseReflection, 
 		float ambiantReflection, 
 		float shininess,
-		float reflectivity = 0.9,
-		int maxReflections = 9,
-		float transparency = 0.7,
-		float refractiveIn = 1.1,
+		float reflectivity,
+		int maxReflections,
+		float transparency,
+		float refractiveIn = 1,
 		float refractiveOut = 1);
 
-  Color renderRay(Ray &ray, float distance, const Vec3<float> &normal, Scene *scene);
+  Color renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene);
 };
 
 #endif

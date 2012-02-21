@@ -40,21 +40,32 @@ class Material:
         self.ambiant     = 0
         self.shininess   = 100
         self.reflexivity = 0
-    def __eq__(self, mat): return self.color == mat.color and self.specular == mat.specular and self.diffuse == mat.diffuse and self.ambiant == mat.ambiant and self.reflexivity == mat.reflexivity and self.shininess == mat.shininess
+        self.transparency= 0 
+    def __eq__(self, mat): 
+        return self.color.r == mat.color.r          \
+            and self.color.g == mat.color.g         \
+            and self.color.b == mat.color.b         \
+            and self.specular == mat.specular       \
+            and self.diffuse == mat.diffuse         \
+            and self.ambiant == mat.ambiant         \
+            and self.reflexivity == mat.reflexivity \
+            and self.shininess == mat.shininess
     
     def __hash__(self):
         return hash(self.specular) + hash(self.diffuse) + hash(self.ambiant) + hash(self.shininess) + hash(self.reflexivity) + hash(self.color.r) + hash(self.color.g) + hash(self.color.b)
+        
+    def __str__(self):
+        return "Material:    r: "+str(self.color.r) +", g: "+ str(self.color.g) +", b: "+ str(self.color.b)
 
-def writeTriangle(f, verts, verts_id, material):
+def writeTriangle(f, verts, vecs, verts_id, material):
     l = ['a', 'b', 'c']
     
-    for i,v in enumerate(verts_id):
-        f.write('\t\t\t<shape>\n')
-        f.write('\t\t\t\t<triangle>\n')
-        f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].x, verts[v].y, verts[v].z))
-        f.write('\t\t\t\t</triangle>\n')
-        f.write('\t\t\t</shape>\n')
     
+    f.write('\t\t\t\t<triangle>\n')
+    for i,v in enumerate(verts_id):
+        f.write('\t\t\t\t\t<%s x="%f" y="%f" z="%f"/>\n' % (l[i], vecs[v].x, vecs[v].y, vecs[v].z))
+        f.write('\t\t\t\t\t<normal_%s x="%f" y="%f" z="%f"/>\n' % (l[i], verts[v].normal.x, verts[v].normal.y, verts[v].normal.z))
+    f.write('\t\t\t\t</triangle>\n')
 
 def main(filename):
     sce = bpy.context.scene
@@ -67,9 +78,11 @@ def main(filename):
             camz = Vector().to_4d()
             camy = Vector().to_4d()
             camy.y = 1
+            camy.w = 0
             camz.z = -10
+            #camz.w = 0
             target = ob.matrix_world * camz
-            normal = ob.matrix_world*camy - ob.matrix_world[3]
+            normal = ob.matrix_world*camy
             f.write('\t<camera>\n')
             f.write('\t\t<position x="%f" y="%f" z="%f"/>\n' %(ob.location.x, ob.location.y, ob.location.z))
             f.write('\t\t<target x="%f" y="%f" z="%f"/>\n' %(target.x, target.y, target.z))
@@ -90,39 +103,46 @@ def main(filename):
                 material = Material()
                 
                 if len(ob.material_slots) > 0:
-                    mat = ob.material_slots[0].material
+                    #print("index", face.material_index)
+                    mat = ob.material_slots[face.material_index].material
                     if mat.use_vertex_color_paint:
                         material.color = mesh.vertex_colors[0].data[face.index].color1
+                        print("mat", material.color)
                     else:
-                        material.col = mat.diffuse_color
+                        material.color = mat.diffuse_color
+                        if mat.use_transparency:
+                            material.transparency= mat.raytrace_transparency.fresnel_factor
                         if mat.use_raytrace:
                             material.reflexivity = mat.raytrace_mirror.reflect_factor
                             material.ambiant     = mat.ambient
                             material.diffuse     = mat.diffuse_intensity
                             material.specular    = mat.specular_intensity
                             material.shininess   = mat.specular_hardness
+                print ("Blend mat", material.color)
                 if not material in dfaces:
-                    print (dfaces)
+                    print("new mat", material.color)
                     dfaces[material] = []
                 dfaces[material].append(face)
                 
             for material in dfaces:
                 f.write("\t<object>\n")
-                f.write('\t\t<list>\n')
-                print ('material ', material, len(dfaces[material]))
+                f.write('\t\t<shape>\n')
+                f.write('\t\t\t<list>\n')
+                print ('material ', material.color)
                 for face in dfaces[material]:
                     vs = face.vertices                    
                     if len(vs)==3:
-                        writeTriangle(f, verts, vs, material)
+                        writeTriangle(f, mesh.vertices, verts, vs, material)
                     elif len(vs)==4:
                         vs1 = vs[:3]
                         vs2 = [vs[0],vs[2], vs[3]]
-                        writeTriangle(f, verts, vs1, material)
-                        writeTriangle(f, verts, vs2, material)
+                        writeTriangle(f, mesh.vertices, verts, vs1, material)
+                        writeTriangle(f, mesh.vertices, verts, vs2, material)
                     else:
                         print("Pas de face")
                         
-                f.write('\t\t</list>\n')
+                f.write('\t\t\t</list>\n')
+                f.write('\t\t</shape>\n')
                 f.write('\t\t<material>\n\t\t\t<phong>\n')
                 f.write('\t\t\t\t<color r="%d" g="%d" b="%d"/>\n' % (int(255*material.color.r), int(255*material.color.g), int(255*material.color.b)))
                 f.write('\t\t\t\t<specular v="%f"/>\n' % (material.specular))
@@ -130,6 +150,7 @@ def main(filename):
                 f.write('\t\t\t\t<ambiant v="%f"/>\n' % (material.ambiant))
                 f.write('\t\t\t\t<shininess v="%f"/>\n' % (material.shininess))
                 f.write('\t\t\t\t<reflexivity v="%f"/>\n' % (material.reflexivity))
+                f.write('\t\t\t\t<transparency v="%f"/>\n' % (material.transparency))
                 f.write('\t\t\t</phong>\n\t\t</material>\n')
                 f.write("\t</object>\n")
     

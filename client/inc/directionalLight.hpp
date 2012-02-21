@@ -8,17 +8,17 @@
 
 class DirectionalLight : public Light {
 private :
-    Vec3<float> direction;
+    VEC3F direction;
 public :
     DirectionalLight(const Color &color,
-                     const Vec3<float> &direction);
+                     const VEC3F &direction);
     DirectionalLight(float color,
-                     const Vec3<float> &direction);
+                     const VEC3F &direction);
     DirectionalLight(float r,
                      float g,
                      float b,
-                     const Vec3<float> &direction);
-    Vec3<float> getDirection();
+                     const VEC3F &direction);
+    VEC3F getDirection();
 };
 
 #endif

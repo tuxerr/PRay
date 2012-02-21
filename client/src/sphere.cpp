@@ -2,7 +2,7 @@
 #include "sphere.hpp"
 #include <math.h>
 
-Sphere::Sphere(const Vec3<float> &center,
+Sphere::Sphere(const VEC3F &center,
                float radius,
                Material* material) :
     Object(material),
@@ -12,7 +12,7 @@ Sphere::Sphere(const Vec3<float> &center,
 
 }
 
-Vec3<float> Sphere::getCenter() const {
+VEC3F Sphere::getCenter() const {
     return center;
 }
 
@@ -25,14 +25,14 @@ float Sphere::getRadius() const {
  */
 void Sphere::getIntersection(Ray& ray,
                              float* distance,
-                             Vec3<float>* normal,
+                             VEC3F* normal,
                              Material** materialIntersection) {
 
     // http://www.cs.princeton.edu/courses/archive/fall00/
     //                                 cs426/lectures/raycast/sld013.htm
 
-    Vec3<float> L = center - ray.getOrigin();
-    Vec3<float> V = ray.getDirection().normalize();
+    VEC3F L = center - ray.getOrigin();
+    VEC3F V = ray.getDirection().normalize();
     float t_ca = L.scalar(V);
     if (t_ca < 0) {
         *distance = -1;
@@ -46,7 +46,7 @@ void Sphere::getIntersection(Ray& ray,
             float t1 = t_ca - t_hc;
             float t2 = t_ca + t_hc;
             *distance = (t1<t2) ? t1 : t2;
-            Vec3<float> OP = ray.getOrigin() + V*(*distance) - center;
+            VEC3F OP = ray.getOrigin() + V*(*distance) - center;
             *normal = OP.normalize();
             *materialIntersection = material;
         }
