@@ -19,6 +19,7 @@ public :
                      float b,
                      const VEC3F &direction);
     VEC3F getDirection();
+    VEC3F getDirection(VEC3F &point);
 };
 
 #endif

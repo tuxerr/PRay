@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+  <camera>
+    <position x="-100" y="0" z="0"/>
+    <target x="0" y="0" z="0"/>
+    <normal x="0" y="0" z="1"/>
+    <viewplane w="8" h="4.5" d="35"/>
+  </camera>
+  <directionalLight>
+    <color r="255" g="255" b="255"/>
+    <direction x="0" y="1" z="-1"/>
+  </directionalLight>
+  <ambientLight>
+    <color r="255" g="255" b="255"/>
+  </ambientLight>
+
+  <object>
+    <shape>
+      <triangle>
+	<a x="0" y="0" z="10"/>
+	<normal_a x="0" y="0" z="1"/>
+	<b x="-10" y="0" z="0"/>
+	<normal_b x="-1" y="0" z="0"/>
+	<c x="-10" y="-10" z="0"/>
+	<normal_c x="-1" y="1" z="0"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="0" g="200" b="200"/>
+        <specular v="0.5"/>
+        <diffuse v="0.8"/>
+        <ambiant v="0.3"/>
+        <shininess v="100"/>
+        <reflexivity v="0"/>
+	<transparency v="0"/>	
+      </phong>
+    </material>
+  </object>
+
+<!--
+  <object>
+    <shape>
+      <triangle>
+	<a x="0" y="0" z="10"/>
+	<normal_a x="0" y="0" z="1"/>
+	<b x="-10" y="-10" z="0"/>
+	<normal_b x="-1" y="0" z="0"/>
+	<c x="0" y="-10" z="0"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="0" g="200" b="200"/>
+        <specular v="0.5"/>
+        <diffuse v="0.8"/>
+        <ambiant v="0.2"/>
+        <shininess v="100"/>
+        <reflexivity v="0.2"/>
+      </phong>
+    </material>
+  </object>
+
+
+  <object>
+    <shape>
+      <triangle>
+	<a x="0" y="0" z="10"/>
+	<normal_a x="0" y="0" z="1"/>
+	<b x="-10" y="0" z="0"/>
+	<c x="0" y="-10" z="0"/>
+      </triangle>
+    </shape>
+    <material>
+      <phong>
+        <color r="0" g="200" b="200"/>
+        <specular v="0.5"/>
+        <diffuse v="0.8"/>
+        <ambiant v="0.2"/>
+        <shininess v="100"/>
+        <reflexivity v="0.2"/>
+      </phong>
+    </material>
+  </object>
+-->
+</scene>
