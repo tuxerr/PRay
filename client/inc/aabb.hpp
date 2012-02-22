@@ -15,7 +15,7 @@ public :
     AABB(float minX, float maxX,
          float minY, float maxY,
          float minZ, float maxZ);
-    bool intersectRay(Ray &ray, float t0 = FLT_MIN, float t1 = FLT_MAX);
-}
+    //bool intersectRay(Ray &ray, float t0 = FLT_MIN, float t1 = FLT_MAX);
+};
 
 #endif

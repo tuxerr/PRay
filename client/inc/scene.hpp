@@ -10,7 +10,12 @@
 #include "directionalLight.hpp"
 #include "ray.hpp"
 #include "object.hpp"
-
+#include "logger.hpp"
+#include "material.hpp"
+#include "uglyMaterial.hpp"
+#include "settings.hpp"
+#include "kdtree.hpp"
+#include "aabb.hpp"
 
 using namespace std;
 
@@ -37,7 +42,7 @@ public :
     Camera* getCamera();
     KdTreeNode* getKdTree();
     Color renderRay(Ray &ray);
-    void computeIntersection(Ray &ray, float *distance, VEC3F *normal,
+    void computeIntersection(Ray &ray, float *distance, VEC3F *normal, 
                              Material **material);
     Color renderPixel(int x, int y);
     list<DirectionalLight> visibleLights(VEC3F point);

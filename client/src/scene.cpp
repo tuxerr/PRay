@@ -1,8 +1,4 @@
-#include "logger.hpp"
 #include "scene.hpp"
-#include "material.hpp"
-#include "uglyMaterial.hpp"
-#include "settings.hpp"
 
 Scene::Scene(const list<Object*> objects,
 	     const list<DirectionalLight> &directionalLights,
@@ -71,6 +67,7 @@ Color Scene::renderRay(Ray &ray) {
 AABB* Scene::computeGlobalAABB()
 {
     // TODO
+    return NULL;
 }
 
 void Scene::computeKdTree() 
@@ -81,12 +78,12 @@ void Scene::computeKdTree()
 
     list<Object*>::iterator iterObj;
 
-    for (iterObj = objects.begin(); iterObj != objects.end(); iter++)
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
     {
-        kdTree.addObject(*iterObj);
+        kdTree->addObject(*iterObj);
     }
 
-    kdTree.computeChildren();
+    kdTree->computeChildren();
 }
 
 KdTreeNode* Scene::getKdTree()
@@ -98,41 +95,42 @@ KdTreeNode* Scene::getKdTree()
 /**
  * *distance < 0 if no intersection was found
  */
-void Scene::computeIntersection(KDTree node, Ray &ray, float *distance, VEC3F *normal,
+void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal, 
                                 Material **material)
 {
+    if (Settings::getAsBool("use_kdtree")) {
+
     // TODO
 
-    // ============================================================================
+    } else {
+        *distance = -2;
+        float tempDistance = -1;
+        VEC3F tempNormal;
+        Material* tempMaterial;
+        list<Object*>::iterator iter;
 
-    *distance = -2;
-    float tempDistance = -1;
-    VEC3F tempNormal;
-    Material* tempMaterial;
-    list<Object*>::iterator iter;
-
-    for (iter = objects.begin(); iter != objects.end(); iter++)
-    {
-        (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
-
-	// Fixes the precision problem for shadows.
-	if(tempDistance < 0 && tempDistance > -0.001) {
-            tempDistance = -tempDistance;
-      	}
-	// ----------------------------------------
-
-        if (tempDistance >= 0
-            && ((*distance >= 0 && tempDistance < *distance)
-                || *distance < 0 ))
+        for (iter = objects.begin(); iter != objects.end(); iter++)
         {
-            *distance = tempDistance;
-            *normal = tempNormal;
-            *material = tempMaterial;
-        }
+            (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
-        tempDistance = -1;
+            // Fixes the precision problem for shadows.
+            if(tempDistance < 0 && tempDistance > -0.001) {
+                tempDistance = -tempDistance;
+            }
+            // ----------------------------------------
+
+            if (tempDistance >= 0
+                && ((*distance >= 0 && tempDistance < *distance)
+                    || *distance < 0 ))
+            {
+                *distance = tempDistance;
+                *normal = tempNormal;
+                *material = tempMaterial;
+            }
+
+            tempDistance = -1;
+        }
     }
-    
 }
 
 Color Scene::renderPixel(int x, int y) {

@@ -7,7 +7,7 @@
 
 class KdTreeNode {
 private:
-    std::List<Object*> objects;
+    std::list<Object*> objects;
     KdTreeNode * left;
     KdTreeNode * right;
     AABB * aabb;
@@ -18,7 +18,7 @@ public :
     KdTreeNode(int depth, AABB* aabb);
     ~KdTreeNode();
     bool isLeaf();
-    void addObj(Object* object);
+    void addObject(Object* object);
     void computeChildren();
 };
 
