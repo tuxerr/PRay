@@ -73,31 +73,31 @@ void NetworkRenderer::run() {
             string cam_operation;
             mes_ss>>cam_operation;
             if(cam_operation=="tF") {
-
+                scene->getCamera()->translateForward();
             } else if(cam_operation=="tB") {
-
+                scene->getCamera()->translateBackwards();
             } else if(cam_operation=="tL") {
-
+                scene->getCamera()->translateRight();
             } else if(cam_operation=="tR") {
-
+                scene->getCamera()->translateLeft();
             } else if(cam_operation=="tU") {
-
+                scene->getCamera()->translateUp();
             } else if(cam_operation=="tD") {
-
+                scene->getCamera()->translateDown();
             } else if(cam_operation=="rL") {
-
+                scene->getCamera()->rollLeft();
             } else if(cam_operation=="rR") {
-
+                scene->getCamera()->rollRight();
             } else if(cam_operation=="pU") {
-
+                scene->getCamera()->pitchUp();
             } else if(cam_operation=="pD") {
-
+                scene->getCamera()->pitchDown();
             } else if(cam_operation=="yL") {
-
+                scene->getCamera()->yawLeft();
             } else if(cam_operation=="yR") {
-
-            } else if(cam_operation=="sM") {
-
+                scene->getCamera()->yawRight();
+            } else if(cam_operation=="sM") 
+{               scene->getCamera()->switchMode();
             } 
         }
 
