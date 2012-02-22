@@ -8,6 +8,7 @@ NcursesUI::NcursesUI() :
 NcursesUI::~NcursesUI()
 {
     endwin(); // end curses mode
+    Logger::getInstance().use_stdout_output();
     delete client_ptr;
     delete log_ptr;
     delete status_ptr;
@@ -27,6 +28,8 @@ void NcursesUI::init()
     client_ptr=new NcursesScrollingWindow("Clients",LINES-1,COLS/3,0,COLS/3,KEY_UP,KEY_DOWN);
     log_ptr=new NcursesLogWindow("Logs",LINES-1,COLS/3,0,COLS*2/3);
     status_ptr=new NcursesLogWindow("Status",LINES-1,COLS/3,0,0);
+    Logger::getInstance().redirect_output(std::bind(&NcursesLogWindow::add_string,log_ptr,std::placeholders::_1));
+    Logger::log()<<"Ncurses Init"<<std::endl;
 }
 
 NcursesScrollingWindow* NcursesUI::get_clients_win() {
@@ -73,6 +76,7 @@ void NcursesLogWindow::add_string(string text) {
     if(messages.size()>=line_size) {
         messages.pop_front();
     }
+    
     messages.push_back(text);
     refresh();
 }
@@ -80,7 +84,9 @@ void NcursesLogWindow::add_string(string text) {
 void NcursesLogWindow::refresh() {
     int col=1;
     for(std::deque<std::string>::iterator it = messages.begin();it!=messages.end();it++) {
-        string newstr = (*it).append(col_size-(*it).size(),' ');
+
+        string cutstr = (*it).substr(0,col_size);
+        string newstr = cutstr.append(col_size-cutstr.length(),' ');
         
         mvwprintw(ptr,col,1,newstr.c_str());
         col++;

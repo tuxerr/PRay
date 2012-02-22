@@ -63,7 +63,10 @@ void NetworkRenderer::run() {
 
             result_message<<"RESULT "<<task_number;
             for(unsigned int i=0;i<rescol.size();i++) {
-                result_message<<" "<<rescol[i].getR()<<" "<<rescol[i].getG()<<" "<<rescol[i].getB();
+                result_message
+                    <<(unsigned char)((rescol[i].getR())*255)
+                    <<(unsigned char)((rescol[i].getG())*255)
+                    <<(unsigned char)((rescol[i].getB())*255);
             }
 
             serv.send_message(result_message.str());
