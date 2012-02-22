@@ -7,21 +7,45 @@ Logger* Logger::logger_ptr;
 void (*Logger::sigsegv_handlerptr)(int);
 
 LoggerStreambuf::LoggerStreambuf(string &prefix,fstream &file,Mutex &mut) :
-    prefix(prefix), file(file), write_mut(mut), firstflush(true)
+    prefix(prefix), file(file), write_mut(mut), cout_output(true), fun_output(false), firstflush(true)
+
 {
     setp (buffer, buffer+(bufferSize-1));
+}
+
+void LoggerStreambuf::set_redirection_ptr(std::function<void(string)> fun) {
+    redirection=fun;
+}
+
+void LoggerStreambuf::use_cout_output(bool use) {
+    cout_output=use;
+}
+
+void LoggerStreambuf::use_fun_output(bool use) {
+    fun_output=use;
 }
 
 int LoggerStreambuf::flushBuffer () {
     int num = pptr()-pbase();
     if(firstflush && num!=0) {
         file<<prefix;
-        std::cout<<prefix;
+        if(cout_output) {
+            std::cout<<prefix;
+        }
+        if(fun_output) {
+            current_log.append(prefix);
+        }
         firstflush=false;
     }
     if(num!=0) {
         file.write(buffer,num);
-        std::cout.write(buffer,num);
+        if(cout_output) {
+            std::cout.write(buffer,num);
+        } 
+        if(fun_output) {
+            string res(buffer,num-1);
+            current_log.append(res);
+        }
         pbump(-num); // reset put pointer accordingly
     }
     return num;
@@ -41,8 +65,13 @@ int LoggerStreambuf::sync() {
     if (flushBuffer() == EOF)
         return -1;    // ERROR
     firstflush=true;
+    if(fun_output) {
+        redirection(current_log);
+        current_log="";
+    }
 
     write_mut.unlock();
+
     return 0;
 }
 
@@ -69,6 +98,15 @@ Logger& Logger::log(Log_Type type) {
     }
 }
 
+Logger& Logger::getInstance() {
+    if(logger_ptr!=NULL) {
+        return *logger_ptr;
+    } else {
+        cerr<<"Logger class is not initiated"<<endl;
+        exit(0);
+    }
+}
+
 void Logger::close() {
     if(m_file) {
         m_file.close();
@@ -82,6 +120,17 @@ Logger::Logger(string file_path) :
     if(!m_file) {
         cerr<<"File "<<file_path<<" could not be opened in write mode (for logging) "<<endl;
     }
+}
+
+void Logger::redirect_output(std::function<void(string)> fun) {
+    ((LoggerStreambuf*)rdbuf())->set_redirection_ptr(fun);
+    ((LoggerStreambuf*)rdbuf())->use_cout_output(false);
+    ((LoggerStreambuf*)rdbuf())->use_fun_output(true);
+}
+
+void Logger::use_stdout_output() {
+    ((LoggerStreambuf*)rdbuf())->use_cout_output(true);
+    ((LoggerStreambuf*)rdbuf())->use_fun_output(false);
 }
 
 Logger::~Logger() {

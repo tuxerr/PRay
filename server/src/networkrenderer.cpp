@@ -111,8 +111,13 @@ void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
     recv_ss>>packet_number;
     std::vector<Color> result;
     while(recv_ss.peek()!=EOF) {
+
+        unsigned char cr,cg,cb;
+        recv_ss>>cr>>cg>>cb;
         float r,g,b;
-        recv_ss>>r>>g>>b;
+        r=((float)cr)/255;
+        g=((float)cg)/255;
+        b=((float)cb)/255;
         Color c(r,g,b);
         result.push_back(c);
     }
