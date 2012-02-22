@@ -4,6 +4,10 @@ Renderer::Renderer(Scene *scene,Display *disp) : scene(scene), frameNumber(0) , 
 {
 }
 
+void Renderer::set_scene(Scene *newscene) {
+    scene=newscene;
+}
+
 std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_number,bool _onscreen) {
     onscreen=_onscreen;
     if(onscreen && display==NULL) {

@@ -25,6 +25,7 @@ public:
     std::vector<Color> render(int x,int y,int width,int height,int thread_number=DEFAULT_THREAD_NUMBER,bool _onscreen=false);
     void compute_task();
     static void *computing_thread(void *This);
+    void set_scene(Scene *newscene);
     
 private:
     pthread_t new_thread(int x,int y,int width,int height,std::vector<Color> *pixels);

@@ -5,6 +5,7 @@
 #include "logger.hpp"
 #include "display.hpp"
 #include "ncursesui.hpp"
+#include "settings.hpp"
 #include <iostream>
 #include "color.hpp"
 #include <vector>

@@ -8,6 +8,7 @@
 #include <errno.h>
 #include "logger.hpp"
 #include "tcpsock.hpp"
+#include "conditional.hpp"
 
 #define DEFAULT_LISTENING_PORT 12345
 #define RECV_L 3000
@@ -16,11 +17,14 @@
 class Server {
 public:
     Server(const char *ip,int port=DEFAULT_LISTENING_PORT);
+    Server(std::string ip,int port=DEFAULT_LISTENING_PORT);
     void connect();
     void stop();
     int send_message(std::string mes);
+    void wait_for_message();
     bool has_messages();
     bool is_connected();
+    int get_failed_connections();
     std::string unstack_message();
 
     void main_loop();
@@ -36,6 +40,8 @@ private:
     Mutex received_messages_mutex;
     bool continue_loop;
     bool islaunched;
+    int failed_connections;
+    Conditional wait_message;
 };
 
 #endif
