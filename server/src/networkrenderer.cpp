@@ -136,53 +136,79 @@ int NetworkRenderer::send_task_to_client(int id) {
 
 // functions to bind to display keys
 void NetworkRenderer::camera_translate_forward() {
-    network.send_to_all("CAM tF");
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM tF");
+    }
 }
 
 void NetworkRenderer::camera_translate_backwards() {
-    network.send_to_all("CAM tB");
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM tB");
+    }
 }
 
 void NetworkRenderer::camera_translate_left() {
-    network.send_to_all("CAM tL");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM tL");    
+    }
 }
 
 void NetworkRenderer::camera_translate_right() {
-    network.send_to_all("CAM tR");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM tR");    
+    }
 }
 
 void NetworkRenderer::camera_translate_up() {
-    network.send_to_all("CAM tU");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM tU");    
+    }
 }
 
 void NetworkRenderer::camera_translate_down() {
-    network.send_to_all("CAM tD");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM tD");    
+    }
 }
 
 void NetworkRenderer::camera_roll_left() {
-    network.send_to_all("CAM rL");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM rL");    
+    }
 }
 
 void NetworkRenderer::camera_roll_right() {
-    network.send_to_all("CAM rR");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM rR");    
+    }
 }
 
 void NetworkRenderer::camera_pitch_up() {
-    network.send_to_all("CAM pU");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM pU");    
+    }
 }
 
 void NetworkRenderer::camera_pitch_down() {
-    network.send_to_all("CAM pD");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM pD");    
+    }
 }
 
 void NetworkRenderer::camera_yaw_left() {
-    network.send_to_all("CAM yL");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM yL");    
+    }
 }
 
 void NetworkRenderer::camera_yaw_right() {
-    network.send_to_all("CAM yR");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM yR");    
+    }
 }
 
 void NetworkRenderer::camera_switch_mode() {
-    network.send_to_all("CAM sM");    
+    if(rstatus==RENDERER_WAITING) {
+        network.send_to_all("CAM sM"); 
+    }   
 }

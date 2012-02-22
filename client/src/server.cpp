@@ -36,7 +36,10 @@ void Server::main_loop() {
         sleep(1);
         failed_connections++;
     }
-    Logger::log()<<"Established connection to the server "<<ip_addr<<"("<<dest_port<<")"<<std::endl;
+
+    // if continue loop is false, while stopped because of a Server::stop call
+    if(continue_loop) 
+        Logger::log()<<"Established connection to the server "<<ip_addr<<"("<<dest_port<<")"<<std::endl;
     
     char recv_str[RECV_L]="";
     islaunched=true;
