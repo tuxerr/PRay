@@ -57,13 +57,17 @@ void NetworkRenderer::renderer_thread() {
             newcl.hostname=recv.substr(6);
             newcl.curses_id=ncursesui.get_clients_win()->add_string(newcl.hostname);
             rendering_clients.insert(rendering_clients.begin()+id,newcl);
+
+            stringstream infos(stringstream::out);
+            infos<<"INFO "<<Settings::getAsInt("window_width")<<Settings::getAsInt("window_height");
+            cl->send_message(infos.str());
         }
     }
 }
 
 void NetworkRenderer::set_rendering_file(string xmlfile) {
     if(rstatus==RENDERER_RENDERING) {
-        Logger::log(LOG_WARNING)<<"A render is in progress"<<std::endl;
+        Logger::log(LOG_WARNING)<<"A render is in progress, cannot change scene file"<<std::endl;
     } else if(rstatus==RENDERER_WAITING) {
         string tosend("SETSCENE ");
         tosend.append(xmlfile);

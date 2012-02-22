@@ -62,6 +62,15 @@ int main(int argc, char* argv[])
             cout<<usage<<endl;
             break;
 
+        case 's':
+            standalone=true;
+            break;
+
+        case 'f':
+            filename=string(optarg);
+            break;
+
+
         default:
             break;
         }
