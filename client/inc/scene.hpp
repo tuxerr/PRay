@@ -10,7 +10,12 @@
 #include "directionalLight.hpp"
 #include "ray.hpp"
 #include "object.hpp"
-
+#include "logger.hpp"
+#include "material.hpp"
+#include "uglyMaterial.hpp"
+#include "settings.hpp"
+#include "kdtree.hpp"
+#include "aabb.hpp"
 
 using namespace std;
 
@@ -22,6 +27,9 @@ private :
     list<Light*> lights;
     AmbientLight ambientLight;
     Camera* camera;
+    KdTreeNode* kdTree;
+    AABB* computeGlobalAABB();
+    void computeKdTree(); 
 public :
     Scene(const list<Object*> objects,
 	  const list<Light*> lights,
@@ -32,6 +40,7 @@ public :
     list<Light*> getLights();
     AmbientLight getAmbientLight();
     Camera* getCamera();
+    KdTreeNode* getKdTree();
     Color renderRay(Ray &ray);
     void computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 			     Material **material);
