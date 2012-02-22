@@ -1,6 +1,5 @@
 #include "light.hpp"
 
-
 Light::Light(const Color &color) :
   color(color)
 {

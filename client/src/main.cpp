@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
         while ( !disp->quit() )
         {
             if(disp->new_control_press()) {
-                renderer.render(0,0,width,height,1,true);
+                renderer.render(0,0,width,height,numOfCPUs,true);
                 disp->refresh_display();
             } else {
                 usleep(30000);

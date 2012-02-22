@@ -5,13 +5,13 @@
 #include "settings.hpp"
 
 Scene::Scene(const list<Object*> objects,
-	     const list<DirectionalLight> &directionalLights,
+	     const list<Light *> lights,
 	     const AmbientLight &ambientLight,
 	     Camera* camera) :
-  objects(objects),
-  directionalLights(directionalLights),
-  ambientLight(ambientLight),
-  camera(camera)
+    objects(objects),
+    lights(lights),
+    ambientLight(ambientLight),
+    camera(camera)
 {
 
 }
@@ -28,42 +28,39 @@ Scene::~Scene()
 }
 
 list<Object*> Scene::getObjects() {
-  return objects;
+    return objects;
 }
 
-list<DirectionalLight> Scene::getDirectionalLights() {
-  return directionalLights;
+list<Light*> Scene::getLights() {
+    return lights;
 }
 
 AmbientLight Scene::getAmbientLight() {
-  return ambientLight;
+    return ambientLight;
 }
 
 Camera* Scene::getCamera() {
-  return camera;
+    return camera;
 }
 
 Color Scene::renderRay(Ray &ray) {
-  float distance;
-  VEC3F normal;
-  Material* material = 0;
+    float distance;
+    VEC3F normal;
+    Material* material = 0;
 
-  computeIntersection(ray, &distance, &normal, &material);
+    computeIntersection(ray, &distance, &normal, &material);
 
-  if (distance < 0) { // no intersection was found
-    //    Logger::log(LOG_DEBUG) << "NO INTERSECTION" << endl;
-    return Color(0,0,0);
-  } else {
-    /*    Logger::log(LOG_DEBUG) << "INTERSECTION : " << material << endl;
-    Logger::log(LOG_DEBUG) << "TROLOL" << endl;
-    
-    
-    Logger::log(LOG_DEBUG) << "ray : " << &ray << endl;
-    Logger::log(LOG_DEBUG) << "distance : " << &distance << endl;
-    Logger::log(LOG_DEBUG) << "normal : " << &normal << endl;
-    Logger::log(LOG_DEBUG) << "this : " << this << endl;*/
-    return material->renderRay(ray, distance, normal, this);
-  }
+    if (distance < 0) { // no intersection was found
+
+	return Color(0,0,0);
+    } else {
+
+	Color result = material->renderRay(ray, distance, normal, this);
+	// for(int i=0; i<5; i++) {
+	//     result = result.merge(material->renderRay(ray, distance, normal, this));
+	// }
+	return result;
+    }
 }
 
 /**
@@ -79,27 +76,27 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
     list<Object*>::iterator iter;
 
     for (iter = objects.begin(); iter != objects.end(); iter++)
-    {
-        (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
+	{
+	    (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
-	// Fixes the precision problem for shadows.
-	if(tempDistance < 0 && tempDistance > -0.001) {
-	  tempDistance = -tempDistance;
-      	}
-	// ----------------------------------------
+	    // Fixes the precision problem for shadows.
+	    if(tempDistance < 0 && tempDistance > -0.001) {
+		tempDistance = -tempDistance;
+	    }
+	    // ----------------------------------------
 
 
-        if (tempDistance >= 0
-            && ((*distance >= 0 && tempDistance < *distance)
-                || *distance < 0 ))
-        {
-            *distance = tempDistance;
-            *normal = tempNormal;
-            *material = tempMaterial;
-        }
+	    if (tempDistance >= 0
+		&& ((*distance >= 0 && tempDistance < *distance)
+		    || *distance < 0 ))
+		{
+		    *distance = tempDistance;
+		    *normal = tempNormal;
+		    *material = tempMaterial;
+		}
 
-        tempDistance = -1;
-    }
+	    tempDistance = -1;
+	}
     
 }
 
@@ -174,11 +171,11 @@ Color Scene::renderPixel(int x, int y) {
                          + fabs(old_mean_b - mean_b)
                          > Settings::getAsFloat("supersampling_threshold_end")));
         }
-/*
-            if (launchedRays > 4) {
-                Logger::log(LOG_DEBUG)<<"launchedRays="<<launchedRays<<endl;
-            }
-*/
+	/*
+	  if (launchedRays > 4) {
+	  Logger::log(LOG_DEBUG)<<"launchedRays="<<launchedRays<<endl;
+	  }
+	*/
         if (Settings::getAsBool("supersampling_show")) {
             return Color(min((float)1.0, (float)(launchedRays - 4) 
                              / Settings::getAsFloat("supersampling_show_limit")));
@@ -197,26 +194,33 @@ Color Scene::renderPixel(int x, int y) {
 /**
  * Give the lights that are visible from a point. Used for shadows.
  */
-list<DirectionalLight> Scene::visibleLights(VEC3F point) {
+list<Light *> Scene::visibleLights(VEC3F point, float intensity) {
 
-  float distance = -1;
-  VEC3F normal;
-  Material *material;
-  Color color = Color(0.0);
-  list<DirectionalLight> result;
-  Ray ray = Ray(point, normal, color);
+    float distance = -1;
+    VEC3F normal;
+    Material *material;
+    Color color = Color(0.0);
+    list<Light *> result;
+    Ray ray = Ray(point, normal, color);
 
-  list<DirectionalLight>::iterator itLight;
-  
-  for (itLight = directionalLights.begin(); itLight != directionalLights.end(); itLight++)
-  {
-      ray = Ray(point, itLight->getDirection()*(-1), color);
-      computeIntersection(ray, &distance, &normal, &material);
-      //  Logger::log(LOG_DEBUG)<< distance <<endl;      
-      if(distance < 0) {
-          result.push_back(*itLight);
-      }
-  }
+    list<Light *>::iterator itLight;
+    VEC3F lightDirection;
+    VEC3F one = VEC3F(1,1,1);
 
-  return result;
+    for (itLight = lights.begin(); itLight != lights.end(); itLight++) {
+	
+	
+	lightDirection = (*itLight)->getDirection(point)*(-1);
+	lightDirection = (lightDirection + one*((((float)rand() / (float)RAND_MAX) -0.5)*intensity)).normalize();
+
+
+	ray = Ray(point, lightDirection, color);
+	computeIntersection(ray, &distance, &normal, &material);
+	//  Logger::log(LOG_DEBUG)<< distance <<endl;      
+	if(distance < 0) {
+	    result.push_back(*itLight);
+	}
+    }
+
+    return result;
 }

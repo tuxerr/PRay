@@ -3,7 +3,9 @@
 #include "settings.hpp"
 #include "sphere.hpp"
 #include "triangle.hpp"
+#include "light.hpp"
 #include "directionalLight.hpp"
+#include "pointLight.hpp"
 #include "ambientLight.hpp"
 #include "vec3.hpp"
 #include "phongMaterial.hpp"
@@ -23,7 +25,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         Logger::log(LOG_INFO) << "Start loading scene : " << scene_file << endl;
 
         list<Object*> objects;
-        list<DirectionalLight> lDirLights;
+        list<Light*> lights;
         AmbientLight ambientLight;
         Camera* camera=0;
         TiXmlElement* tmp_node = 0;
@@ -94,8 +96,27 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 } else {
                     direction = readVec3Float(tmp_node);
                 }
+		DirectionalLight *dirLight = new DirectionalLight(color, direction.normalize()); // !!!!!!!!!! NEEDS TO BE DESTROYED
+                lights.push_back(dirLight);
+	    } else if ( nodeName.compare("pointLight")==0 ) {
+                Color color;
+                VEC3F point;
+		
+                tmp_node = node->FirstChildElement("color");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <color> near line "<<node->Row()<<endl;
+                } else {
+                    color = readColor(tmp_node);
+                }
 
-                lDirLights.push_back(DirectionalLight(color, direction.normalize()));
+                tmp_node = node->FirstChildElement("point");
+                if (tmp_node == NULL) {
+                    Logger::log(LOG_ERROR)<<"Missing <point> near line "<<node->Row()<<endl;
+                } else {
+                    point = readVec3Float(tmp_node);
+                }
+	      	PointLight *pointLight = new PointLight(color, point); // !!!!!!!!!! NEEDS TO BE DESTROYED
+                lights.push_back(pointLight);
             } else if ( nodeName.compare("ambientLight")==0 ) {
                 Color color;
 
@@ -132,7 +153,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
 
         Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects)" << endl;
 
-        *scene = new Scene(objects,lDirLights,ambientLight,camera);
+        *scene = new Scene(objects,lights,ambientLight,camera);
 
 	return 0;
     }
