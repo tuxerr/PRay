@@ -68,8 +68,8 @@ void Server::main_loop() {
                 received_messages_mutex.lock();
                 received_messages.push_back(string(recv_str));
                 received_messages_mutex.unlock();
-                wait_message.signal();
             }
+            wait_message.signal();
 	}
     }
 

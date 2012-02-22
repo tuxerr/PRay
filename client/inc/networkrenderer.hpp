@@ -5,8 +5,15 @@
 
 #include "server.hpp"
 #include "logger.hpp"
+#include "scene.hpp"
+#include "sceneLoader.hpp"
+#include "renderer.hpp"
+#include "color.hpp"
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
+#include <string>
+#include <sstream>
 
 typedef enum {
     CLIENT_WAITING,

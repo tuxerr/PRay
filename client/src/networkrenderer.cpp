@@ -29,6 +29,10 @@ void NetworkRenderer::run() {
 
     SceneLoader sceneLoader;
     Scene *scene;
+    int global_width,global_height;
+    Renderer renderer(scene,NULL);
+
+    int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
 
     while(serv.is_connected()) {
         serv.wait_for_message();
@@ -36,21 +40,38 @@ void NetworkRenderer::run() {
         if(serv.has_messages()) {
             mes=serv.unstack_message();
         }
+        stringstream mes_ss(stringstream::in | stringstream::out);
+        mes_ss<<mes;
+
+        string head;
+        mes_ss>>head;
 
         /*message parsing*/
-        if(mes.find("SETSCENE")==0) {
-            string filexml=mes.substring(9);
-            sceneLoader.load(filexml,&scene);
+        if(head=="SETSCENE") {
+            string filexml;
+            mes_ss>>filexml;
+            sceneLoader.load(filexml,&scene,global_width,global_height);
+            renderer.set_scene(scene);
             
-        } else if(mes.find("CALCULATE")==0) {
-            string result_message;
+        } else if(head=="CALCULATE") {
             serv.send_message("CALCULATING");
+            int task_number,y,width,height;
+            stringstream result_message(stringstream::out);
+            mes_ss>>task_number>>y>>width>>height;
 
-            serv.send_message(result_message);
-        } else if(mes.find("INFO")==0) { 
+            std::vector<Color> rescol = renderer.render(0,y,width,height,numOfCPUs);
 
-        } else if(mes.find("CAM")==0) {
-            string cam_operation=mes.substring(4);
+            result_message<<"RESULT "<<task_number;
+            for(unsigned int i=0;i<rescol.size();i++) {
+                result_message<<" "<<rescol[i].getR()<<" "<<rescol[i].getG()<<" "<<rescol[i].getB();
+            }
+
+            serv.send_message(result_message.str());
+        } else if(head=="INFO") { 
+            mes_ss>>global_width>>global_height;
+        } else if(head=="CAM") {
+            string cam_operation;
+            mes_ss>>cam_operation;
             if(cam_operation=="tF") {
 
             } else if(cam_operation=="tB") {
