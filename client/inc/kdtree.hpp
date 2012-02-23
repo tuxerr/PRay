@@ -6,7 +6,6 @@
 #include "triangle.hpp"
 #include "aabb.hpp"
 #include "logger.hpp"
-//#include "scene.hpp"
 
 class KdTreeNode {
     friend class Scene;

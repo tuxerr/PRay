@@ -136,6 +136,7 @@ void standalone_mode(string filename) {
 
     int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
     Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
+    if (Settings::getAsBool("one_thread")) numOfCPUs = 1;
 
     while ( !disp->quit() )
     {

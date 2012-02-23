@@ -12,4 +12,5 @@
   <supersampling_show b="false"/>
   <supersampling_show_limit f="16"/>
   <use_kdtree b="false"/>
+  <one_thread b="false"/>
 </settings>

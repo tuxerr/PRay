@@ -7,9 +7,10 @@ Scene::Scene(const list<Object*> objects,
     objects(objects),
     lights(lights),
     ambientLight(ambientLight),
-    camera(camera)
+    camera(camera),
+    kdTree(NULL)
 {
-
+    computeKdTree();
 }
 
 Scene::~Scene()
@@ -51,6 +52,7 @@ Color Scene::renderRay(Ray &ray) {
     if (distance < 0) { // no intersection was found
 	return Color(0,0,0);
     } else {
+        if (material == 0) return Color(255,0,255); // DEBUG kdtree
 
 	Color result = material->renderRay(ray, distance, normal, this);
 	// for(int i=0; i<5; i++) {

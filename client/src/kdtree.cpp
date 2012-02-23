@@ -17,7 +17,7 @@ KdTreeNode::~KdTreeNode()
 
 bool KdTreeNode::isLeaf()
 {
-    return left == NULL 
+    return left == NULL
         && right == NULL; 
 }
 
