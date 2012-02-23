@@ -43,7 +43,7 @@ Camera* Scene::getCamera() {
 }
 
 Color Scene::renderRay(Ray &ray) {
-    float distance;
+    float distance = -3;
     VEC3F normal;
     Material* material = 0;
 
@@ -80,7 +80,6 @@ AABB* Scene::computeGlobalAABB()
         maxY = min(maxY, aabb->maxY);
         minZ = min(minZ, aabb->minZ);
         maxZ = min(maxZ, aabb->maxZ);
-        delete aabb;
     }
 
     return new AABB(minX, maxX, minY, maxY, minZ, maxZ);
@@ -143,7 +142,7 @@ void Scene::computeIntersectionNode(KdTreeNode *node,
         }
 
     } else {
-        float left_distance, right_distance;
+        float left_distance = -1, right_distance = -1;
         VEC3F left_normal, right_normal;
         Material *left_material = 0, *right_material = 0;
 

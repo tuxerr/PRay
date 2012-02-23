@@ -23,7 +23,7 @@ bool KdTreeNode::isLeaf()
 
 void KdTreeNode::addObject(Object* object)
 {
-    return objects.push_back(object);
+    objects.push_back(object);
 }
 
 void KdTreeNode::computeChildren()
