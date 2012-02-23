@@ -20,7 +20,6 @@ void NcursesUI::init()
     initscr(); // start curses mode
     cbreak(); // line buffering disabled
     keypad(stdscr, TRUE); // reading keys like F1, F2, arrows keys
-    noecho(); // no echo() while getch()
 
     Logger::log()<<"Starting ncurses server UI"<<std::endl;
 
@@ -46,16 +45,35 @@ NcursesLogWindow* NcursesUI::get_status_win() {
 
 void NcursesUI::run()
 {
-
-    while (mode_ch != 'q')
+    string current_input;
+    // 27 is the ESCAPE key
+    while (mode_ch != 27 && mode_ch != KEY_EXIT)
     {
-//        refresh();
-        
-        halfdelay(5);
-
         mode_ch = getch();
 
         (*client_ptr).refresh(mode_ch);
+
+        wmove(stdscr,LINES-1,current_input.size()+0);
+
+        if(mode_ch==KEY_BACKSPACE) {
+            current_input=current_input.substr(0,current_input.length()-1);
+        } else if(mode_ch==KEY_BREAK) {
+            stringstream input_ss(stringstream::out | stringstream::in);
+            input_ss<<current_input;
+            
+            string head="";
+            input_ss>>head;
+            if(head=="scene") {
+
+            } else if(head=="render") {
+
+            }
+
+            current_input="";
+        } else if(mode_ch!=-1) {
+            current_input.push_back((char)mode_ch);
+        }
+        
     }
 }
 
