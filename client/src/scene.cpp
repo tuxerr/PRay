@@ -1,8 +1,4 @@
-#include "logger.hpp"
 #include "scene.hpp"
-#include "material.hpp"
-#include "uglyMaterial.hpp"
-#include "settings.hpp"
 
 Scene::Scene(const list<Object*> objects,
 	     const list<Light *> lights,
@@ -23,6 +19,8 @@ Scene::~Scene()
     for (iter = objects.begin() ; iter != objects.end() ; iter++) {
         delete *iter;
     }
+
+    //delete kdTree;
 
     //delete camera;
 }
@@ -51,7 +49,6 @@ Color Scene::renderRay(Ray &ray) {
     computeIntersection(ray, &distance, &normal, &material);
 
     if (distance < 0) { // no intersection was found
-
 	return Color(0,0,0);
     } else {
 
@@ -63,43 +60,96 @@ Color Scene::renderRay(Ray &ray) {
     }
 }
 
+AABB* Scene::computeGlobalAABB()
+{
+    float minX = FLT_MAX, maxX = FLT_MIN;
+    float minY = FLT_MAX, maxY = FLT_MIN;
+    float minZ = FLT_MAX, maxZ = FLT_MIN;
+
+    list<Object*>::iterator iterObj;
+    AABB * aabb;
+
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
+    {
+        aabb = (*iterObj)->getAABB();
+        minX = min(minX, aabb->minX);
+        maxX = min(maxX, aabb->maxX);
+        minY = min(minY, aabb->minY);
+        maxY = min(maxY, aabb->maxY);
+        minZ = min(minZ, aabb->minZ);
+        maxZ = min(maxZ, aabb->maxZ);
+        delete aabb;
+    }
+
+    return new AABB(minX, maxX, minY, maxY, minZ, maxZ);
+}
+
+void Scene::computeKdTree() 
+{
+    AABB* globalAABB = computeGlobalAABB();
+
+    kdTree = new KdTreeNode(0, globalAABB);
+
+    list<Object*>::iterator iterObj;
+
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
+    {
+        kdTree->addObject(*iterObj);
+    }
+
+    kdTree->computeChildren();
+}
+
+KdTreeNode* Scene::getKdTree()
+{
+    return kdTree;
+}
+
+
 /**
  * *distance < 0 if no intersection was found
  */
-void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
-                                Material **material) {
+void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal, 
+                                Material **material)
+{
+    if (Settings::getAsBool("use_kdtree")) {
 
-    *distance = -2;
-    float tempDistance = -1;
-    VEC3F tempNormal;
-    Material* tempMaterial;
-    list<Object*>::iterator iter;
+    // TODO
 
-    for (iter = objects.begin(); iter != objects.end(); iter++)
-	{
-	    (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
+    } else {
+        *distance = -2;
+        float tempDistance = -1;
+        VEC3F tempNormal;
+        Material* tempMaterial;
+        list<Object*>::iterator iter;
 
-	    // Fixes the precision problem for shadows.
-	    if(tempDistance < 0 && tempDistance > -0.001) {
-		tempDistance = -tempDistance;
-	    }
-	    // ----------------------------------------
+        for (iter = objects.begin(); iter != objects.end(); iter++)
+        {
+            (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
+            // Fixes the precision problem for shadows.
+            if(tempDistance < 0 && tempDistance > -0.001) {
+                tempDistance = -tempDistance;
+            }
+            // ----------------------------------------
 
-	    if (tempDistance >= 0
-		&& ((*distance >= 0 && tempDistance < *distance)
-		    || *distance < 0 ))
-		{
-		    *distance = tempDistance;
-		    *normal = tempNormal;
-		    *material = tempMaterial;
-		}
+            if (tempDistance >= 0
+                && ((*distance >= 0 && tempDistance < *distance)
+                    || *distance < 0 ))
+            {
+                *distance = tempDistance;
+                *normal = tempNormal;
+                *material = tempMaterial;
+            }
 
-	    tempDistance = -1;
-	}
-    
+            tempDistance = -1;
+        }
+    }
 }
 
+/**
+ * Adaptive stochastic supersampling
+ */
 Color Scene::renderPixel(int x, int y) {
 
     VEC3F origin = camera->getPoint();

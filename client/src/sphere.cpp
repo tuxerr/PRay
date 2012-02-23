@@ -5,11 +5,11 @@
 Sphere::Sphere(const VEC3F &center,
                float radius,
                Material* material) :
-    Object(material),
+    Object(material, NULL),
     center(center),
     radius(radius)
 {
-
+    aabb = new AABB(0, 1, 0, 1, 0, 1); // TODO
 }
 
 VEC3F Sphere::getCenter() const {
