@@ -31,20 +31,88 @@ void KdTreeNode::computeChildren()
     int axis = depth % 3;
     float limit = findBestSplit(axis);
     split(axis, limit);
+    objects.clear(); // only leaves keep their objects
 }
 
 /**
  * Local greedy surface area heuristic
+ *
+ * TODO : The accurate way of determining the candidate planes thus is
+ * to first clip the triangle t to the voxel V , and use the sides of
+ * the clipped triangle’s AABB B(t ∩ V )
  */
 float KdTreeNode::findBestSplit(int axis)
 {
-    // TODO
-    return 0;
+    float bestSplit = 0;
+    float cost, bestCost = FLT_MAX;
+
+    std::list<Object*>::iterator iterObj;
+    AABB * aabb;
+
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
+    {
+        aabb = (*iterObj)->getAABB();
+
+        if (axis == 0) {
+            // X
+            split(axis, aabb->minX);
+            cost = computeCost();
+            if (cost < bestCost)
+                bestSplit = aabb->minX;
+
+            split(axis, aabb->maxX);
+            cost = computeCost();
+            if (cost < bestCost)
+                bestSplit = aabb->maxX;
+
+        } else if (axis == 1) {
+            // Y
+            split(axis, aabb->minY);
+            cost = computeCost();
+            if (cost < bestCost)
+                bestSplit = aabb->minY;
+
+            split(axis, aabb->maxY);
+            cost = computeCost();
+            if (cost < bestCost)
+                bestSplit = aabb->maxY;
+
+        } else {
+            // Z
+            split(axis, aabb->minZ);
+            cost = computeCost();
+            if (cost < bestCost)
+                bestSplit = aabb->minZ;
+
+            split(axis, aabb->maxZ);
+            cost = computeCost();
+            if (cost < bestCost)
+                bestSplit = aabb->maxZ;
+        }
+    }
+    
+    return bestSplit;
 }
+
+float KdTreeNode::computeCost()
+{
+    float lo = left->objects.size();
+    float ro = right->objects.size();
+
+    if (lo == 0)
+        return 0.8 * right->aabb->surfaceArea * ro;
+
+    if (ro == 0)
+        return 0.8 * left->aabb->surfaceArea * lo;
+
+    return left->aabb->surfaceArea * lo + right->aabb->surfaceArea * ro;
+} 
 
 void KdTreeNode::split(int axis, float limit)
 {
-//    if (ça vaut le coup);
+    // TODO : better termination criterion based on the cost
+    if (depth > 20 or objects.size() < 4)
+        return;
 
     float left_minX = aabb->minX, left_minY = aabb->minY, left_minZ = aabb->minZ;
     float left_maxX = aabb->maxX, left_maxY = aabb->maxY, left_maxZ = aabb->maxZ;
@@ -77,7 +145,6 @@ void KdTreeNode::split(int axis, float limit)
                                                right_minY, right_maxY,
                                                right_minZ, right_maxZ));
 
-
     std::list<Object*>::iterator iterObj;
     AABB * aabb;
 
@@ -107,8 +174,5 @@ void KdTreeNode::split(int axis, float limit)
         default: // error
             break;
         }
-        
-        delete aabb;
-        objects.clear(); // only leaves keep their objects
     }
 }

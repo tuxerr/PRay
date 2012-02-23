@@ -12,10 +12,11 @@ public :
     float maxY;
     float minZ;
     float maxZ;
+    float surfaceArea;
     AABB(float minX, float maxX,
          float minY, float maxY,
          float minZ, float maxZ);
-    bool intersectRay(Ray &ray);
+    bool intersectRay(Ray &ray, float distanceMax = FLT_MAX);
 };
 
 #endif

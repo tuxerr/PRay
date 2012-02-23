@@ -2,11 +2,14 @@
 #define DEF_KDTREE
 
 #include <list>
+#include <cfloat>
 #include "triangle.hpp"
 #include "aabb.hpp"
 #include "logger.hpp"
+//#include "scene.hpp"
 
 class KdTreeNode {
+    friend class Scene;
 private:
     std::list<Object*> objects;
     KdTreeNode * left;
@@ -14,6 +17,7 @@ private:
     AABB * aabb;
     int depth;
     float findBestSplit(int axis);
+    float computeCost();
     void split(int axis, float limit);
 public :
     KdTreeNode(int depth, AABB* aabb);

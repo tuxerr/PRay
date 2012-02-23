@@ -105,6 +105,87 @@ KdTreeNode* Scene::getKdTree()
     return kdTree;
 }
 
+void Scene::computeIntersectionNode(KdTreeNode *node,
+                                    Ray &ray, 
+                                    float *distance, 
+                                    VEC3F *normal, 
+                                    Material **material)
+{
+    if (node->isLeaf()) {
+        *distance = -2;
+        float tempDistance = -1;
+        VEC3F tempNormal;
+        Material* tempMaterial;
+        list<Object*>::iterator iter;
+
+        for (iter = node->objects.begin(); iter != node->objects.end(); iter++)
+        {
+            (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
+
+            // Fixes the precision problem for shadows.
+            if(-0.001 < tempDistance && tempDistance < 0 ) {
+                tempDistance = -tempDistance;
+            }
+            // ----------------------------------------
+
+            if (tempDistance >= 0
+                && ((*distance >= 0 && tempDistance < *distance)
+                    || *distance < 0 ))
+            {
+                *distance = tempDistance;
+                *normal = tempNormal;
+                *material = tempMaterial;
+            }
+
+            tempDistance = -1;
+        }
+
+    } else {
+        float left_distance, right_distance;
+        VEC3F left_normal, right_normal;
+        Material *left_material = 0, *right_material = 0;
+
+        if (node->left->aabb->intersectRay(ray)) {
+            computeIntersectionNode(node->left, ray, &left_distance, &left_normal, &left_material);
+        }
+        if (node->right->aabb->intersectRay(ray)) {
+            computeIntersectionNode(node->right, ray, &right_distance, &right_normal, &right_material);
+        }
+
+        if (-1 < left_distance) {
+            if (-1 < right_distance) {
+                if (left_distance < right_distance) {
+                    *distance = left_distance;
+                    *normal = left_normal;
+                    *material = left_material;
+                    return;
+                } else {
+                    *distance = right_distance;
+                    *normal = right_normal;
+                    *material = right_material;
+                    return;
+                }
+            } else {
+                *distance = left_distance;
+                *normal = left_normal;
+                *material = left_material;
+                return;
+            }
+        } else {
+            if (-1 < right_distance) {
+                *distance = right_distance;
+                *normal = right_normal;
+                *material = right_material;
+                return;
+            } else {
+                *distance = -1;
+                *normal = 0;
+                *material = 0;
+                return;
+            }
+        }
+    }
+}
 
 /**
  * *distance < 0 if no intersection was found
@@ -114,7 +195,7 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 {
     if (Settings::getAsBool("use_kdtree")) {
 
-    // TODO
+        computeIntersectionNode(kdTree, ray, distance, normal, material);
 
     } else {
         *distance = -2;

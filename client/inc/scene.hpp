@@ -43,6 +43,8 @@ public :
     Camera* getCamera();
     KdTreeNode* getKdTree();
     Color renderRay(Ray &ray);
+    void computeIntersectionNode(KdTreeNode *node, Ray &ray,float *distance, 
+                                 VEC3F *normal, Material **material);
     void computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 			     Material **material);
     Color renderPixel(int x, int y);

@@ -27,7 +27,7 @@ Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
     minZ = std::min(a_[2], std::min(b_[2], c_[2]));
     maxZ = std::max(a_[2], std::max(b_[2], c_[2]));
 
-    aabb = new AABB(minX, maxX, minY, maxY, minZ, minZ);
+    aabb = new AABB(minX, maxX, minY, maxY, minZ, maxZ);
 }
 
 VEC3F Triangle::getA() {
