@@ -12,6 +12,12 @@ AABB::AABB(float minX, float maxX,
 {
 }
 
+bool AABB::intersectRay(Ray &ray)
+{
+    // TODO
+    return true;
+}
+
 /*
  * Ray-box intersection using IEEE numerical properties to ensure that the
  * test is both robust and efficient, as described in:

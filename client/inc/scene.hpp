@@ -2,6 +2,7 @@
 #define DEF_SCENE
 
 #include <list>
+#include <cfloat>
 
 #include "vec3.hpp"
 #include "camera.hpp"

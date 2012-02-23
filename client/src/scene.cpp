@@ -62,8 +62,26 @@ Color Scene::renderRay(Ray &ray) {
 
 AABB* Scene::computeGlobalAABB()
 {
-    // TODO
-    return NULL;
+    float minX = FLT_MAX, maxX = FLT_MIN;
+    float minY = FLT_MAX, maxY = FLT_MIN;
+    float minZ = FLT_MAX, maxZ = FLT_MIN;
+
+    list<Object*>::iterator iterObj;
+    AABB * aabb;
+
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
+    {
+        aabb = (*iterObj)->getAABB();
+        minX = min(minX, aabb->minX);
+        maxX = min(maxX, aabb->maxX);
+        minY = min(minY, aabb->minY);
+        maxY = min(maxY, aabb->maxY);
+        minZ = min(minZ, aabb->minZ);
+        maxZ = min(maxZ, aabb->maxZ);
+        delete aabb;
+    }
+
+    return new AABB(minX, maxX, minY, maxY, minZ, maxZ);
 }
 
 void Scene::computeKdTree() 
@@ -129,6 +147,9 @@ void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
     }
 }
 
+/**
+ * Adaptive stochastic supersampling
+ */
 Color Scene::renderPixel(int x, int y) {
 
     VEC3F origin = camera->getPoint();

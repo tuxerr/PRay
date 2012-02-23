@@ -1,12 +1,10 @@
 #include "triangle.hpp"
-#include "logger.hpp"
-
 
 Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
 		   VEC3F &na, VEC3F &nb, VEC3F &nc,
                    VEC3F &normal,
 		   Material *material) :
-    Object(material), 
+    Object(material, NULL),
     a(a), 
     b(b), 
     c(c), 
@@ -15,7 +13,21 @@ Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
     nb(nb.normalize()), 
     nc(nc.normalize())
 {
+    float minX, maxX, minY, maxY, minZ, maxZ;
+    
+    float a_[4], b_[4], c_[4];
+    a.getCoord(a_);
+    b.getCoord(b_);
+    c.getCoord(c_);
 
+    minX = std::min(a_[0], std::min(b_[0], c_[0]));
+    maxX = std::max(a_[0], std::max(b_[0], c_[0]));
+    minY = std::min(a_[1], std::min(b_[1], c_[1]));
+    maxY = std::max(a_[1], std::max(b_[1], c_[1]));
+    minZ = std::min(a_[2], std::min(b_[2], c_[2]));
+    maxZ = std::max(a_[2], std::max(b_[2], c_[2]));
+
+    aabb = new AABB(minX, maxX, minY, maxY, minZ, minZ);
 }
 
 VEC3F Triangle::getA() {
