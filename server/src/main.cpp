@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         cout<<usage<<endl;
         exit(EXIT_FAILURE);
     }
-    
+
     Network network(port);
     network.launch();
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
     NetworkRenderer networkRenderer(network,*disp,ui);
 
-    ui.run();
+    ui.run(networkRenderer);
 
     network.stop();
 

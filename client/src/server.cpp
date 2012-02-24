@@ -69,7 +69,7 @@ void Server::main_loop() {
                 continue_loop=false;
             } else {
                 received_messages_mutex.lock();
-                received_messages.push_back(string(recv_str));
+                received_messages.push_back(string(recv_str,message_length-1));
                 received_messages_mutex.unlock();
             }
             wait_message.signal();
@@ -87,7 +87,9 @@ void Server::stop() {
 
 int Server::send_message(string mes) {
     socket_mutex.lock();
+
     ssize_t message_length = send(sock.sock,mes.c_str(),mes.size()+1,0);
+
     if(message_length==-1) {
         Logger::log(LOG_ERROR)<<"Error while sending TCP packet to server "<<ip_addr<<std::endl;
         continue_loop=false;
