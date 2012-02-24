@@ -1,5 +1,8 @@
 #include "kdtree.hpp"
 
+#define NODE_DEPTH_LIMIT 15
+#define NODE_OBJECTS_LIMIT 10
+
 KdTreeNode::KdTreeNode(int depth, AABB* aabb) :
     left(NULL),
     right(NULL),
@@ -29,18 +32,20 @@ void KdTreeNode::addObject(Object* object)
 void KdTreeNode::computeChildren()
 {
     int axis = depth % 3;
+
     float limit = findBestSplit(axis);
+
     split(axis, limit);
     objects.clear(); // only leaves keep their objects
 
     if (left != NULL) {
-        if (left->depth < 20 and left->objects.size() > 3) {
+        if (left->depth < NODE_DEPTH_LIMIT and left->objects.size() > NODE_OBJECTS_LIMIT) {
             left->computeChildren();
         }
     }
 
     if (right != NULL) {
-        if (right->depth < 20 and right->objects.size() > 3) {
+        if (right->depth < NODE_DEPTH_LIMIT and right->objects.size() > NODE_OBJECTS_LIMIT) {
             right->computeChildren();
         }
     }
@@ -69,37 +74,43 @@ float KdTreeNode::findBestSplit(int axis)
             // X
             split(axis, aabb->minX);
             cost = computeCost();
-            if (cost < bestCost)
-                bestSplit = aabb->minX;
+            if (left != NULL) delete left;
+            if (right != NULL) delete right;
+            if (cost < bestCost) bestSplit = aabb->minX;
 
             split(axis, aabb->maxX);
             cost = computeCost();
-            if (cost < bestCost)
-                bestSplit = aabb->maxX;
+            if (left != NULL) delete left;
+            if (right != NULL) delete right;
+            if (cost < bestCost) bestSplit = aabb->maxX;
 
         } else if (axis == 1) {
             // Y
             split(axis, aabb->minY);
             cost = computeCost();
-            if (cost < bestCost)
-                bestSplit = aabb->minY;
+            if (left != NULL) delete left;
+            if (right != NULL) delete right;
+            if (cost < bestCost) bestSplit = aabb->minY;
 
             split(axis, aabb->maxY);
             cost = computeCost();
-            if (cost < bestCost)
-                bestSplit = aabb->maxY;
+            if (left != NULL) delete left;
+            if (right != NULL) delete right;
+            if (cost < bestCost) bestSplit = aabb->maxY;
 
         } else {
             // Z
             split(axis, aabb->minZ);
             cost = computeCost();
-            if (cost < bestCost)
-                bestSplit = aabb->minZ;
+            if (left != NULL) delete left;
+            if (right != NULL) delete right;
+            if (cost < bestCost) bestSplit = aabb->minZ;
 
             split(axis, aabb->maxZ);
             cost = computeCost();
-            if (cost < bestCost)
-                bestSplit = aabb->maxZ;
+            if (left != NULL) delete left;
+            if (right != NULL) delete right;
+            if (cost < bestCost) bestSplit = aabb->maxZ;
         }
     }
     
@@ -199,7 +210,7 @@ unsigned int KdTreeNode::getNbNodes()
     Logger::log(LOG_DEBUG)<<"       objects = "<<objects.size()<<std::endl;
 */
     unsigned int nb_left = 0, nb_right = 0;
-    
+
     if (left != NULL)
         nb_left = left->getNbNodes();
 
