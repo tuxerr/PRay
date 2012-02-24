@@ -2,6 +2,7 @@
 #define DEF_SCENE
 
 #include <list>
+#include <set>
 #include <cfloat>
 
 #include "vec3.hpp"
@@ -26,14 +27,18 @@ class Scene {
 private :
     list<Object*> objects;
     list<Light*> lights;
+    set<Material*> materials;
     AmbientLight ambientLight;
     Camera* camera;
     KdTreeNode* kdTree;
     AABB* computeGlobalAABB();
     void computeKdTree(); 
+    void computeIntersectionNode(KdTreeNode *node, Ray &ray,float *distance, 
+                                 VEC3F *normal, Material **material);
 public :
     Scene(const list<Object*> objects,
 	  const list<Light*> lights,
+          const set<Material*> materials,
 	  const AmbientLight& ambientLight,
 	  Camera* camera);
     ~Scene();
@@ -43,8 +48,6 @@ public :
     Camera* getCamera();
     KdTreeNode* getKdTree();
     Color renderRay(Ray &ray);
-    void computeIntersectionNode(KdTreeNode *node, Ray &ray,float *distance, 
-                                 VEC3F *normal, Material **material);
     void computeIntersection(Ray &ray, float *distance, VEC3F *normal,
 			     Material **material);
     Color renderPixel(int x, int y);
