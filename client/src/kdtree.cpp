@@ -32,6 +32,18 @@ void KdTreeNode::computeChildren()
     float limit = findBestSplit(axis);
     split(axis, limit);
     objects.clear(); // only leaves keep their objects
+
+    if (left != NULL) {
+        if (left->depth < 20 and left->objects.size() > 3) {
+            left->computeChildren();
+        }
+    }
+
+    if (right != NULL) {
+        if (right->depth < 20 and right->objects.size() > 3) {
+            right->computeChildren();
+        }
+    }
 }
 
 /**
@@ -96,6 +108,10 @@ float KdTreeNode::findBestSplit(int axis)
 
 float KdTreeNode::computeCost()
 {
+    if (isLeaf()) {
+        return aabb->surfaceArea * objects.size();
+    }
+
     float lo = left->objects.size();
     float ro = right->objects.size();
 
@@ -110,10 +126,6 @@ float KdTreeNode::computeCost()
 
 void KdTreeNode::split(int axis, float limit)
 {
-    // TODO : better termination criterion based on the cost
-    if (depth > 20 or objects.size() < 4)
-        return;
-
     float left_minX = aabb->minX, left_minY = aabb->minY, left_minZ = aabb->minZ;
     float left_maxX = aabb->maxX, left_maxY = aabb->maxY, left_maxZ = aabb->maxZ;
 
@@ -175,4 +187,24 @@ void KdTreeNode::split(int axis, float limit)
             break;
         }
     }
+}
+
+unsigned int KdTreeNode::getNbNodes()
+{
+/*
+    Logger::log(LOG_DEBUG)<<"Node : addr    = "<<this<<std::endl; 
+    Logger::log(LOG_DEBUG)<<"       depth   = "<<depth<<std::endl;
+    Logger::log(LOG_DEBUG)<<"       left    = "<<left<<std::endl;
+    Logger::log(LOG_DEBUG)<<"       right   = "<<right<<std::endl;
+    Logger::log(LOG_DEBUG)<<"       objects = "<<objects.size()<<std::endl;
+*/
+    unsigned int nb_left = 0, nb_right = 0;
+    
+    if (left != NULL)
+        nb_left = left->getNbNodes();
+
+    if (right != NULL)
+        nb_right = right->getNbNodes();
+        
+    return nb_left + nb_right + objects.size();
 }

@@ -1,11 +1,13 @@
 #include "scene.hpp"
 
 Scene::Scene(const list<Object*> objects,
-             const list<Light *> lights,
+             const list<Light*> lights,
+             const set<Material*> materials,
              const AmbientLight &ambientLight,
              Camera* camera) :
     objects(objects),
     lights(lights),
+    materials(materials),
     ambientLight(ambientLight),
     camera(camera),
     kdTree(NULL)
@@ -15,15 +17,26 @@ Scene::Scene(const list<Object*> objects,
 
 Scene::~Scene()
 {
-    list<Object*>::iterator iter;
+    list<Object*>::iterator iterObj;
 
-    for (iter = objects.begin() ; iter != objects.end() ; iter++) {
-        delete *iter;
+    for (iterObj = objects.begin() ; iterObj != objects.end() ; iterObj++) {
+        delete *iterObj;
     }
 
-    delete kdTree;
+    set<Material*>::iterator iterMat;
 
-    //delete camera;
+    for (iterMat = materials.begin() ; iterMat != materials.end() ; iterMat++) {
+        delete *iterMat;
+    }
+
+    list<Light*>::iterator iterLights;
+
+    for (iterLights = lights.begin() ; iterLights != lights.end() ; iterLights++) {
+        delete *iterLights;
+    }
+
+    delete camera;
+    delete kdTree;
 }
 
 list<Object*> Scene::getObjects() {
@@ -87,6 +100,8 @@ AABB* Scene::computeGlobalAABB()
 
 void Scene::computeKdTree()
 {
+    Logger::log(LOG_INFO)<<"Start building kd-tree"<<endl;
+
     AABB* globalAABB = computeGlobalAABB();
 
     kdTree = new KdTreeNode(0, globalAABB);
@@ -99,6 +114,10 @@ void Scene::computeKdTree()
     }
 
     kdTree->computeChildren();
+
+    unsigned int nbNodes = kdTree->getNbNodes();
+
+    Logger::log(LOG_INFO)<<"Kd-tree building completed ("<<nbNodes<<" nodes)"<<endl;
 }
 
 KdTreeNode* Scene::getKdTree()

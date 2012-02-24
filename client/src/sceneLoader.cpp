@@ -1,15 +1,4 @@
 #include "sceneLoader.hpp"
-#include "logger.hpp"
-#include "settings.hpp"
-#include "sphere.hpp"
-#include "triangle.hpp"
-#include "light.hpp"
-#include "directionalLight.hpp"
-#include "pointLight.hpp"
-#include "ambientLight.hpp"
-#include "vec3.hpp"
-#include "phongMaterial.hpp"
-#include "uglyMaterial.hpp"
 
 //#define SCENELOADER_DEBUG
 
@@ -26,6 +15,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
 
         list<Object*> objects;
         list<Light*> lights;
+        set<Material*> materials;
         AmbientLight ambientLight;
         Camera* camera=0;
         TiXmlElement* tmp_node = 0;
@@ -136,6 +126,11 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                     Logger::log(LOG_ERROR)<<"Missing <material> near line "<<node->Row()<<endl;
                 } else {
                     material = readMaterial(tmp_node);
+                    if (material != NULL) {
+                        if (materials.count(material) == 0) {
+                            materials.insert(material);
+                        }
+                    }
                 }
 
                 tmp_node = node->FirstChildElement("shape");
@@ -153,7 +148,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
 
         Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects)" << endl;
 
-        *scene = new Scene(objects,lights,ambientLight,camera);
+        *scene = new Scene(objects,lights,materials,ambientLight,camera);
 
 	return 0;
     }
@@ -223,7 +218,7 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 }
 
 Material* SceneLoader::readMaterial(TiXmlElement* node) {
-    Material* material = 0;
+    Material* material = NULL;
     TiXmlElement* child = node->FirstChildElement();
     string childName(child->Value());
 

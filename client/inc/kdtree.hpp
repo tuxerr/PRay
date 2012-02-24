@@ -24,6 +24,7 @@ public :
     bool isLeaf();
     void addObject(Object* object);
     void computeChildren();
+    unsigned int getNbNodes();
 };
 
 #endif
