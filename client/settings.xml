@@ -11,6 +11,6 @@
   <supersampling_max_rays i="40"/>
   <supersampling_show b="false"/>
   <supersampling_show_limit f="16"/>
-  <use_kdtree b="false"/>
+  <use_kdtree b="true"/>
   <one_thread b="false"/>
 </settings>

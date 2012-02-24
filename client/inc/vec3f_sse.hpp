@@ -38,7 +38,7 @@ public:
     Vec3f operator/(float n);
     Vec3f rotate(float angle, Vec3f axis);
     Vec3f symmetry(Vec3f x);
-    void getCoord(float* coord);
+    void getCoord(float* coord) const;
     void printLog();
     bool operator==(Vec3f vec);
     bool operator!=(Vec3f vec);
@@ -185,7 +185,7 @@ p[2] := a2
 p[3] := a3
 */
 
-inline void Vec3f::getCoord(float* coord) {
+inline void Vec3f::getCoord(float* coord) const {
     _mm_storeu_ps(coord, v);
 }
 

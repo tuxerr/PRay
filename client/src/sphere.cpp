@@ -9,7 +9,11 @@ Sphere::Sphere(const VEC3F &center,
     center(center),
     radius(radius)
 {
-    aabb = new AABB(0, 1, 0, 1, 0, 1); // TODO
+    float centerCoord[4];
+    center.getCoord(centerCoord);
+    aabb = new AABB(centerCoord[0] - radius, centerCoord[0] + radius,
+                    centerCoord[1] - radius, centerCoord[1] + radius,
+                    centerCoord[2] - radius, centerCoord[2] + radius);
 }
 
 VEC3F Sphere::getCenter() const {
