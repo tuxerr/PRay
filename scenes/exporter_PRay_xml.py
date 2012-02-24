@@ -89,7 +89,7 @@ def main(filename):
             f.write('\t\t<normal x="%f" y="%f" z="%f"/>' % (normal.x, normal.y, normal.z))
             f.write('\n\t\t<viewplane w="16/2" h="9/2" d="%f"/>\n\t</camera>\n' %(ob.data.lens/4))
         if ob.type == 'MESH':        
-            
+            dfaces = {}
             mesh = ob.data
             verts = mesh.vertices
             ob_mat = ob.matrix_world
@@ -107,7 +107,6 @@ def main(filename):
                     mat = ob.material_slots[face.material_index].material
                     if mat.use_vertex_color_paint:
                         material.color = mesh.vertex_colors[0].data[face.index].color1
-                        print("mat", material.color)
                     else:
                         material.color = mat.diffuse_color
                         if mat.use_transparency:
@@ -118,9 +117,7 @@ def main(filename):
                             material.diffuse     = mat.diffuse_intensity
                             material.specular    = mat.specular_intensity
                             material.shininess   = mat.specular_hardness
-                print ("Blend mat", material.color)
                 if not material in dfaces:
-                    print("new mat", material.color)
                     dfaces[material] = []
                 dfaces[material].append(face)
                 
@@ -128,7 +125,6 @@ def main(filename):
                 f.write("\t<object>\n")
                 f.write('\t\t<shape>\n')
                 f.write('\t\t\t<list>\n')
-                print ('material ', material.color)
                 for face in dfaces[material]:
                     vs = face.vertices                    
                     if len(vs)==3:
