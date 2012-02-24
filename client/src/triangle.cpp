@@ -1,5 +1,7 @@
 #include "triangle.hpp"
 
+#define MIN_BOX_SIZE 0.001
+
 Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
 		   VEC3F &na, VEC3F &nb, VEC3F &nc,
                    VEC3F &normal,
@@ -26,6 +28,24 @@ Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
     maxY = std::max(a_[1], std::max(b_[1], c_[1]));
     minZ = std::min(a_[2], std::min(b_[2], c_[2]));
     maxZ = std::max(a_[2], std::max(b_[2], c_[2]));
+
+    if (maxX - minX < MIN_BOX_SIZE) {
+        float meanX = (minX + maxX) / 2.0;
+        minX = meanX - MIN_BOX_SIZE / 2.0;
+        maxX = meanX + MIN_BOX_SIZE / 2.0;
+    }
+
+    if (maxY - minY < MIN_BOX_SIZE) {
+        float meanY = (minY + maxY) / 2.0;
+        minY = meanY - MIN_BOX_SIZE / 2.0;
+        maxY = meanY + MIN_BOX_SIZE / 2.0;
+    }
+
+    if (maxZ - minZ < MIN_BOX_SIZE) {
+        float meanZ = (minZ + maxZ) / 2.0;
+        minZ = meanZ - MIN_BOX_SIZE / 2.0;
+        maxZ = meanZ + MIN_BOX_SIZE / 2.0;
+    }
 
     aabb = new AABB(minX, maxX, minY, maxY, minZ, maxZ);
 }

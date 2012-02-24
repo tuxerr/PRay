@@ -12,7 +12,9 @@ Scene::Scene(const list<Object*> objects,
     camera(camera),
     kdTree(NULL)
 {
-    computeKdTree();
+    if (Settings::getAsBool("use_kdtree")) {
+        computeKdTree();
+    }
 }
 
 Scene::~Scene()
@@ -36,7 +38,10 @@ Scene::~Scene()
     }
 
     delete camera;
-    delete kdTree;
+
+    if (Settings::getAsBool("use_kdtree")) {
+        delete kdTree;
+    }
 }
 
 list<Object*> Scene::getObjects() {
