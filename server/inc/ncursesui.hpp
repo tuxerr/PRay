@@ -6,8 +6,11 @@
 #include <functional>
 #include <string>
 #include "logger.hpp"
+#include "settings.hpp"
 #include <queue>
 #include <map>
+
+class NetworkRenderer;
 
 using namespace std;
 
@@ -59,12 +62,24 @@ private:
     unsigned int col_size;
 };
 
+class NcursesTextWindow {
+public:
+    NcursesTextWindow(int width,int starty,int startx);
+    ~NcursesTextWindow();
+    string get_current_string();
+    void refresh(int mode_ch);
+private:
+    string current_string;
+    WINDOW *ptr;
+    unsigned int col_size;
+};
+
 class NcursesUI {
 public :
     NcursesUI();
     ~NcursesUI();
     void init();
-    void run();
+    void run(NetworkRenderer &renderer);
     NcursesScrollingWindow* get_clients_win();
     NcursesLogWindow* get_log_win();
     NcursesLogWindow* get_status_win();
@@ -74,6 +89,7 @@ private :
     NcursesScrollingWindow *client_ptr;
     NcursesLogWindow *log_ptr;
     NcursesLogWindow *status_ptr;
+    NcursesTextWindow *text_ptr;
 };
 
 #endif

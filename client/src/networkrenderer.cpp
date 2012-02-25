@@ -35,7 +35,9 @@ void NetworkRenderer::run() {
     int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
 
     while(serv.is_connected()) {
-        serv.wait_for_message();
+        if(!serv.has_messages()) {
+            serv.wait_for_message();
+        }
         string mes = "";
         if(serv.has_messages()) {
             mes=serv.unstack_message();
@@ -60,10 +62,13 @@ void NetworkRenderer::run() {
             mes_ss>>task_number>>y>>width>>height;
 
             std::vector<Color> rescol = renderer.render(0,y,width,height,numOfCPUs);
+	    Logger::log()<<"Rendering part : "<<0<<"/"<<y<<"/"<<width<<"/"<<height<<std::endl;
 
-            result_message<<"RESULT "<<task_number;
+            result_message<<"RESULT "<<task_number<<" ";
             for(unsigned int i=0;i<rescol.size();i++) {
-                result_message<<" "<<rescol[i].getR()<<" "<<rescol[i].getG()<<" "<<rescol[i].getB();
+                result_message.put((char)((rescol[i].getR())*255));
+                result_message.put((char)((rescol[i].getG())*255));
+                result_message.put((char)((rescol[i].getB())*255));
             }
 
             serv.send_message(result_message.str());

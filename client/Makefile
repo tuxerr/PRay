@@ -3,8 +3,7 @@ EXEC = pray_client
 # source files
 CXX = g++
 #CXX = icpc
-#CXXFLAGS = -Wall -W -O3 -march=native `sdl-config --cflags` -I./inc -I../common/inc -std=c++0x
-CXXFLAGS = -Wall -W -g `sdl-config --cflags` -I./inc -I../common/inc -std=c++0x
+CXXFLAGS = -Wall -W -O3 -march=native `sdl-config --cflags` -I./inc -I../common/inc -std=c++0x
 LDFLAGS = -lm -lrt `sdl-config --libs` -lpthread -ltinyxml
 SRCS = $(wildcard src/*.cpp)
 OBJS = $(SRCS:.cpp=.o)

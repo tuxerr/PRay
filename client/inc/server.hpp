@@ -11,7 +11,7 @@
 #include "conditional.hpp"
 
 #define DEFAULT_LISTENING_PORT 12345
-#define RECV_L 3000
+#define RECV_L 40
 #define NETWORK_CLIENT_SLEEPTIME 30000
 
 class Server {

@@ -1,9 +1,24 @@
 #ifndef DEF_SCENELOADER
 #define DEF_SCENELOADER
 
+#include <list>
+#include <set>
 #include <string>
 #include <tinyxml.h>
 #include "scene.hpp"
+#include "logger.hpp"
+#include "settings.hpp"
+#include "sphere.hpp"
+#include "triangle.hpp"
+#include "light.hpp"
+#include "directionalLight.hpp"
+#include "pointLight.hpp"
+#include "ambientLight.hpp"
+#include "vec3.hpp"
+#include "material.hpp"
+#include "phongMaterial.hpp"
+#include "uglyMaterial.hpp"
+
 
 class SceneLoader {
 public:

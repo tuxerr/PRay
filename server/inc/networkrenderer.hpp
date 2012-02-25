@@ -13,7 +13,7 @@
 #include <pthread.h>
 #include <sstream>
 
-#define CLIENT_TASK_LINES 2
+#define CLIENT_TASK_LINES 5
 
 typedef enum {
     RENDERER_WAITING,
@@ -71,6 +71,7 @@ private:
     std::vector<Task> network_tasks;
     std::vector<Rendering_Client> rendering_clients;
     int rendering_task_number;
+    Uint32 initial_tick;
 
     int send_task_to_client(int id);
     void parse_network_result_output(stringstream &recv_ss);

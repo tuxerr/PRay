@@ -1,30 +1,47 @@
-#include "logger.hpp"
 #include "scene.hpp"
-#include "material.hpp"
-#include "uglyMaterial.hpp"
-#include "settings.hpp"
 
 Scene::Scene(const list<Object*> objects,
-	     const list<Light *> lights,
-	     const AmbientLight &ambientLight,
-	     Camera* camera) :
+             const list<Light*> lights,
+             const set<Material*> materials,
+             const AmbientLight &ambientLight,
+             Camera* camera) :
     objects(objects),
     lights(lights),
+    materials(materials),
     ambientLight(ambientLight),
-    camera(camera)
+    camera(camera),
+    kdTree(NULL)
 {
-
+    if (Settings::getAsBool("use_kdtree")) {
+        computeKdTree();
+    }
 }
 
 Scene::~Scene()
 {
-    list<Object*>::iterator iter;
+    list<Object*>::iterator iterObj;
 
-    for (iter = objects.begin() ; iter != objects.end() ; iter++) {
-        delete *iter;
+    for (iterObj = objects.begin() ; iterObj != objects.end() ; iterObj++) {
+        delete *iterObj;
     }
 
-    //delete camera;
+    set<Material*>::iterator iterMat;
+
+    for (iterMat = materials.begin() ; iterMat != materials.end() ; iterMat++) {
+        delete *iterMat;
+    }
+
+    list<Light*>::iterator iterLights;
+
+    for (iterLights = lights.begin() ; iterLights != lights.end() ; iterLights++) {
+        delete *iterLights;
+    }
+
+    delete camera;
+
+    if (Settings::getAsBool("use_kdtree")) {
+        delete kdTree;
+    }
 }
 
 list<Object*> Scene::getObjects() {
@@ -44,22 +61,154 @@ Camera* Scene::getCamera() {
 }
 
 Color Scene::renderRay(Ray &ray) {
-    float distance;
+    float distance = -3;
     VEC3F normal;
     Material* material = 0;
 
     computeIntersection(ray, &distance, &normal, &material);
 
     if (distance < 0) { // no intersection was found
-
-	return Color(0,0,0);
+        return Color(0,0,0);
     } else {
+        if (material == 0) return Color(255,0,255); // DEBUG kdtree
 
-	Color result = material->renderRay(ray, distance, normal, this);
-	// for(int i=0; i<5; i++) {
-	//     result = result.merge(material->renderRay(ray, distance, normal, this));
-	// }
-	return result;
+        Color result = material->renderRay(ray, distance, normal, this);
+        // for(int i=0; i<5; i++) {
+        //     result = result.merge(material->renderRay(ray, distance, normal, this));
+        // }
+        return result;
+    }
+}
+
+AABB* Scene::computeGlobalAABB()
+{
+    float minX = FLT_MAX, maxX = FLT_MIN;
+    float minY = FLT_MAX, maxY = FLT_MIN;
+    float minZ = FLT_MAX, maxZ = FLT_MIN;
+
+    list<Object*>::iterator iterObj;
+    AABB * aabb;
+
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
+    {
+        aabb = (*iterObj)->getAABB();
+        minX = min(minX, aabb->minX);
+        maxX = max(maxX, aabb->maxX);
+        minY = min(minY, aabb->minY);
+        maxY = max(maxY, aabb->maxY);
+        minZ = min(minZ, aabb->minZ);
+        maxZ = max(maxZ, aabb->maxZ);
+    }
+
+    return new AABB(minX, maxX, minY, maxY, minZ, maxZ);
+}
+
+void Scene::computeKdTree()
+{
+    Logger::log(LOG_INFO)<<"Start building kd-tree"<<endl;
+
+    AABB* globalAABB = computeGlobalAABB();
+
+    kdTree = new KdTreeNode(0, globalAABB);
+
+    list<Object*>::iterator iterObj;
+
+    for (iterObj = objects.begin(); iterObj != objects.end(); iterObj++)
+    {
+        kdTree->addObject(*iterObj);
+    }
+
+    kdTree->computeChildren();
+
+    unsigned int nbNodes = kdTree->getNbNodes();
+
+    Logger::log(LOG_INFO)<<"Kd-tree building completed ("<<nbNodes<<" nodes)"<<endl;
+}
+
+KdTreeNode* Scene::getKdTree()
+{
+    return kdTree;
+}
+
+void Scene::computeIntersectionNode(KdTreeNode *node,
+                                    Ray &ray,
+                                    float *distance,
+                                    VEC3F *normal,
+                                    Material **material)
+{
+    if (node->isLeaf()) {
+        *distance = -2;
+        float tempDistance = -1;
+        VEC3F tempNormal;
+        Material* tempMaterial;
+        list<Object*>::iterator iter;
+
+        for (iter = node->objects.begin(); iter != node->objects.end(); iter++)
+        {
+            (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
+
+            // Fixes the precision problem for shadows.
+            if(-0.001 < tempDistance && tempDistance < 0 ) {
+                tempDistance = -tempDistance;
+            }
+            // ----------------------------------------
+
+            if (tempDistance >= 0
+                && ((*distance >= 0 && tempDistance < *distance)
+                    || *distance < 0 ))
+            {
+                *distance = tempDistance;
+                *normal = tempNormal;
+                *material = tempMaterial;
+            }
+
+            tempDistance = -1;
+        }
+
+    } else {
+        float left_distance = -1, right_distance = -1;
+        VEC3F left_normal, right_normal;
+        Material *left_material = 0, *right_material = 0;
+
+        if (node->left->aabb->intersectRay(ray)) {
+            computeIntersectionNode(node->left, ray, &left_distance, &left_normal, &left_material);
+        }
+        if (node->right->aabb->intersectRay(ray)) {
+            computeIntersectionNode(node->right, ray, &right_distance, &right_normal, &right_material);
+        }
+
+        if (-1 < left_distance) {
+            if (-1 < right_distance) {
+                if (left_distance < right_distance) {
+                    *distance = left_distance;
+                    *normal = left_normal;
+                    *material = left_material;
+                    return;
+                } else {
+                    *distance = right_distance;
+                    *normal = right_normal;
+                    *material = right_material;
+                    return;
+                }
+            } else {
+                *distance = left_distance;
+                *normal = left_normal;
+                *material = left_material;
+                return;
+            }
+        } else {
+            if (-1 < right_distance) {
+                *distance = right_distance;
+                *normal = right_normal;
+                *material = right_material;
+                return;
+            } else {
+                *distance = -1;
+                *normal = 0;
+                *material = 0;
+                return;
+            }
+        }
     }
 }
 
@@ -67,45 +216,52 @@ Color Scene::renderRay(Ray &ray) {
  * *distance < 0 if no intersection was found
  */
 void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
-                                Material **material) {
+                                Material **material)
+{
+    if (Settings::getAsBool("use_kdtree")) {
 
-    *distance = -2;
-    float tempDistance = -1;
-    VEC3F tempNormal;
-    Material* tempMaterial;
-    list<Object*>::iterator iter;
+        computeIntersectionNode(kdTree, ray, distance, normal, material);
 
-    for (iter = objects.begin(); iter != objects.end(); iter++)
-	{
-	    (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
+    } else {
+        *distance = -2;
+        float tempDistance = -1;
+        VEC3F tempNormal;
+        Material* tempMaterial;
+        list<Object*>::iterator iter;
 
-	    // Fixes the precision problem for shadows.
-	    if(tempDistance < 0 && tempDistance > -0.001) {
-		tempDistance = -tempDistance;
-	    }
-	    // ----------------------------------------
+        for (iter = objects.begin(); iter != objects.end(); iter++)
+        {
+            (*iter)->getIntersection(ray, &tempDistance, &tempNormal, &tempMaterial);
 
+            // Fixes the precision problem for shadows.
+            if(tempDistance < 0 && tempDistance > -0.001) {
+                tempDistance = -tempDistance;
+            }
+            // ----------------------------------------
 
-	    if (tempDistance >= 0
-		&& ((*distance >= 0 && tempDistance < *distance)
-		    || *distance < 0 ))
-		{
-		    *distance = tempDistance;
-		    *normal = tempNormal;
-		    *material = tempMaterial;
-		}
+            if (tempDistance >= 0
+                && ((*distance >= 0 && tempDistance < *distance)
+                    || *distance < 0 ))
+            {
+                *distance = tempDistance;
+                *normal = tempNormal;
+                *material = tempMaterial;
+            }
 
-	    tempDistance = -1;
-	}
-    
+            tempDistance = -1;
+        }
+    }
 }
 
+/**
+ * Adaptive stochastic supersampling
+ */
 Color Scene::renderPixel(int x, int y) {
 
     VEC3F origin = camera->getPoint();
 
     if (Settings::getAsBool("supersampling_enable")) {
-    
+
         int launchedRays = 0;
         std::vector<VEC3F> directions;
         std::vector<Color> colors;
@@ -132,7 +288,7 @@ Color Scene::renderPixel(int x, int y) {
         for (int i = 0 ; i < 4 ; i++) {
             if (fabs(mean_r - colors[i].getR())
                 + fabs(mean_g - colors[i].getG())
-                + fabs(mean_b - colors[i].getB()) 
+                + fabs(mean_b - colors[i].getB())
                 > Settings::getAsFloat("supersampling_threshold_start")) {
                 doSupersampling = true;
                 break;
@@ -142,7 +298,7 @@ Color Scene::renderPixel(int x, int y) {
         if (doSupersampling) {
             do {
                 old_mean_r = mean_r;
-                old_mean_g = mean_g; 
+                old_mean_g = mean_g;
                 old_mean_b = mean_b;
 
                 mean_r *= launchedRays;
@@ -171,13 +327,13 @@ Color Scene::renderPixel(int x, int y) {
                          + fabs(old_mean_b - mean_b)
                          > Settings::getAsFloat("supersampling_threshold_end")));
         }
-	/*
-	  if (launchedRays > 4) {
-	  Logger::log(LOG_DEBUG)<<"launchedRays="<<launchedRays<<endl;
-	  }
-	*/
+        /*
+          if (launchedRays > 4) {
+          Logger::log(LOG_DEBUG)<<"launchedRays="<<launchedRays<<endl;
+          }
+        */
         if (Settings::getAsBool("supersampling_show")) {
-            return Color(min((float)1.0, (float)(launchedRays - 4) 
+            return Color(min((float)1.0, (float)(launchedRays - 4)
                              / Settings::getAsFloat("supersampling_show_limit")));
         } else {
             return Color(mean_r, mean_g, mean_b);
@@ -208,18 +364,18 @@ list<Light *> Scene::visibleLights(VEC3F point, float intensity) {
     VEC3F one = VEC3F(1,1,1);
 
     for (itLight = lights.begin(); itLight != lights.end(); itLight++) {
-	
-	
-	lightDirection = (*itLight)->getDirection(point)*(-1);
-	lightDirection = (lightDirection + one*((((float)rand() / (float)RAND_MAX) -0.5)*intensity)).normalize();
 
 
-	ray = Ray(point, lightDirection, color);
-	computeIntersection(ray, &distance, &normal, &material);
-	//  Logger::log(LOG_DEBUG)<< distance <<endl;      
-	if(distance < 0) {
-	    result.push_back(*itLight);
-	}
+        lightDirection = (*itLight)->getDirection(point)*(-1);
+        lightDirection = (lightDirection + one*((((float)rand() / (float)RAND_MAX) -0.5)*intensity)).normalize();
+
+
+        ray = Ray(point, lightDirection, color);
+        computeIntersection(ray, &distance, &normal, &material);
+        //  Logger::log(LOG_DEBUG)<< distance <<endl;
+        if(distance < 0) {
+            result.push_back(*itLight);
+        }
     }
 
     return result;

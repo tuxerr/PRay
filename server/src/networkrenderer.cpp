@@ -1,6 +1,6 @@
 #include "networkrenderer.hpp"
 
-NetworkRenderer::NetworkRenderer(Network &network,Display &disp,NcursesUI &ncursesui) : network(network), display(disp), ncursesui(ncursesui) {
+NetworkRenderer::NetworkRenderer(Network &network,Display &disp,NcursesUI &ncursesui) : network(network), display(disp), ncursesui(ncursesui), rstatus(RENDERER_WAITING) {
     if(pthread_create(&thread,NULL,launch_renderer_thread,(void*)this)!=0) {
         Logger::log(LOG_ERROR)<<"Couldn't launch network renderer thread"<<std::endl;
     }
@@ -49,6 +49,9 @@ void NetworkRenderer::renderer_thread() {
             if(result_number==rendering_task_number) {
                 rstatus=RENDERER_WAITING;
                 display.refresh_display();
+		Logger::log()<<"Network rendering finished in "
+			     <<(SDL_GetTicks()-initial_tick)/(float)1000
+			     <<" seconds"<<std::endl;
             }
 
         } else if(recv.find("LOGIN")==0) {
@@ -59,7 +62,7 @@ void NetworkRenderer::renderer_thread() {
             rendering_clients.insert(rendering_clients.begin()+id,newcl);
 
             stringstream infos(stringstream::out);
-            infos<<"INFO "<<Settings::getAsInt("window_width")<<Settings::getAsInt("window_height");
+            infos<<"INFO "<<Settings::getAsInt("window_width")<<" "<<Settings::getAsInt("window_height");
             cl->send_message(infos.str());
         }
     }
@@ -79,6 +82,7 @@ void NetworkRenderer::render(int width,int height) {
     if(rstatus==RENDERER_RENDERING) {
         Logger::log(LOG_WARNING)<<"A render is in progress"<<std::endl;
     } else if(rstatus==RENDERER_WAITING) {
+	initial_tick=SDL_GetTicks();
         rendering_width=width;
         rendering_height=height;
         rstatus=RENDERER_RENDERING;
@@ -109,14 +113,32 @@ void NetworkRenderer::render(int width,int height) {
 void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
     int packet_number;
     recv_ss>>packet_number;
+    recv_ss.get();
     std::vector<Color> result;
-    while(recv_ss.peek()!=EOF) {
+    while(recv_ss.good()) {
+
+        int ir,ig,ib;
+        ir=recv_ss.get();
+        ig=recv_ss.get();
+        ib=recv_ss.get();
+
         float r,g,b;
+        r=(float)ir/(float)255;
+        g=(float)ig/(float)255;
+        b=(float)ib/(float)255;
+        if(recv_ss.good()) {
+            Color c(r,g,b);
+            result.push_back(c); 
+        }
+        
+/*        float r,g,b;
         recv_ss>>r>>g>>b;
-        Color c(r,g,b);
-        result.push_back(c);
+
+            Color c(r,g,b);
+            result.push_back(c); */
     }
-    display.add_surface(0,CLIENT_TASK_LINES*packet_number,rendering_width,result.size()/rendering_width,result);
+    display.add_surface(0,CLIENT_TASK_LINES*packet_number,rendering_width,CLIENT_TASK_LINES,result);
+    Logger::log()<<"received "<<packet_number<<" of "<<result.size()<<std::endl;
     display.refresh_part_display_timecheck();
 }
 
@@ -127,7 +149,7 @@ int NetworkRenderer::send_task_to_client(int id) {
 
         Client* cl = network.get_client(id);
         stringstream send(stringstream::in | stringstream::out);
-        send<<"CALCULATE "<<network_tasks.size()<<""<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
+        send<<"CALCULATE "<<network_tasks.size()<<" "<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
         cl->send_message(send.str());
         return network_tasks.size();
     } 

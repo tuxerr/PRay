@@ -18,6 +18,10 @@ int Client::send_message(string mes) {
         return -1;
     }
 
+    stringstream ss(stringstream::out | stringstream::in);
+    ss<<mes.size()<<" ";
+    mes.insert(0,ss.str());
+
     socket_mutex.lock();
     ssize_t message_length = send(sock,mes.c_str(),mes.size()+1,0);
     if(message_length==-1) {
@@ -96,7 +100,34 @@ void Client::main_loop() {
                 Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
                 continue_loop=false;
             } else {
-                received_messages.push_back(string(recv_str,message_length-1));
+
+		string recvd_message(recv_str,message_length-1);
+		size_t space_pos = recvd_message.find(' ');
+		int message_size=atoi(recvd_message.substr(0,space_pos).c_str());
+		recvd_message=recvd_message.substr(space_pos+1);
+
+		if(message_length<RECV_L) {
+		    received_messages_mutex.lock();
+		    received_messages.push_back(recvd_message);
+		    received_messages_mutex.unlock();		    
+		} else {
+		    char *recv2 = new char[message_size];
+
+		    socket_mutex.lock();
+		    ssize_t message_length2 = recv(sock,recv2,message_size,0);    
+		    socket_mutex.unlock();
+
+		    if(message_length2!=0 && message_length2!=-1) {
+			string final_string(recvd_message);
+			final_string.append(recv2,message_length2);
+
+			received_messages_mutex.lock();
+			received_messages.push_back(final_string);
+			received_messages_mutex.unlock();
+		    }
+		    delete [] recv2;
+
+		}
                 recv_cond.signal();
             }
 	}
