@@ -10,6 +10,18 @@
     <color r="255" g="255" b="255"/>
     <direction x="0" y="1" z="1"/>
   </directionalLight>
+  <directionalLight>
+    <color r="255" g="255" b="255"/>
+    <direction x="0" y="8" z="57"/>
+  </directionalLight>
+  <directionalLight>
+    <color r="255" g="255" b="255"/>
+    <direction x="5" y="1" z="1"/>
+  </directionalLight>
+  <directionalLight>
+    <color r="0" g="255" b="0"/>
+    <direction x="0" y="-1" z="0"/>
+  </directionalLight>
   <ambientLight>
     <color r="255" g="255" b="255"/>
   </ambientLight>
@@ -23,8 +35,8 @@
     <material>
       <phong>
         <color r="255" g="0" b="0"/>      
-        <specular v="0.6"/>
-        <diffuse v="0.5"/>
+        <specular v="0.8"/>
+        <diffuse v="0.7"/>
         <ambiant v="0"/>
         <shininess v="100"/>
         <reflexivity v="0.1"/>
@@ -42,8 +54,8 @@
     <material>
       <phong>
         <color r="100" g="255" b="0"/>
-        <specular v="0.6"/>
-        <diffuse v="0.5"/>
+        <specular v="0.9"/>
+        <diffuse v="0.9"/>
         <ambiant v="0"/>
         <shininess v="100"/>
         <reflexivity v="0.1"/>
@@ -62,7 +74,7 @@
       <phong>
         <color r="0" g="255" b="100"/>
         <specular v="0.6"/>
-        <diffuse v="0.6"/>
+        <diffuse v="1"/>
         <ambiant v="0"/>
         <shininess v="100"/>
         <reflexivity v="0.1"/>

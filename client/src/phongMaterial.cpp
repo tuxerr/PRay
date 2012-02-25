@@ -54,6 +54,8 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Sc
     float rr;
     float rg;
     float rb;
+
+    float exposure = 1;
   
     r += color.getR()*ambiantReflection*ambientColor.getR();
     g += color.getG()*ambiantReflection*ambientColor.getG();
@@ -155,15 +157,35 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Sc
     
     }
   
-    if(r>1) {
-	r=1;
-    }
-    if(g>1) {
-	g=1;
-    }
-    if(b>1) {
-	b=1;
-    }  
+    // We are taking care of the exposure in order to avoid the min function
+
+    float expp = expf(exposure*r);
+    float expm = expf(-exposure*r);
+
+    r = (expp - expm)/(expp + expm);
+
+    expp = expf(exposure*g);
+    expm = expf(-exposure*g);
+
+    g = (expp - expm)/(expp + expm);
+
+    expp = expf(exposure*b);
+    expm = expf(-exposure*b);
+
+    b = (expp - expm)/(expp + expm);
+
+    // if(r>1) {
+    // 	Logger::log(LOG_INFO) << "r out of bounds" << std::endl;
+    // 	r=1;
+    // }
+    // if(g>1) {
+    // 	Logger::log(LOG_INFO) << "g out of bounds" << std::endl;
+    // 	g=1;
+    // }
+    // if(b>1) {
+    // 	Logger::log(LOG_INFO) << "b out of bounds" << std::endl;
+    // 	b=1;
+    // }  
 
     return Color(r, g, b);
 

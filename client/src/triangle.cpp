@@ -200,7 +200,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     /* *distance = t;*/
 
      if (u != u || v != v) {
-	 //*normal = this->normal;
+	 *normal = this->normal;
      } else {
        VEC3F point = ray.getOrigin() + (ray.getDirection())*(*distance);
        *normal = getNormal(point);
