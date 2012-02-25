@@ -12,7 +12,7 @@
 #include <algorithm>
 
 #define DEFAULT_THREAD_NUMBER 8
-#define PIXEL_GROUPS 128
+#define PIXEL_GROUPS 64
 
 typedef struct {
     std::vector< std::pair<int,int> > pixels;

@@ -62,6 +62,7 @@ void NetworkRenderer::run() {
             mes_ss>>task_number>>y>>width>>height;
 
             std::vector<Color> rescol = renderer.render(0,y,width,height,numOfCPUs);
+	    Logger::log()<<"Rendering part : "<<0<<"/"<<y<<"/"<<width<<"/"<<height<<std::endl;
 
             result_message<<"RESULT "<<task_number<<" ";
             for(unsigned int i=0;i<rescol.size();i++) {
@@ -69,7 +70,6 @@ void NetworkRenderer::run() {
                 result_message.put((char)((rescol[i].getG())*255));
                 result_message.put((char)((rescol[i].getB())*255));
             }
-            Logger::log()<<"Sent "<<task_number<<" of "<<rescol.size()<<std::endl;
 
             serv.send_message(result_message.str());
         } else if(head=="INFO") { 

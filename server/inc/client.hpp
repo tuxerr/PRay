@@ -12,7 +12,7 @@
 using namespace std;
 
 #define NETWORK_CLIENT_SLEEPTIME 30000
-#define RECV_L 60000
+#define RECV_L 40
 
 class Client {
  public:

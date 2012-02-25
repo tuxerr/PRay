@@ -49,6 +49,9 @@ void NetworkRenderer::renderer_thread() {
             if(result_number==rendering_task_number) {
                 rstatus=RENDERER_WAITING;
                 display.refresh_display();
+		Logger::log()<<"Network rendering finished in "
+			     <<(SDL_GetTicks()-initial_tick)/(float)1000
+			     <<" seconds"<<std::endl;
             }
 
         } else if(recv.find("LOGIN")==0) {
@@ -79,6 +82,7 @@ void NetworkRenderer::render(int width,int height) {
     if(rstatus==RENDERER_RENDERING) {
         Logger::log(LOG_WARNING)<<"A render is in progress"<<std::endl;
     } else if(rstatus==RENDERER_WAITING) {
+	initial_tick=SDL_GetTicks();
         rendering_width=width;
         rendering_height=height;
         rstatus=RENDERER_RENDERING;
