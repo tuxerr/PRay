@@ -1,6 +1,6 @@
 #include "kdtree.hpp"
 
-#define NODE_DEPTH_LIMIT 15
+#define NODE_DEPTH_LIMIT 25
 #define NODE_OBJECTS_LIMIT 3
 #define NODE_SIZE_LIMIT 0.001
 
@@ -126,19 +126,26 @@ bool KdTreeNode::findBestSplit(int axis, float* bestSplit)
 
             createChildren(axis, *iterLimit);
             splitObjects(axis, &objectsNode, &objectsLeft, &objectsRight);
-
             cost = computeCost(&objectsLeft, &objectsRight);
+            
             //Logger::log(LOG_DEBUG)<<"cost = "<<cost<<std::endl;
-            if (cost < bestCost) *bestSplit = *iterLimit;
-
+            if (cost < bestCost) {
+                bestCost = cost;
+                *bestSplit = *iterLimit;
+            }
+            //Logger::log(LOG_DEBUG)<<"best cost = "<<bestCost<<std::endl;
+/*
             objectsNode.clear();
             objectsNode.splice(objectsNode.begin(), objectsRight);                          
+*/
+            objectsLeft.clear();
+            objectsRight.clear();
 
             if (left != NULL) delete left;
             if (right != NULL) delete right;
         }
     }
-    
+
     //Logger::log(LOG_DEBUG)<<"bestSplit = "<<*bestSplit<<std::endl;
 
     return splitFound;
@@ -147,6 +154,7 @@ bool KdTreeNode::findBestSplit(int axis, float* bestSplit)
 float KdTreeNode::computeCost(std::list<Object*>* objectsLeft,
                               std::list<Object*>* objectsRight)
 {
+
     if (isLeaf()) {
         return aabb->surfaceArea * objects.size();
     }
@@ -154,6 +162,10 @@ float KdTreeNode::computeCost(std::list<Object*>* objectsLeft,
     float lo = objectsLeft->size();
     float ro = objectsRight->size();
 
+/*
+    Logger::log(LOG_DEBUG)<<"lo="<<lo<<std::endl;
+    Logger::log(LOG_DEBUG)<<"ro="<<ro<<std::endl;
+*/
     if (lo == 0)
         return 0.8 * right->aabb->surfaceArea * ro;
 
@@ -161,6 +173,7 @@ float KdTreeNode::computeCost(std::list<Object*>* objectsLeft,
         return 0.8 * left->aabb->surfaceArea * lo;
 
     return left->aabb->surfaceArea * lo + right->aabb->surfaceArea * ro;
+
 } 
 
 void KdTreeNode::createChildren(int axis, float limit)
@@ -238,14 +251,13 @@ void KdTreeNode::getInfos(int* nbNodes, int* nbLeaves, int* nbEmptyLeaves,
                           float* emptyVolume, int* nbObjets)
 {
 /*
-    Logger::log(LOG_DEBUG)<<"Node : addr    = "<<this<<std::endl; 
-    Logger::log(LOG_DEBUG)<<"       depth   = "<<depth<<std::endl;
-    Logger::log(LOG_DEBUG)<<"       left    = "<<left<<std::endl;
-    Logger::log(LOG_DEBUG)<<"       right   = "<<right<<std::endl;
-    Logger::log(LOG_DEBUG)<<"       objects = "<<objects.size()<<std::endl;
+    Logger::log(LOG_DEBUG)<<this<<"\t";
+    Logger::log(LOG_DEBUG)<<depth<<"\t";
+    Logger::log(LOG_DEBUG)<<left<<(left == 0 ? "\t\t" : "\t");
+    Logger::log(LOG_DEBUG)<<right<<(right == 0 ? "\t\t" : "\t");
+    Logger::log(LOG_DEBUG)<<objects.size()<<"\t";
+    Logger::log(LOG_DEBUG)<<aabb->getVolume()<<std::endl;
 */
-    //Logger::log(LOG_DEBUG)<<"volume = "<<aabb->getVolume()<<std::endl;
-
     if (isLeaf()) {
         *nbNodes = 1;
         *nbLeaves = 1;
