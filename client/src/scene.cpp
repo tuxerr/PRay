@@ -120,9 +120,16 @@ void Scene::computeKdTree()
 
     kdTree->computeChildren();
 
-    unsigned int nbNodes = kdTree->getNbNodes();
+    int nbNodes, nbLeaves, nbEmptyLeaves, nbObjets;
+    float emptyVolume;
+    kdTree->getInfos(&nbNodes, &nbLeaves, &nbEmptyLeaves, &emptyVolume, &nbObjets);
 
-    Logger::log(LOG_INFO)<<"Kd-tree building completed ("<<nbNodes<<" nodes)"<<endl;
+    Logger::log(LOG_INFO)<<" - number of nodes : "<<nbNodes<<endl;
+    Logger::log(LOG_INFO)<<" - number of leaves : "<<nbLeaves<<endl;
+    Logger::log(LOG_INFO)<<" - number of empty leaves : "<<nbEmptyLeaves<<endl;
+    Logger::log(LOG_INFO)<<" - number of objects : "<<nbObjets<<endl;
+    Logger::log(LOG_INFO)<<" - empty volume : "<< 100.0 * emptyVolume / kdTree->aabb->getVolume() <<"%"<<endl;
+    Logger::log(LOG_INFO)<<"Kd-tree building completed"<<endl;
 }
 
 KdTreeNode* Scene::getKdTree()

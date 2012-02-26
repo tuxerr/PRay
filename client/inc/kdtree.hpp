@@ -15,16 +15,23 @@ private:
     KdTreeNode * right;
     AABB * aabb;
     int depth;
-    float findBestSplit(int axis);
-    float computeCost();
-    void split(int axis, float limit);
+    bool findBestSplit(int axis, float* bestSplit);
+    float computeCost(std::list<Object*>* objectsLeft,
+                      std::list<Object*>* objectsRight);
+    void splitObjects(int axis,
+                      std::list<Object*>* objectsNode,
+                      std::list<Object*>* objectsLeft,
+                      std::list<Object*>* objectsRight);
+    void createChildren(int axis, float limit);
+    bool terminate();
 public :
     KdTreeNode(int depth, AABB* aabb);
     ~KdTreeNode();
     bool isLeaf();
     void addObject(Object* object);
     void computeChildren();
-    unsigned int getNbNodes();
+    void getInfos(int* nbNodes, int* nbLeaves, int* nbEmptyLeaves, 
+                  float* emptyVolume, int* nbObjets);
 };
 
 #endif
