@@ -7,6 +7,7 @@
 #define MINIMUM_TIMECHECK_REFRESH_TIME 30
 
 #include "logger.hpp"
+#include "settings.hpp"
 #include <vector>
 #include <map>
 #include <iostream>
@@ -53,6 +54,7 @@ private:
     bool new_press;
     Uint32 last_refresh;
     std::set<int> new_lines_to_refresh;
+    bool line_refresh;
 };
 
 #endif
