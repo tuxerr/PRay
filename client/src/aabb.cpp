@@ -14,6 +14,11 @@ AABB::AABB(float minX, float maxX,
 {
 }
 
+float AABB::getVolume()
+{
+    return (maxX - minX) * (maxY - minY) * (maxZ - minZ);
+}
+
 // http://www.ics.uci.edu/~arvo/EECS204/code/latest/aabb.cpp
 bool AABB::intersectRay(Ray &ray, float distanceMax)
 {

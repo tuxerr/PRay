@@ -136,6 +136,7 @@ int NcursesScrollingWindow::add_string(string text) {
     ent.prop=STRING_NORMAL;
     messages[act_id]=ent;
     act_id++;
+    refresh(-1); 
     return act_id;
 }
 

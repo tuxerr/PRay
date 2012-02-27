@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
+  <line_refresh b="true"/>
   <window_width i="1280"/>
   <window_height i="800"/>
 </settings>

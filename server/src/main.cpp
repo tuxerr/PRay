@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     NcursesUI ui;
     ui.init();
 
-    NetworkRenderer networkRenderer(network,*disp,ui);
+    NetworkRenderer networkRenderer(network,Display::getInstance(),ui);
 
     ui.run(networkRenderer);
 

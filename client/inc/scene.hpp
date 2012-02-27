@@ -4,7 +4,7 @@
 #include <list>
 #include <set>
 #include <cfloat>
-
+#include <SDL/SDL.h>
 #include "vec3.hpp"
 #include "camera.hpp"
 #include "color.hpp"
@@ -14,7 +14,6 @@
 #include "object.hpp"
 #include "logger.hpp"
 #include "material.hpp"
-#include "uglyMaterial.hpp"
 #include "settings.hpp"
 #include "kdtree.hpp"
 #include "aabb.hpp"

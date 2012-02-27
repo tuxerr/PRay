@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
+<<<<<<< HEAD
 
 <!--  Camera Settings  -->
-  <window_width i="700"/>
-  <window_height i="700"/>
+  <line_refresh b="true"/>
+  <window_width i="1280"/>
+  <window_height i="800"/>
   <camera_translation_factor f="5"/>
   <camera_rotation_angle f="2"/>
 

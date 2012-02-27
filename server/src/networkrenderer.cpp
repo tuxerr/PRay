@@ -13,7 +13,6 @@ void *NetworkRenderer::launch_renderer_thread(void *This) {
 }
 
 void NetworkRenderer::renderer_thread() {
-    int result_number=0;
     while(1) {
         int id = network.get_first_nonempty_client();
         while (id==-1) {
@@ -24,7 +23,7 @@ void NetworkRenderer::renderer_thread() {
         string recv = cl->unstack_message();
         
         if(recv=="CALCULATING") {
-            rendering_clients[id].status=CLIENT_RENDERING;
+           rendering_clients[id].status=CLIENT_RENDERING;
         } else if(recv.find("RESULT")==0) {
 
             stringstream recv_ss(stringstream::in | stringstream::out);
@@ -82,6 +81,7 @@ void NetworkRenderer::render(int width,int height) {
     if(rstatus==RENDERER_RENDERING) {
         Logger::log(LOG_WARNING)<<"A render is in progress"<<std::endl;
     } else if(rstatus==RENDERER_WAITING) {
+        result_number=0;
 	initial_tick=SDL_GetTicks();
         rendering_width=width;
         rendering_height=height;
@@ -93,7 +93,7 @@ void NetworkRenderer::render(int width,int height) {
             currenttask.y=i;
             currenttask.width=width;
             if( i+CLIENT_TASK_LINES>height) {
-                currenttask.height=(i+CLIENT_TASK_LINES)-height;
+                currenttask.height=height-i;
             } else {
                 currenttask.height=CLIENT_TASK_LINES;                
             }
@@ -130,16 +130,25 @@ void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
             Color c(r,g,b);
             result.push_back(c); 
         }
-        
-/*        float r,g,b;
-        recv_ss>>r>>g>>b;
 
-            Color c(r,g,b);
-            result.push_back(c); */
     }
-    display.add_surface(0,CLIENT_TASK_LINES*packet_number,rendering_width,CLIENT_TASK_LINES,result);
-    Logger::log()<<"received "<<packet_number<<" of "<<result.size()<<std::endl;
-    display.refresh_part_display_timecheck();
+    int height;
+    int act_height=CLIENT_TASK_LINES*packet_number;
+    if(act_height+CLIENT_TASK_LINES>rendering_height) {
+        height=rendering_height-act_height;
+    } else {
+        height=CLIENT_TASK_LINES;
+    }
+//    display.add_surface(0,act_height,rendering_width,height,result);
+    std::vector<Color> realresult;
+    for(int i=0;i<1280*5;i++) {
+        realresult.push_back(Color(1,0,0));
+
+    }
+    display.add_line_group(0,act_height,realresult);
+
+    Logger::log()<<"received "<<packet_number<<" of "<<result.size()<<"(height : "<<act_height<<")"<<std::endl;
+//    display.refresh_part_display_timecheck();
 }
 
 int NetworkRenderer::send_task_to_client(int id) {

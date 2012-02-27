@@ -5,6 +5,7 @@ Display* Display::display_ptr;
 void Display::init(int height,int width) {
     static Display disp(height,width);
     display_ptr=&disp;
+
 }
 
 Display& Display::getInstance() {
@@ -18,19 +19,28 @@ void Display::register_keyhook(std::function< void(void) > met,SDLKey key) {
 #endif
 
 void Display::refresh_display() {
-    SDL_UpdateRect(screen,0,0,0,0);
-    last_refresh=SDL_GetTicks();
+    if(line_refresh) {
+        SDL_UpdateRect(screen,0,0,0,0);
+        last_refresh=SDL_GetTicks();
+    } else {
+        Logger::log()<<"Flipping"<<std::endl;
+        SDL_UpdateRect(screen,0,0,0,0);
+//        SDL_Flip(screen);
+    }
+
 }
 
 void Display::refresh_part_display_timecheck() {
-    if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
-        for (std::set<int>::iterator it=new_lines_to_refresh.begin(); 
-             it!=new_lines_to_refresh.end(); 
-             it++) {
-            SDL_UpdateRect(screen,0,*it,width,1);            
+    if(line_refresh) {
+        if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
+            for (std::set<int>::iterator it=new_lines_to_refresh.begin(); 
+                 it!=new_lines_to_refresh.end(); 
+                 it++) {
+                SDL_UpdateRect(screen,0,*it,width,1);            
+            }
+            last_refresh=SDL_GetTicks();
+            new_lines_to_refresh.clear();
         }
-        last_refresh=SDL_GetTicks();
-        new_lines_to_refresh.clear();
     }
 }
 
@@ -82,6 +92,9 @@ bool Display::quit() {
 Display::Display(int p_width,int p_height) : 
     height(p_height),width(p_width), quit_pressed(false), screen(NULL), new_press(true), last_refresh(0)
 {
+
+    line_refresh=Settings::getAsBool("line_refresh");
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         Logger::log(LOG_ERROR)<<"Problem during SDL initialisation: "<<SDL_GetError()<<endl;
@@ -125,11 +138,13 @@ void Display::add_pixel(int x,int y,Color color) {
     SDL_LockSurface(screen);
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
+    Logger::log()<<"Updating pixel "<<x<<y<<std::endl;
     SDL_UnlockSurface(screen);
     new_lines_to_refresh.insert(y);
 }
 
 void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
+    Logger::log()<<x<<"/"<<y<<"/"<<width<<"/"<<height<<std::endl;
     SDL_LockSurface(screen);
     // all pixels are 32b-encoded
     int i=0;
@@ -163,4 +178,5 @@ void Display::add_line_group(int x,int y,std::vector<Color> &pixels) {
         }
     }
     SDL_UnlockSurface(screen);
+
 }

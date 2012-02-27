@@ -39,6 +39,7 @@ private:
     unsigned int frameNumber;
     Display *display;
     bool onscreen;
+    float total_time;
 };
 
 #endif

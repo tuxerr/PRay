@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 #include <tinyxml.h>
+#include <SDL/SDL.h>
 #include "scene.hpp"
 #include "logger.hpp"
 #include "settings.hpp"

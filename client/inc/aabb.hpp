@@ -17,6 +17,7 @@ public :
          float minY, float maxY,
          float minZ, float maxZ);
     bool intersectRay(Ray &ray, float distanceMax = FLT_MAX);
+    float getVolume();
 };
 
 #endif

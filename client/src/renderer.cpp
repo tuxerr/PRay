@@ -2,6 +2,7 @@
 
 Renderer::Renderer(Scene *scene,Display *disp) : scene(scene), frameNumber(0) , display(disp)
 {
+    total_time=0;
 }
 
 void Renderer::set_scene(Scene *newscene) {
@@ -68,9 +69,13 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_
         }
     }
 
+    float render_time=(SDL_GetTicks()-initial_tick)/(float)1000;
+    total_time+=render_time;
+        
     Logger::log()<<"Frame "<< frameNumber++ <<" rendered in "
-                 <<(SDL_GetTicks()-initial_tick)/(float)1000
-                 <<" seconds"<<std::endl;
+                 <<render_time
+                 <<" seconds (total is "<<total_time<<") seconds"<<std::endl;
+    
     return res;
 }
 
