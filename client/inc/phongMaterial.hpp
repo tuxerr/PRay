@@ -7,66 +7,66 @@
 #include "vec3.hpp"
 
 class PhongMaterial : public Material {
- private :
+private :
 
-  Color color;
+    Color color;
 
-  /**
-   * The ratio of reflection of the specular term of incoming light
-   */
-  float specularReflection;
+    /**
+     * The ratio of reflection of the specular term of incoming light
+     */
+    float specularReflection;
 
-  /**
-   *  The ratio of reflection of the diffuse term of incoming light (Lambertian reflectance)
-   */
-  float diffuseReflection;
+    /**
+     *  The ratio of reflection of the diffuse term of incoming light (Lambertian reflectance)
+     */
+    float diffuseReflection;
 
-  /**
-   *  The ratio of reflection of the ambient term present in all points in the scene rendered
-   */
-  float ambiantReflection;
+    /**
+     *  The ratio of reflection of the ambient term present in all points in the scene rendered
+     */
+    float ambiantReflection;
 
-  /**
-   * Shininess constant for this material, which is larger for surfaces that are smoother and more mirror-like.
-   * When this constant is large the specular highlight is small.
-   */
-  float shininess;
+    /**
+     * Shininess constant for this material, which is larger for surfaces that are smoother and more mirror-like.
+     * When this constant is large the specular highlight is small.
+     */
+    float shininess;
 
-  /**
-   * 1 for a perfect mirror, 0 for no reflectivity
-   */
-  float reflectivity;
+    /**
+     * 1 for a perfect mirror, 0 for no reflectivity
+     */
+    float reflectivity;
 
-  int maxReflections;
+    float transparency;
 
-  float transparency;
+    float refractiveIn;
 
-  float refractiveIn;
+    float refractiveOut;
 
-  float refractiveOut;
+    void addReflection(float &r, float &g, float &b,
+		       Ray &ray, VEC3F &point,
+		       const VEC3F &normal, Scene *scene);
 
-  VEC3F reflect(VEC3F normal, VEC3F incident);
+    void addRefraction(float &r, float &g, float &b,
+		       Ray &ray, VEC3F &point,
+		       const VEC3F &normal, Scene *scene);
 
-  VEC3F refract(VEC3F normal, VEC3F incident, float n1, float n2);
+    void addPathTracing(float &r, float &g, float &b,
+			Ray &ray, VEC3F &point,
+			const VEC3F &normal, Scene *scene);
 
-  float reflectance(VEC3F normal, VEC3F incident, float n1, float n2);
+public :
+    PhongMaterial(const Color &color, 
+		  float specularReflection, 
+		  float diffuseReflection, 
+		  float ambiantReflection, 
+		  float shininess,
+		  float reflectivity,
+		  float transparency,
+		  float refractiveIn = 1,
+		  float refractiveOut = 1);
 
-  float rSchlick2(VEC3F normal, VEC3F incident, float n1, float n2);
-
-
- public :
-  PhongMaterial(const Color &color, 
-		float specularReflection, 
-		float diffuseReflection, 
-		float ambiantReflection, 
-		float shininess,
-		float reflectivity,
-		int maxReflections,
-		float transparency,
-		float refractiveIn = 1,
-		float refractiveOut = 1);
-
-  Color renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene);
+    Color renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene);
 };
 
 #endif

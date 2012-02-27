@@ -1,30 +1,32 @@
 #include "plane.hpp"
 
-Plane::Plane(const VEC3F &normal, float originDistance, Material &material) :
-    Object(&material, NULL),
+Plane::Plane(const VEC3F &normal, const VEC3F &point, Material *material) :
+    Object(material, NULL),
     normal(normal), 
-    originDistance(originDistance)
+    point(point)
 {
-    aabb = new AABB(0,1,0,1,0,1); // TODO
+    aabb = new AABB(-1000,1000,-1000,1000,-1000,1000); // TODO
 }
 
 VEC3F Plane::getNormal() {
     return normal;
 }
 
-float Plane::getOriginDistance() {
-    return originDistance;
+VEC3F Plane::getPoint() {
+    return point;
 }
 
-void Plane::getIntersection(Ray &ray, float *distance, VEC3F *normal, Material **material) {
-    float PS = (this->normal).scalar(ray.getOrigin());
-    float PD = (this->normal).scalar(ray.getDirection());
-    if( PS <= originDistance || PD == 0 ) {
-        *distance = -1;
-    } else {
-        float t = (originDistance - PS) / PD;
-        *distance = t;
-        *normal = this->normal;
-        *material = &(*(this->material));
+void Plane::getIntersection(Ray &ray, float *distance, VEC3F *normal, Material **materialIntersection) {
+
+    (this->normal).printLog();
+    (ray.getDirection()).printLog();
+
+    float d = (this->normal).scalar(ray.getDirection());
+    Logger::log(LOG_INFO) << "d" << d << std::endl;
+    if(fabs(d) >= 0.0001) {
+	float t = (this->normal).scalar(this->point - ray.getOrigin()) / d;
+	*distance = t; 
+	*normal = this->normal;
+	*materialIntersection = material;
     }
 }

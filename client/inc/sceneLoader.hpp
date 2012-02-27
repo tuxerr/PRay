@@ -10,6 +10,7 @@
 #include "settings.hpp"
 #include "sphere.hpp"
 #include "triangle.hpp"
+#include "plane.hpp"
 #include "light.hpp"
 #include "directionalLight.hpp"
 #include "pointLight.hpp"
