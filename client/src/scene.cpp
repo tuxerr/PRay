@@ -107,6 +107,8 @@ void Scene::computeKdTree()
 {
     Logger::log(LOG_INFO)<<"Start building kd-tree"<<endl;
 
+    Uint32 initial_tick = SDL_GetTicks();
+
     AABB* globalAABB = computeGlobalAABB();
 
     kdTree = new KdTreeNode(0, globalAABB);
@@ -129,7 +131,9 @@ void Scene::computeKdTree()
     Logger::log(LOG_INFO)<<" - number of empty leaves : "<<nbEmptyLeaves<<endl;
     Logger::log(LOG_INFO)<<" - number of objects : "<<nbObjets<<endl;
     Logger::log(LOG_INFO)<<" - empty volume : "<< 100.0 * emptyVolume / kdTree->aabb->getVolume() <<"%"<<endl;
-    Logger::log(LOG_INFO)<<"Kd-tree building completed"<<endl;
+
+    float build_time=(SDL_GetTicks()-initial_tick)/(float)1000;
+    Logger::log(LOG_INFO)<<"Kd-tree building completed ("<<build_time<<" s)"<<endl;
 }
 
 KdTreeNode* Scene::getKdTree()

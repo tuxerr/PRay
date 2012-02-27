@@ -12,6 +12,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
 	return -1;
     } else {
         Logger::log(LOG_INFO) << "Start loading scene : " << scene_file << endl;
+        Uint32 initial_tick = SDL_GetTicks();
 
         list<Object*> objects;
         list<Light*> lights;
@@ -146,7 +147,9 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
             node = node->NextSiblingElement();
         }
 
-        Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects)" << endl;
+        float loading_time=(SDL_GetTicks()-initial_tick)/(float)1000;
+        Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects) (" 
+                              << loading_time << " s)" << endl;
 
         *scene = new Scene(objects,lights,materials,ambientLight,camera);
 

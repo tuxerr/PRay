@@ -74,7 +74,7 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_
         
     Logger::log()<<"Frame "<< frameNumber++ <<" rendered in "
                  <<render_time
-                 <<" seconds (total is "<<total_time<<")"<<std::endl;
+                 <<" seconds (total is "<<total_time<<") seconds"<<std::endl;
     
     return res;
 }
