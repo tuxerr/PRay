@@ -123,7 +123,7 @@ VEC3F Triangle::getNormal(VEC3F &point) {
     VEC3F vPoint;
     int inter = -1;
     inter = lineIntersection(uPoint, up, a, ac, &vPoint);
-    Logger::log(LOG_DEBUG) << "inter " << inter << std::endl;
+    //    Logger::log(LOG_DEBUG) << "inter " << inter << std::endl;
 
     if(inter !=0) {
 	inter = lineIntersection(uPoint, up, b, bc, &vPoint);
