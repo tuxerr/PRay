@@ -3,10 +3,14 @@
 
 #include <list>
 #include <cfloat>
+#include <pthread.h>
 #include "triangle.hpp"
 #include "aabb.hpp"
 #include "logger.hpp"
 
+/**
+ * kd-tree : axis-aligned binary space partitioning k-dimensional tree
+ */
 class KdTreeNode {
     friend class Scene;
 private:
@@ -23,6 +27,7 @@ private:
                       std::list<Object*>* objectsLeft,
                       std::list<Object*>* objectsRight);
     void createChildren(int axis, float limit);
+    static void* computeChildrenThread(void *node);
     bool terminate();
 public :
     KdTreeNode(int depth, AABB* aabb);
