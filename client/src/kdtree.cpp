@@ -53,8 +53,27 @@ void KdTreeNode::computeChildren()
     splitObjects(axis, &objects, &(left->objects), &(right->objects));
     objects.clear(); // only leaves keep their objects
 
-    left->computeChildren();
-    right->computeChildren();
+    if (depth < 3) {
+        pthread_t threadLeft, threadRight;
+        //Logger::log(LOG_DEBUG)<<"Starting thread : Left / "<<depth<<std::endl;
+        pthread_create(&threadLeft, NULL, computeChildrenThread, (void*)left);
+        //Logger::log(LOG_DEBUG)<<"Starting thread : Right / "<<depth<<std::endl;
+        pthread_create(&threadRight, NULL, computeChildrenThread, (void*)right);
+        pthread_join(threadLeft, NULL);
+        //Logger::log(LOG_DEBUG)<<"Joining thread : Left / "<<depth<<std::endl;
+        pthread_join(threadRight, NULL);
+        //Logger::log(LOG_DEBUG)<<"Joining thread : Right / "<<depth<<std::endl;
+    } else {
+        left->computeChildren();
+        right->computeChildren();
+    }
+}
+
+void* KdTreeNode::computeChildrenThread(void *node)
+{
+    KdTreeNode* node_ptr = (KdTreeNode*)node;
+    node_ptr->computeChildren();
+    return NULL;
 }
 
 /**
