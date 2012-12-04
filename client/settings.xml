@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
+<<<<<<< HEAD
+
+<!--  Camera Settings  -->
   <line_refresh b="true"/>
   <window_width i="1280"/>
   <window_height i="800"/>
   <camera_translation_factor f="5"/>
   <camera_rotation_angle f="2"/>
+
+<!--  Rendering Settings  -->
   <max_reflections i="20"/>
-  <supersampling_enable b="true"/>
+  <exposure f="1"/>
+
+<!--  Supersampling Settings  -->
+  <supersampling_enable b="false"/>
   <supersampling_threshold_start f="0.2"/>
   <supersampling_threshold_end f="0.01"/>
   <supersampling_max_rays i="40"/>
-  <supersampling_show b="false"/>
+  <supersampling_show b="true"/>
   <supersampling_show_limit f="16"/>
+
+<!--  Optimization settings  -->
   <use_kdtree b="true"/>
   <one_thread b="false"/>
+
 </settings>

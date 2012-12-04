@@ -61,6 +61,10 @@ Camera* Scene::getCamera() {
 }
 
 Color Scene::renderRay(Ray &ray) {
+
+    // Logger::log(LOG_INFO) << "DIRECTION DANS renderRay (SCENE)" << std::endl;
+    // (ray.getDirection()).printLog();
+
     float distance = -3;
     VEC3F normal;
     Material* material = 0;
@@ -229,6 +233,9 @@ void Scene::computeIntersectionNode(KdTreeNode *node,
 void Scene::computeIntersection(Ray &ray, float *distance, VEC3F *normal,
                                 Material **material)
 {
+    // Logger::log(LOG_INFO) << "DIRECTION DANS COMPUTE (SCENE)" << std::endl;
+    // (ray.getDirection()).printLog();
+
     if (Settings::getAsBool("use_kdtree")) {
 
         computeIntersectionNode(kdTree, ray, distance, normal, material);
@@ -283,6 +290,10 @@ Color Scene::renderPixel(int x, int y) {
         for (int i = 0 ; i < 4 ; i++) {
             Color color;
             Ray ray = Ray(origin, directions[i], color);
+
+	    //	    Logger::log(LOG_INFO) << "DIRECTION DANS renderPixel (SCENE, supersampling)" << std::endl;
+	    //	    (directions[i]).printLog();
+
             Color res = renderRay(ray);
             launchedRays++;
             colors.push_back(res);
@@ -352,6 +363,8 @@ Color Scene::renderPixel(int x, int y) {
 
     } else {
         VEC3F direction = camera->getDirection(x, y);
+	//	Logger::log(LOG_INFO) << "DIRECTION DANS renderPixel (SCENE, supersampling)" << std::endl;
+	//	(direction).printLog();
         Color color;
         Ray ray = Ray(origin, direction, color);
         return renderRay(ray);
@@ -378,7 +391,7 @@ list<Light *> Scene::visibleLights(VEC3F point, float intensity) {
 
 
         lightDirection = (*itLight)->getDirection(point)*(-1);
-        lightDirection = (lightDirection + one*((((float)rand() / (float)RAND_MAX) -0.5)*intensity)).normalize();
+        lightDirection = (lightDirection + one*((((float)rand() / (float)RAND_MAX) -0.5)*intensity));
 
 
         ray = Ray(point, lightDirection, color);
