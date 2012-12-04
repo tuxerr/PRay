@@ -2,7 +2,7 @@
 EXEC = pray_server
 # source files
 CXX = g++
-CXXFLAGS = -Wall -W -O3 -march=native -Wunused -I./inc `sdl-config --cflags` -I../common/inc -std=c++0x 
+CXXFLAGS = -Wall -W -O3 -march=native -Wunused -I./inc `sdl-config --cflags` -I../common/inc -std=c++11
 LDFLAGS = -lm -lrt -lcurses -lpthread `sdl-config --libs` -ltinyxml
 SRCS = $(wildcard src/*.cpp)
 OBJS = $(SRCS:.cpp=.o)

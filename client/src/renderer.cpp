@@ -19,7 +19,7 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,int thread_
 
     tasks.clear();
     results.clear();
-    results.assign((width*height/PIXEL_GROUPS)+1,NULL);
+    results.assign((width*height/PIXEL_GROUPS)+1,nullptr);
     
     int i=0;
     Task currenttask;
