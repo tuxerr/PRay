@@ -18,4 +18,3 @@ add_library(
 
 
 set(CMAKE_CXX_FLAGS "-g -Wall -ggdb -std=c++11")
-
