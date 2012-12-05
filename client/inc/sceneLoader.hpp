@@ -20,7 +20,7 @@
 #include "material.hpp"
 #include "phongMaterial.hpp"
 #include "uglyMaterial.hpp"
-
+#include "vertex.hpp"
 
 class SceneLoader {
 public:

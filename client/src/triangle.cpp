@@ -2,25 +2,20 @@
 
 #define MIN_BOX_SIZE 0.001
 
-Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
-		   VEC3F &na, VEC3F &nb, VEC3F &nc,
+Triangle::Triangle(Vertex *a, Vertex *b, Vertex *c,
                    VEC3F &normal,
 		   Material *material) :
     Object(material, NULL),
-    a(a), 
-    b(b), 
-    c(c), 
-    normal(normal),
-    na(na.normalize()), 
-    nb(nb.normalize()), 
-    nc(nc.normalize())
+    a(a), b(b), c(c),
+    normal(normal)
+
 {
     float minX, maxX, minY, maxY, minZ, maxZ;
     
     float a_[4], b_[4], c_[4];
-    a.getCoord(a_);
-    b.getCoord(b_);
-    c.getCoord(c_);
+    a->coord.getCoord(a_);
+    b->coord.getCoord(b_);
+    c->coord.getCoord(c_);
 
     minX = std::min(a_[0], std::min(b_[0], c_[0]));
     maxX = std::max(a_[0], std::max(b_[0], c_[0]));
@@ -50,92 +45,18 @@ Triangle::Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
     aabb = new AABB(minX, maxX, minY, maxY, minZ, maxZ);
 }
 
-VEC3F Triangle::getA() {
-    return a;
-}
-
-VEC3F Triangle::getB() {
-    return b;
-}
-
-VEC3F Triangle::getC() {
-    return c;
-}
-
-VEC3F Triangle::getNA() {
-    return na;
-}
-
-VEC3F Triangle::getNB() {
-    return nb;
-}
-
-VEC3F Triangle::getNC() {
-    return nc;
-}
-
-
 VEC3F Triangle::getNormal() {
     return normal;
 }
 
-
-float determinant(VEC3F x_, VEC3F y_, VEC3F z_) {
-    float x[4];
-    x_.getCoord(x);
-    float y[4];
-    y_.getCoord(y);
-    float z[4];
-    z_.getCoord(z);
-    
-    return x[0]*y[1]*z[2] + y[0]*z[1]*x[2] + z[0]*x[1]*z[2] 
-	- z[0]*y[1]*x[2] - y[0]*x[1]*z[2] - x[0]*z[1]*y[2];
-}
-
-
-int lineIntersection(VEC3F a, VEC3F da, VEC3F b, VEC3F db, VEC3F *res) {
-    
-    VEC3F dadb = da*db;
-
-    float ndadb2 = dadb.norm();
-    ndadb2 = ndadb2*ndadb2;
-
-    if(fabs(ndadb2) > 0.0001) {
-	float t = determinant((b-a),db,dadb) / ndadb2;
-	*res = a + da*t;
-	return 0;
-    } else {
-	return 1;
-    }
+bool Triangle::contains(Vertex *v) {
+    return v == a || v == b || v == c;
 }
 
 
 VEC3F Triangle::getNormal(VEC3F &point) {
-
-    // We determine the two extremities of the segment
-    VEC3F uPoint = a + ((b-a).normalize())*((point-a).scalar((b-a).normalize()));
-
-    VEC3F up = (point - uPoint).normalize();
-    VEC3F ac = (c-a).normalize();
-    VEC3F bc = (c-b).normalize();
-    VEC3F uNormal = (nb*((uPoint-a).norm()) + na*((uPoint-b).norm())).normalize();
-    VEC3F vNormal;
-    VEC3F vPoint;
-    int inter = -1;
-    inter = lineIntersection(uPoint, up, a, ac, &vPoint);
-    //    Logger::log(LOG_DEBUG) << "inter " << inter << std::endl;
-
-    if(inter !=0) {
-	inter = lineIntersection(uPoint, up, b, bc, &vPoint);
-	vNormal = (nc*((vPoint-b).norm()) + nb*((vPoint-c).norm())).normalize();
-    } else {
-	vNormal = (nc*((vPoint-a).norm()) + na*((vPoint-c).norm())).normalize();
-    }
-    return (vNormal*((point-uPoint).norm()) + uNormal*((point-vPoint).norm())).normalize();
+    return normal;
 }
-
-
-
 
 
 // Fast, minimum storage ray/triangle intersection
@@ -155,11 +76,11 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     float det, u, v; /* inv_det, t */
     
     // find vectors for two edges sharing A
-    edge1 = b - a;
-    edge2 = c - a;
+    edge1 = b->coord - a->coord;
+    edge2 = c->coord - a->coord;
     
     // begin calculating determiant - also used to calculate U parameter
-    pvec = ray.getDirection().cross(edge2);
+    pvec = ray.direction.cross(edge2);
 
     // if determinant is near zero, ray lies in plane of triangle
     det = edge1.scalar(pvec);
@@ -170,7 +91,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     }
 
     // calculate distance from A to ray origin
-    tvec = ray.getOrigin() - a;
+    tvec = ray.origin - a->coord;
 
     // calculate U parameter and test bounds
     u = tvec.scalar(pvec);
@@ -183,7 +104,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     qvec = tvec.cross(edge1);
 
     // calculate V parameter and test bounds
-    v = ray.getDirection().scalar(qvec);
+    v = ray.direction.scalar(qvec);
     if (v < 0.0 || u + v > det) {
 	*distance = -1;
 	return;
@@ -203,7 +124,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
      if (u != u || v != v) {
 	 *normal = this->normal;
      } else {
-       VEC3F point = ray.getOrigin() + (ray.getDirection())*(*distance);
+       VEC3F point = ray.origin + (ray.direction)*(*distance);
        *normal = getNormal(point);
      }
 

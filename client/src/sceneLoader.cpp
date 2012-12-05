@@ -207,7 +207,10 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
 			      <<b.x<<","<<b.y<<","<<b.z<<") ("
 			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
-        Triangle* tr = new Triangle(a, b, c, na, nb, nc, normal, material);
+	Vertex *va = new Vertex(a, na);
+	Vertex *vb = new Vertex(b, nb);
+	Vertex *vc = new Vertex(c, nc);
+        Triangle *tr = new Triangle(va, vb, vc, normal, material);
         objects->push_back(tr);
     } else if ( nodeName.compare("list")==0 ) {
         TiXmlElement* child = node->FirstChildElement();
@@ -215,12 +218,6 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
             readShape(child,  objects, material);
             child = child->NextSiblingElement();
         }
-    } else if(nodeName.compare("plane")==0) {
-        VEC3F normal = readVec3Float(node->FirstChildElement("normal"));
-        VEC3F point = readVec3Float(node->FirstChildElement("point"));
-	
-      	objects->push_back(new Plane(normal.normalize(), point, material));
-
     } else {
         Logger::log(LOG_ERROR)<<"Unknown shape : "<<nodeName<<" (line "<<node->Row()<<")"<<endl;
     }
@@ -253,7 +250,8 @@ Material* SceneLoader::readMaterial(TiXmlElement* node) {
         Logger::log(LOG_DEBUG)<<"Material : Phong : ("<<color.getR()<<","<<color.getG()<<","<<color.getB()
                               <<") "<<specular<<" "<<diffuse<<" "<<ambiant<<" "<<shininess<<" "<<reflexivity<<endl;
 #endif
-        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity, transparency);
+        material = new PhongMaterial(color, specular, diffuse, ambiant, shininess, reflexivity,
+				     Settings::getAsInt("max_reflections"), transparency);
     } else if (childName.compare("ugly")==0 ) {
         Color color = readColor(child->FirstChildElement("color"));
 #ifdef SCENELOADER_DEBUG

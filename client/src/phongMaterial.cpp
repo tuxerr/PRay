@@ -38,7 +38,7 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Sc
   
 
 
-    VEC3F point = ray.getOrigin() + ray.getDirection()*distance;
+    VEC3F point = ray.origin + ray.direction*distance;
     list<Light *> lights = scene->visibleLights(point, 0);
     //    list<Light*> lights = scene->getLights();
   
@@ -55,7 +55,7 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Sc
 
     list<Light *>::iterator itLight;
 
-    VEC3F rayDirection = ray.getDirection();
+    VEC3F rayDirection = ray.direction;
     VEC3F lightDirection;
     float diffuse;
     float specular;
@@ -65,7 +65,7 @@ Color PhongMaterial::renderRay(Ray &ray, float distance, const VEC3F &normal, Sc
 
     for (itLight = lights.begin(); itLight != lights.end(); itLight++) {
 
-	//lightDirection = itLight->getDirection();
+	//lightDirection = itLight->direction;
 	lightDirection = (*itLight)->getDirection(point);
 	    
 	diffuse = diffuseReflection*fabs(lightDirection.scalar(normal));
@@ -137,7 +137,7 @@ void PhongMaterial::addReflection(float &r, float &g, float &b,
 	Color black = Color(0,0,0);
 	
 	Ray reflectedRay = Ray(point,
-			       (ray.getDirection()*(-1)).symmetry(normal),
+			       (ray.direction*(-1)).symmetry(normal),
 			       black,
 			       ray.reflections);
 
@@ -163,7 +163,7 @@ void PhongMaterial::addRefraction(float &r, float &g, float &b,
 	float cosI;
 	float sinI2;    
 	VEC3F direction;
-	VEC3F rayDirection = ray.getDirection();
+	VEC3F rayDirection = ray.direction;
 	VEC3F normalol = VEC3F(normal);
 	Color black = Color(0,0,0);    
 

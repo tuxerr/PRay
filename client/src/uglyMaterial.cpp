@@ -20,7 +20,7 @@ Color UglyMaterial::renderRay(Ray & ray,
   //  Logger::log(LOG_DEBUG)<< "UGLY\n";  
   //  Logger::log(LOG_DEBUG)<< distance <<endl;  
 
-  float factor = std::abs( ray.getDirection().scalar(normal) / (ray.getDirection().norm() * normal.norm()) );
+  float factor = std::abs( ray.direction.scalar(normal) / (ray.direction.norm() * normal.norm()) );
 
   float r = factor * color.getR();
   float g = factor * color.getG();

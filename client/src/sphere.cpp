@@ -35,8 +35,8 @@ void Sphere::getIntersection(Ray& ray,
     // http://www.cs.princeton.edu/courses/archive/fall00/
     //                                 cs426/lectures/raycast/sld013.htm
 
-    VEC3F L = center - ray.getOrigin();
-    VEC3F V = ray.getDirection().normalize();
+    VEC3F L = center - ray.origin;
+    VEC3F V = ray.direction.normalize();
     float t_ca = L.scalar(V);
     if (t_ca < 0) {
         *distance = -1;
@@ -50,7 +50,7 @@ void Sphere::getIntersection(Ray& ray,
             float t1 = t_ca - t_hc;
             float t2 = t_ca + t_hc;
             *distance = (t1<t2) ? t1 : t2;
-            VEC3F OP = ray.getOrigin() + V*(*distance) - center;
+            VEC3F OP = ray.origin + V*(*distance) - center;
             *normal = OP.normalize();
             *materialIntersection = material;
         }

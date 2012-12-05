@@ -6,28 +6,38 @@
 #include "vec3.hpp"
 #include "ray.hpp"
 #include "logger.hpp"
+//#include "vertex.hpp"
+
+//class Vertex;
+
+using namespace std;
+
+class Triangle;
+
+class Vertex {
+private:
+    vector<Triangle *> facesAround;
+public:
+    VEC3F coord;
+    VEC3F normal;
+    Vertex(VEC3F &coord, VEC3F &normal);
+    Vertex();
+    Triangle* getFacesAroundContaining(Vertex *vertex1, Vertex *vertex2);
+};
+
 
 class Triangle : public Object {
 private :
-    VEC3F a;
-    VEC3F b;
-    VEC3F c;
+    Vertex *a;
+    Vertex *b;
+    Vertex *c;
     VEC3F normal;
-    VEC3F na;
-    VEC3F nb;
-    VEC3F nc;
-public :
-    Triangle(VEC3F &a, VEC3F &b, VEC3F &c,
-             VEC3F &na, VEC3F &nb, VEC3F &nc, 
-             VEC3F &normal, Material *material);
-    VEC3F getA() ;
-    VEC3F getB() ;
-    VEC3F getC() ;
-    VEC3F getNA() ;
-    VEC3F getNB() ;
-    VEC3F getNC() ;
-    VEC3F getNormal() ;
     VEC3F getNormal(VEC3F &point);
+public :
+    Triangle(Vertex *a, Vertex *b, Vertex *c,
+             VEC3F &normal, Material *material);
+    VEC3F getNormal() ;
+    bool contains(Vertex *v);
     void getIntersection(Ray &ray, float *distance, VEC3F *normal,
                          Material **material);
 };

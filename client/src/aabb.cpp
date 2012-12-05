@@ -23,9 +23,9 @@ float AABB::getVolume()
 bool AABB::intersectRay(Ray &ray, float distanceMax)
 {
     float dir[4];
-    ray.getDirection().getCoord(dir);
+    ray.direction.getCoord(dir);
     float orig[4];
-    ray.getOrigin().getCoord(orig);
+    ray.origin.getCoord(orig);
     float r, s, t;
     float min( 0.0 );
     float max( distanceMax );
