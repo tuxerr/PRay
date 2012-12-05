@@ -17,10 +17,10 @@ file(GLOB_RECURSE src src/*.cpp)
 
 #Déclaration de l'exécutable
 add_executable(
-	server
+	pray_server
 	${src}
 )
 
 set(CMAKE_CXX_FLAGS "-g -Wall -ggdb -std=c++11")
 
-target_link_libraries(server m rt curses SDL common pthread tinyxml)
+target_link_libraries(pray_server m rt curses SDL common pthread tinyxml)
