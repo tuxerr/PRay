@@ -5,16 +5,20 @@
 #include "color.hpp"
 
 class Ray {
-private :
+    friend class AABB;
+    friend class PhongMaterial;
+    friend class Plane;
+    friend class Sphere;
+    friend class Triangle;
+    friend class UglyMaterial;
+private:
     Color color;
-public :
-    Ray(const VEC3F &origin, const VEC3F &direction, Color &color, int reflections = 0);
     VEC3F origin;
     VEC3F direction;
-    //    VEC3F getOrigin() const;
-    //    VEC3F getDirection() const;
-    Color getColor() const;
+public:
     int reflections;
+    Ray(const VEC3F &origin, const VEC3F &direction, Color &color, int reflections = 0);
+    Color getColor() const;
 };
 
 #endif

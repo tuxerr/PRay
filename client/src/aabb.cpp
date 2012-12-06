@@ -101,8 +101,8 @@ bool AABB::intersectRay(Ray &ray, float t0, float t1)
 {
     float rayPt[4];
     float rayDir[4];
-    ray.getOrigin().getCoord(rayPt);
-    ray.getDirection().getCoord(rayDir);
+    ray.origin.getCoord(rayPt);
+    ray.direction.getCoord(rayDir);
 
     float txmin, txmax, tymin, tymax, tzmin, tzmax;
 
