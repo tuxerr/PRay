@@ -159,7 +159,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     edge2 = c - a;
     
     // begin calculating determiant - also used to calculate U parameter
-    pvec = ray.getDirection().cross(edge2);
+    pvec = ray.direction.cross(edge2);
 
     // if determinant is near zero, ray lies in plane of triangle
     det = edge1.scalar(pvec);
@@ -170,7 +170,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     }
 
     // calculate distance from A to ray origin
-    tvec = ray.getOrigin() - a;
+    tvec = ray.origin - a;
 
     // calculate U parameter and test bounds
     u = tvec.scalar(pvec);
@@ -183,7 +183,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
     qvec = tvec.cross(edge1);
 
     // calculate V parameter and test bounds
-    v = ray.getDirection().scalar(qvec);
+    v = ray.direction.scalar(qvec);
     if (v < 0.0 || u + v > det) {
 	*distance = -1;
 	return;
@@ -203,7 +203,7 @@ void Triangle::getIntersection(Ray &ray, float *distance, VEC3F *normal,
      if (u != u || v != v) {
 	 *normal = this->normal;
      } else {
-       VEC3F point = ray.getOrigin() + (ray.getDirection())*(*distance);
+       VEC3F point = ray.origin + (ray.direction)*(*distance);
        *normal = getNormal(point);
      }
 

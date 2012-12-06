@@ -19,12 +19,12 @@ VEC3F Plane::getPoint() {
 void Plane::getIntersection(Ray &ray, float *distance, VEC3F *normal, Material **materialIntersection) {
 
     (this->normal).printLog();
-    (ray.getDirection()).printLog();
+    (ray.direction).printLog();
 
-    float d = (this->normal).scalar(ray.getDirection());
+    float d = (this->normal).scalar(ray.direction);
     Logger::log(LOG_INFO) << "d" << d << std::endl;
     if(fabs(d) >= 0.0001) {
-	float t = (this->normal).scalar(this->point - ray.getOrigin()) / d;
+	float t = (this->normal).scalar(this->point - ray.origin) / d;
 	*distance = t; 
 	*normal = this->normal;
 	*materialIntersection = material;

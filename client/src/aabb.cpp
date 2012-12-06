@@ -23,9 +23,9 @@ float AABB::getVolume()
 bool AABB::intersectRay(Ray &ray, float distanceMax)
 {
     float dir[4];
-    ray.getDirection().getCoord(dir);
+    ray.direction.getCoord(dir);
     float orig[4];
-    ray.getOrigin().getCoord(orig);
+    ray.origin.getCoord(orig);
     float r, s, t;
     float min( 0.0 );
     float max( distanceMax );
@@ -101,8 +101,8 @@ bool AABB::intersectRay(Ray &ray, float t0, float t1)
 {
     float rayPt[4];
     float rayDir[4];
-    ray.getOrigin().getCoord(rayPt);
-    ray.getDirection().getCoord(rayDir);
+    ray.origin.getCoord(rayPt);
+    ray.direction.getCoord(rayDir);
 
     float txmin, txmax, tymin, tymax, tzmin, tzmax;
 
