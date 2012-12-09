@@ -1,0 +1,65 @@
+master / e04867f40b174750464bdc225d8cb0648e5d13f2
+
+$ ./pray_client --standalone --file ../scenes/suzanne_242.xml
+[INF] Start loading settings : settings.xml
+[INF] Settings loaded
+[INF] SDL initialised (video and controls) in 1280x800
+[INF] Start loading scene : ../scenes/suzanne_242.xml
+[INF] Scene loaded (242 objects) (0.002 s)
+[INF] Start building kd-tree
+[INF]  - number of nodes : 4423
+[INF]  - number of leaves : 2212
+[INF]  - number of empty leaves : 222
+[INF]  - number of objects : 6835
+[INF]  - empty volume : 55.3085%
+[INF] Kd-tree building completed (0.016 s)
+[INF] Rendering started in 1280x800
+[INF] Number of logical processors : 4
+[INF] Frame 0 rendered in 1.1 seconds (total is 1.1 seconds)
+[INF] Frame 1 rendered in 1.542 seconds (total is 2.642 seconds)
+[INF] Rendering terminated
+[INF] Rendered image saved
+[INF] SDL Quit
+
+$ valgrind --tool=cachegrind ./pray_client --standalone --file ../scenes/suzanne_242.xml
+==29960== Cachegrind, a cache and branch-prediction profiler
+==29960== Copyright (C) 2002-2012, and GNU GPL'd, by Nicholas Nethercote et al.
+==29960== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==29960== Command: ./pray_client --standalone --file ../scenes/suzanne_242.xml
+==29960== 
+--29960-- warning: L3 cache found, using its data for the LL simulation.
+[INF] Start loading settings : settings.xml
+[INF] Settings loaded
+[INF] SDL initialised (video and controls) in 1280x800
+[INF] Start loading scene : ../scenes/suzanne_242.xml
+[INF] Scene loaded (242 objects) (0.122 s)
+[INF] Start building kd-tree
+[INF]  - number of nodes : 4423
+[INF]  - number of leaves : 2212
+[INF]  - number of empty leaves : 222
+[INF]  - number of objects : 6835
+[INF]  - empty volume : 55.3085%
+[INF] Kd-tree building completed (1.05 s)
+[INF] Rendering started in 1280x800
+[INF] Number of logical processors : 4
+[INF] Frame 0 rendered in 96.054 seconds (total is 96.054 seconds)
+[INF] Rendering terminated
+[INF] Rendered image saved
+[INF] SDL Quit
+==29960== 
+==29960== I   refs:      7,960,222,463
+==29960== I1  misses:        3,966,337
+==29960== LLi misses:           10,609
+==29960== I1  miss rate:          0.04%
+==29960== LLi miss rate:          0.00%
+==29960== 
+==29960== D   refs:      3,047,103,095  (2,076,248,493 rd   + 970,854,602 wr)
+==29960== D1  misses:       37,779,557  (   36,151,275 rd   +   1,628,282 wr)
+==29960== LLd misses:          618,981  (      241,525 rd   +     377,456 wr)
+==29960== D1  miss rate:           1.2% (          1.7%     +         0.1%  )
+==29960== LLd miss rate:           0.0% (          0.0%     +         0.0%  )
+==29960== 
+==29960== LL refs:          41,745,894  (   40,117,612 rd   +   1,628,282 wr)
+==29960== LL misses:           629,590  (      252,134 rd   +     377,456 wr)
+==29960== LL miss rate:            0.0% (          0.0%     +         0.0%  )
+

@@ -1,0 +1,23 @@
+                      master           vertices
+Instructions
+    I   refs:      7,960,222,463    209,414,510,386
+    I1  misses:        3,966,337          2,782,663
+    LLi misses:           10,609             10,651
+    I1  miss rate:          0.04%              0.00%
+    LLi miss rate:          0.00%              0.00%
+
+Data
+    D   refs:      3,047,103,095     76,126,241,837
+    D1  misses:       37,779,557      2,738,961,918
+    LLd misses:          618,981            626,742
+    D1  miss rate:           1.2%               3.5%
+    LLd miss rate:           0.0%               0.0%
+
+
+
+L1 cache misses details:
+                                       master    vertices
+
+Scene::computeIntersectionNode(...)    34.62%      56.18%
+AABB:intersectRay(...)                 27.06%      31.84%
+Triangle::getIntersection(...)          3.50%      10.54%
