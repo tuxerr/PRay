@@ -3,7 +3,7 @@
 
 #include <list>
 #include <cfloat>
-#include <pthread.h>
+#include <omp.h>
 #include "triangle.hpp"
 #include "aabb.hpp"
 #include "logger.hpp"
@@ -27,7 +27,6 @@ private:
                       std::list<Object*>* objectsLeft,
                       std::list<Object*>* objectsRight);
     void createChildren(int axis, float limit);
-    static void* computeChildrenThread(void *node);
     bool terminate();
 public :
     KdTreeNode(int depth, AABB* aabb);
