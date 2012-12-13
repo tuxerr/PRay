@@ -21,6 +21,6 @@ add_executable(
 	${src}
 )
 
-set(CMAKE_CXX_FLAGS "-W -Wall -O2 -march=native -std=c++11")
+set(CMAKE_CXX_FLAGS "-W -Wall -fopenmp -O2 -march=native -std=c++11")
 
 target_link_libraries(pray_client m rt SDL common pthread tinyxml)

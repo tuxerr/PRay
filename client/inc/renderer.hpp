@@ -10,6 +10,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <omp.h>
 
 #define DEFAULT_THREAD_NUMBER 8
 #define PIXEL_GROUPS 64
@@ -22,7 +23,9 @@ typedef struct {
 class Renderer {
 public:
     Renderer(Scene *scene,Display *disp=NULL);
-    std::vector<Color> render(int x,int y,int width,int height,int thread_number=DEFAULT_THREAD_NUMBER,bool _onscreen=false);
+    std::vector<Color> render(int x,int y,int width,int height,
+                              int thread_number=DEFAULT_THREAD_NUMBER,
+                              bool _onscreen=false);
     void compute_task();
     static void *computing_thread(void *This);
     void set_scene(Scene *newscene);
