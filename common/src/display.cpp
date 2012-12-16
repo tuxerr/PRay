@@ -33,10 +33,10 @@ void Display::refresh_display() {
 void Display::refresh_part_display_timecheck() {
     if(line_refresh) {
         if(SDL_GetTicks()-last_refresh>MINIMUM_TIMECHECK_REFRESH_TIME) {
-            for (std::set<int>::iterator it=new_lines_to_refresh.begin(); 
-                 it!=new_lines_to_refresh.end(); 
+            for (std::set<int>::iterator it=new_lines_to_refresh.begin();
+                 it!=new_lines_to_refresh.end();
                  it++) {
-                SDL_UpdateRect(screen,0,*it,width,1);            
+                SDL_UpdateRect(screen,0,*it,width,1);
             }
             last_refresh=SDL_GetTicks();
             new_lines_to_refresh.clear();
@@ -89,7 +89,7 @@ bool Display::quit() {
     return quit_pressed;
 }
 
-Display::Display(int p_width,int p_height) : 
+Display::Display(int p_width,int p_height) :
     height(p_height),width(p_width), quit_pressed(false), screen(NULL), new_press(true), last_refresh(0)
 {
 
@@ -139,8 +139,8 @@ void Display::add_pixel(int x,int y,Color color) {
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
 //  Logger::log()<<"Updating pixel "<<x<<y<<std::endl;
-    SDL_UnlockSurface(screen);
     new_lines_to_refresh.insert(y);
+    SDL_UnlockSurface(screen);
 }
 
 void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
@@ -153,7 +153,7 @@ void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &p
             Uint32 *p = (Uint32 *)screen->pixels + (x+w) + (y+h) * (screen->pitch/4);
             *p=SDL_MapRGB(screen->format,pixels[i].getR()*255,pixels[i].getG()*255,pixels[i].getB()*255);
             i++;
-        }  
+        }
         new_lines_to_refresh.insert(y+h);
     }
     SDL_UnlockSurface(screen);

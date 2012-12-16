@@ -25,17 +25,24 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,
 
         int xx,yy;
 
-#pragma omp parallel for private(xx,yy) schedule(dynamic,1)
-        for (yy = y ; yy < height ; yy++)
-            for (xx = x ; xx < width ; xx++)
+#pragma omp parallel for private(xx,yy) schedule(dynamic,1) num_threads(thread_number)
+        for (yy = y ; yy < height ; yy++) {
+            for (xx = x ; xx < width ; xx++) {
                 display->add_pixel(xx, yy, scene->renderPixel(xx, yy));
+            }
+
+// #pragma omp critical(refresh_display)
+//             {
+//                 display->refresh_part_display_timecheck();
+//             }
+        }
 
     } else {
 
         tasks.clear();
         results.clear();
         results.assign((width*height/PIXEL_GROUPS)+1,nullptr);
-    
+
         int i=0;
         Task currenttask;
         currenttask.task_number=0;
@@ -43,7 +50,7 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,
         std::vector<pthread_t> thread_pool;
 
         for(int h=0;h<height;h++) {
-        
+
             for(int w=0;w<width;w++) {
 
                 currenttask.pixels.push_back(std::pair<int,int>(x+w,y+h));
@@ -87,7 +94,7 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,
 
     float render_time=(SDL_GetTicks()-initial_tick)/(float)1000;
     total_time+=render_time;
-        
+
     Logger::log()<<"Frame "<< frameNumber++ <<" rendered in "
                  <<render_time
                  <<" seconds (total is "<<total_time<<" seconds)"<<std::endl;
@@ -143,6 +150,6 @@ void Renderer::compute_task() {
         } else {
             cont=false;
         }
-            
-    }    
+
+    }
 }
