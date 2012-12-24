@@ -1,6 +1,8 @@
 #ifndef DEF_SETTINGS
 #define DEF_SETTINGS
 
+#define TIXML_USE_STL
+
 #include <string>
 #include <map>
 #include <tinyxml.h>

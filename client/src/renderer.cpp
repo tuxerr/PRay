@@ -41,7 +41,12 @@ std::vector<Color> Renderer::render(int x,int y,int width,int height,
 
         tasks.clear();
         results.clear();
-        results.assign((width*height/PIXEL_GROUPS)+1,nullptr);
+
+#ifdef __GNUC__
+        results.assign((width*height/PIXEL_GROUPS)+1,nullptr); // C++11
+#else
+        results.assign((width*height/PIXEL_GROUPS)+1,NULL);
+#endif
 
         int i=0;
         Task currenttask;

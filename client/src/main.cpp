@@ -1,5 +1,10 @@
 #include <string>
-#include <getopt.h>
+#ifdef __LINUX__
+# include <getopt.h>
+#endif
+#ifdef _WIN32
+# include <windows.h>
+#endif
 #include "logger.hpp"
 #include "server.hpp"
 #include "color.hpp"
@@ -14,7 +19,12 @@
 using namespace std;
 
 void standalone_mode(string filename);
+#ifdef __LINUX__
 void network_mode(string server_name,int port);
+#endif
+#ifdef __WIN32__
+void usleep(int waitTime);
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -22,6 +32,7 @@ int main(int argc, char* argv[])
     Settings::init("settings.xml");
     srand ( time(NULL) );
 
+#ifdef __LINUX__
     static struct option long_options[] = {
                    {"standalone", no_argument,       0,  's' },
                    {"file",       required_argument, 0,  'f' },
@@ -90,6 +101,20 @@ int main(int argc, char* argv[])
         }
     }
 
+#endif
+
+#ifdef __WIN32__
+
+	string usage="Usage : ./pray_client file.xml";
+
+	if (argc != 2) {
+		cout<<usage<<endl;
+	}
+
+	standalone_mode(argv[1]);
+
+#endif
+
     return EXIT_SUCCESS;
 }
 
@@ -111,8 +136,6 @@ void standalone_mode(string filename) {
 
     Logger::log(LOG_INFO)<<"Rendering started in "<<width<<"x"<<height<<endl;
 
-#ifndef __INTEL_COMPILER
-
     disp->register_keyhook(std::bind(&Camera::translateForward,   scene->getCamera()), SDLK_z);
     disp->register_keyhook(std::bind(&Camera::translateBackwards, scene->getCamera()), SDLK_s);
     disp->register_keyhook(std::bind(&Camera::translateRight,     scene->getCamera()), SDLK_d);
@@ -127,16 +150,17 @@ void standalone_mode(string filename) {
     disp->register_keyhook(std::bind(&Camera::yawRight,           scene->getCamera()), SDLK_RIGHT);
     disp->register_keyhook(std::bind(&Camera::switchMode,         scene->getCamera()), SDLK_m);
 
-#else
-    Logger::log(LOG_INFO)<<"Keys are disabled"<<endl;
-#endif
-
     Renderer renderer(scene,disp);
 
-
+#ifdef __LINUX__
     int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
     Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
     if (Settings::getAsBool("one_thread")) numOfCPUs = 1;
+#endif
+
+#ifdef __WIN32__
+	int numOfCPUs = 4;
+#endif
 
     while ( !disp->quit() )
     {
@@ -155,6 +179,7 @@ void standalone_mode(string filename) {
     delete scene;
 }
 
+#ifdef __LINUX__
 void network_mode(string server_name,int port) {
     Server serv(server_name,port);
     serv.connect();
@@ -163,3 +188,17 @@ void network_mode(string server_name,int port) {
     net_renderer.run();
     Logger::log(LOG_INFO)<<"Network rendering terminated"<<endl;
 }
+#endif
+
+#ifdef __WIN32__
+void usleep(int waitTime) {
+    __int64 time1 = 0, time2 = 0, freq = 0;
+
+    QueryPerformanceCounter((LARGE_INTEGER *) &time1);
+    QueryPerformanceFrequency((LARGE_INTEGER *)&freq);
+
+    do {
+        QueryPerformanceCounter((LARGE_INTEGER *) &time2);
+    } while((time2-time1) < waitTime);
+}
+#endif

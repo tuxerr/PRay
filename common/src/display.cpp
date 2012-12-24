@@ -12,11 +12,9 @@ Display& Display::getInstance() {
     return *display_ptr;
 }
 
-#ifndef __INTEL_COMPILER
 void Display::register_keyhook(std::function< void(void) > met,SDLKey key) {
     bindings.push_back(pair<std::function<void(void)>,SDLKey>(met,key));
 }
-#endif
 
 void Display::refresh_display() {
     if(line_refresh) {
@@ -50,7 +48,6 @@ bool Display::refresh_controls() {
     while(SDL_PollEvent(&event)==1) {
         switch(event.type) {
         case SDL_KEYDOWN:
-#ifndef __INTEL_COMPILER
             for(unsigned int i=0;i<bindings.size();i++) {
                 if(bindings[i].second == event.key.keysym.sym) {
                     (bindings[i].first)();
@@ -61,7 +58,6 @@ bool Display::refresh_controls() {
                     quit_pressed=true;
                 }
             }
-#endif
             break;
 
         case SDL_QUIT:

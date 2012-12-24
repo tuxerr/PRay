@@ -1,3 +1,5 @@
+#ifdef __LINUX__
+
 #ifndef DEF_SERVER
 #define DEF_SERVER
 
@@ -43,5 +45,7 @@ private:
     int failed_connections;
     Conditional wait_message;
 };
+
+#endif
 
 #endif

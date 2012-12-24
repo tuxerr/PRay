@@ -1,6 +1,8 @@
 #ifndef DEF_SCENELOADER
 #define DEF_SCENELOADER
 
+#define TIXML_USE_STL
+
 #include <list>
 #include <set>
 #include <string>

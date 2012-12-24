@@ -1,3 +1,5 @@
+#ifdef __LINUX__
+
 #include "server.hpp"
 
 using namespace std;
@@ -153,3 +155,5 @@ void* Server::main_loop_thread(void *This) {
     cli_ptr->main_loop();
     return NULL;
 }
+
+#endif
