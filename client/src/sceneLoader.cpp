@@ -9,7 +9,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
     if ( !doc.LoadFile() ) {
         Logger::log(LOG_ERROR) << "Scene loading failed : " << scene_file << endl;
         Logger::log(LOG_ERROR) << "Error #" << doc.ErrorId() << " : " << doc.ErrorDesc() << endl;
-	return -1;
+        return -1;
     } else {
         Logger::log(LOG_INFO) << "Start loading scene : " << scene_file << endl;
         Uint32 initial_tick = SDL_GetTicks();
@@ -63,7 +63,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                     tmp_node->QueryFloatAttribute("d", &d);
                 }
 
-		camera = new Camera(position,
+                camera = new Camera(position,
                                     target-position,
                                     normal,
                                     w, d,
@@ -87,12 +87,12 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 } else {
                     direction = readVec3Float(tmp_node);
                 }
-		DirectionalLight *dirLight = new DirectionalLight(color, direction.normalize()); // !!!!!!!!!! NEEDS TO BE DESTROYED
+                DirectionalLight *dirLight = new DirectionalLight(color, direction.normalize()); // !!!!!!!!!! NEEDS TO BE DESTROYED
                 lights.push_back(dirLight);
-	    } else if ( nodeName.compare("pointLight")==0 ) {
+            } else if ( nodeName.compare("pointLight")==0 ) {
                 Color color;
                 VEC3F point;
-		
+
                 tmp_node = node->FirstChildElement("color");
                 if (tmp_node == NULL) {
                     Logger::log(LOG_ERROR)<<"Missing <color> near line "<<node->Row()<<endl;
@@ -106,7 +106,7 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                 } else {
                     point = readVec3Float(tmp_node);
                 }
-	      	PointLight *pointLight = new PointLight(color, point); // !!!!!!!!!! NEEDS TO BE DESTROYED
+                PointLight *pointLight = new PointLight(color, point); // !!!!!!!!!! NEEDS TO BE DESTROYED
                 lights.push_back(pointLight);
             } else if ( nodeName.compare("ambientLight")==0 ) {
                 Color color;
@@ -118,8 +118,8 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
                     color = readColor(tmp_node);
                 }
 
-		ambientLight = AmbientLight(color);
-	    } else if ( nodeName.compare("object")==0 ) {
+                ambientLight = AmbientLight(color);
+            } else if ( nodeName.compare("object")==0 ) {
                 Material* material = 0;
 
                 tmp_node = node->FirstChildElement("material");
@@ -148,12 +148,12 @@ int SceneLoader::load(string scene_file, Scene** scene, int xRes, int yRes) {
         }
 
         float loading_time=(SDL_GetTicks()-initial_tick)/(float)1000;
-        Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects) (" 
+        Logger::log(LOG_INFO) << "Scene loaded ("<<(int) objects.size()<<" objects) ("
                               << loading_time << " s)" << endl;
 
         *scene = new Scene(objects,lights,materials,ambientLight,camera);
 
-	return 0;
+        return 0;
     }
 }
 
@@ -174,38 +174,38 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
         VEC3F a = readVec3Float(node->FirstChildElement("a"));
         VEC3F b = readVec3Float(node->FirstChildElement("b"));
         VEC3F c = readVec3Float(node->FirstChildElement("c"));
-	TiXmlElement* child_normal_a = node->FirstChildElement("normal_a");
-	TiXmlElement* child_normal_b = node->FirstChildElement("normal_b");
-	TiXmlElement* child_normal_c = node->FirstChildElement("normal_c");
+        TiXmlElement* child_normal_a = node->FirstChildElement("normal_a");
+        TiXmlElement* child_normal_b = node->FirstChildElement("normal_b");
+        TiXmlElement* child_normal_c = node->FirstChildElement("normal_c");
 
-	VEC3F na;
+        VEC3F na;
         VEC3F nb;
         VEC3F nc;
 
-	VEC3F normal = ((b - a) * (b - c)).normalize();
-	
-	if(child_normal_a != NULL) {
-	    na = readVec3Float(child_normal_a);
-	} else {
-	    na = normal;
-	}
-	
-	if(child_normal_b != NULL) {
-	    nb = readVec3Float(child_normal_b);
-	} else {
-	    nb = normal;
-	}
+        VEC3F normal = ((b - a) * (b - c)).normalize();
 
-	if(child_normal_c != NULL) {
-	    nc = readVec3Float(child_normal_c);
-	} else {
-	    nc = normal;
-	}
+        if(child_normal_a != NULL) {
+            na = readVec3Float(child_normal_a);
+        } else {
+            na = normal;
+        }
+
+        if(child_normal_b != NULL) {
+            nb = readVec3Float(child_normal_b);
+        } else {
+            nb = normal;
+        }
+
+        if(child_normal_c != NULL) {
+            nc = readVec3Float(child_normal_c);
+        } else {
+            nc = normal;
+        }
 
 #ifdef SCENELOADER_DEBUG
-	Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
-			      <<b.x<<","<<b.y<<","<<b.z<<") ("
-			      <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
+        Logger::log(LOG_DEBUG)<<"Triangle : ("<<a.x<<","<<a.y<<","<<a.z<<") ("
+                              <<b.x<<","<<b.y<<","<<b.z<<") ("
+                              <<c.x<<","<<c.y<<","<<c.z<<")"<<endl;
 #endif
         Triangle* tr = new Triangle(a, b, c, na, nb, nc, normal, material);
         objects->push_back(tr);
@@ -218,8 +218,8 @@ void SceneLoader::readShape(TiXmlElement* node, list<Object*>* objects, Material
     } else if(nodeName.compare("plane")==0) {
         VEC3F normal = readVec3Float(node->FirstChildElement("normal"));
         VEC3F point = readVec3Float(node->FirstChildElement("point"));
-	
-      	objects->push_back(new Plane(normal.normalize(), point, material));
+
+        objects->push_back(new Plane(normal.normalize(), point, material));
 
     } else {
         Logger::log(LOG_ERROR)<<"Unknown shape : "<<nodeName<<" (line "<<node->Row()<<")"<<endl;

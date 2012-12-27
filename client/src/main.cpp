@@ -34,12 +34,12 @@ int main(int argc, char* argv[])
 
 #ifdef __LINUX__
     static struct option long_options[] = {
-                   {"standalone", no_argument,       0,  's' },
-                   {"file",       required_argument, 0,  'f' },
-                   {"server",     required_argument, 0,  0   },
-                   {"port",       required_argument, 0,  0   },
-                   {"fork",       no_argument,       0,  0   },
-                   {0,            0,                 0,  0   }
+        {"standalone", no_argument,       0,  's' },
+        {"file",       required_argument, 0,  'f' },
+        {"server",     required_argument, 0,  0   },
+        {"port",       required_argument, 0,  0   },
+        {"fork",       no_argument,       0,  0   },
+        {0,            0,                 0,  0   }
     };
 
     char res='s';
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
                 forking=true;
             }
             break;
-            
+
         case '?':
             cout<<usage<<endl;
             break;
@@ -105,13 +105,15 @@ int main(int argc, char* argv[])
 
 #ifdef __WIN32__
 
-	string usage="Usage : ./pray_client file.xml";
+    string usage="Usage : ./pray_client file.xml";
 
-	if (argc != 2) {
-		cout<<usage<<endl;
-	}
+    if (argc != 2) {
+        cout<<usage<<endl;
+        Logger::log(LOG_ERROR)<<"Bad argument"<<endl;
+        exit(EXIT_FAILURE);
+    }
 
-	standalone_mode(argv[1]);
+    standalone_mode(argv[1]);
 
 #endif
 
@@ -159,7 +161,7 @@ void standalone_mode(string filename) {
 #endif
 
 #ifdef __WIN32__
-	int numOfCPUs = 4;
+    int numOfCPUs = 4;
 #endif
 
     while ( !disp->quit() )
