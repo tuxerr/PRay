@@ -1,4 +1,4 @@
-#ifdef __LINUX__
+#ifdef __linux__
 
 #ifndef DEF_TCPSOCK
 #define DEF_TCPSOCK

@@ -1,5 +1,5 @@
 #include <string>
-#ifdef __LINUX__
+#ifdef __linux__
 # include <getopt.h>
 #endif
 #ifdef _WIN32
@@ -19,7 +19,7 @@
 using namespace std;
 
 void standalone_mode(string filename);
-#ifdef __LINUX__
+#ifdef __linux__
 void network_mode(string server_name,int port);
 #endif
 #ifdef __WIN32__
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     Settings::init("settings.xml");
     srand ( time(NULL) );
 
-#ifdef __LINUX__
+#ifdef __linux__
     static struct option long_options[] = {
         {"standalone", no_argument,       0,  's' },
         {"file",       required_argument, 0,  'f' },
@@ -154,7 +154,7 @@ void standalone_mode(string filename) {
 
     Renderer renderer(scene,disp);
 
-#ifdef __LINUX__
+#ifdef __linux__
     int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
     Logger::log(LOG_INFO)<<"Number of logical processors : "<<numOfCPUs<<endl;
     if (Settings::getAsBool("one_thread")) numOfCPUs = 1;
@@ -181,7 +181,7 @@ void standalone_mode(string filename) {
     delete scene;
 }
 
-#ifdef __LINUX__
+#ifdef __linux__
 void network_mode(string server_name,int port) {
     Server serv(server_name,port);
     serv.connect();

@@ -1,4 +1,4 @@
-#ifdef __LINUX__
+#ifdef __linux__
 
 #ifndef DEF_NETWORKRENDERER
 #define DEF_NETWORKRENDERER

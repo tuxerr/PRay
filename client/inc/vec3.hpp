@@ -1,7 +1,7 @@
 #ifndef DEF_Vec3
 #define DEF_Vec3
 
-#ifdef __LINUX__
+#ifdef __linux__
 # define USE_SSE
 #endif
 

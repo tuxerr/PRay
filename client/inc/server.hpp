@@ -1,4 +1,4 @@
-#ifdef __LINUX__
+#ifdef __linux__
 
 #ifndef DEF_SERVER
 #define DEF_SERVER

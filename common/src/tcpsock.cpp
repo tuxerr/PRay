@@ -1,4 +1,4 @@
-#ifdef __LINUX__
+#ifdef __linux__
 
 #include "tcpsock.hpp"
 
