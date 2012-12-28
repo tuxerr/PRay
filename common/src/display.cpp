@@ -49,7 +49,8 @@ bool Display::refresh_controls() {
         switch(event.type) {
         case SDL_KEYDOWN:
             for(unsigned int i=0;i<bindings.size();i++) {
-                if(bindings[i].second == event.key.keysym.unicode) {
+                if(bindings[i].second == event.key.keysym.unicode
+                   || bindings[i].second == event.key.keysym.sym) {
                     (bindings[i].first)();
                     change=true;
                     new_press=true;
