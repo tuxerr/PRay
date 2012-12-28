@@ -16,4 +16,7 @@ add_library(
     ${src}
 )
 
-set(CMAKE_CXX_FLAGS "-W -Wall -O2 -march=native -std=c++11")
+# Release
+set(CMAKE_CXX_FLAGS "-W -Wall -fopenmp -O2 -march=native -std=c++11")
+# Debug
+#set(CMAKE_CXX_FLAGS "-W -Wall -g -fopenmp -ggdb -std=c++11")

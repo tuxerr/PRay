@@ -137,7 +137,10 @@ void Display::add_pixel(int x,int y,Color color) {
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
 //  Logger::log()<<"Updating pixel "<<x<<y<<std::endl;
-    new_lines_to_refresh.insert(y);
+
+// SIGSEGV on Linux 32bits
+//  new_lines_to_refresh.insert(y);
+
     SDL_UnlockSurface(screen);
 }
 

@@ -1,3 +1,5 @@
+#ifdef USE_SSE
+
 #include "vec3f_sse.hpp"
 #include "logger.hpp"
 
@@ -38,3 +40,5 @@ bool Vec3f::operator==(Vec3f vec) {
 bool Vec3f::operator!=(Vec3f vec) {
     return !(operator==(vec));
 }
+
+#endif

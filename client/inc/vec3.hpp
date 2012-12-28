@@ -1,7 +1,7 @@
 #ifndef DEF_Vec3
 #define DEF_Vec3
 
-#ifdef __linux__
+#if __x86_64__
 # define USE_SSE
 #endif
 
@@ -14,6 +14,7 @@
 
 #define VEC3F Vec3<float>
 #include <cmath>
+#include "logger.hpp"
 
 template <class number>
 class Vec3 {
