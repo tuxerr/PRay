@@ -98,7 +98,7 @@ def main(filename):
             scale[1][1] = ob.scale.y
             scale[2][2] = ob.scale.z
             verts = [ob_mat * scale * vert.co.to_4d() for vert in verts]
-            faces = mesh.faces
+            faces = mesh.polygons
             for face in faces:
                 material = Material()
                 
