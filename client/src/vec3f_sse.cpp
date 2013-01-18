@@ -1,3 +1,7 @@
+#include "vec3.hpp"
+
+#ifdef USE_SSE
+
 #include "vec3f_sse.hpp"
 #include "logger.hpp"
 
@@ -8,7 +12,7 @@ Vec3f Vec3f::rotate(float phi, Vec3f axis) {
     phi = phi * 3.14159265  / 180.0; // angle in radians
     return (*this) * cos(phi)
         + axis * (*this) * sin(phi)
-        + axis * axis.scalar(*this) * ((float)1.0 - cos(phi)) ;   
+        + axis * axis.scalar(*this) * ((float)1.0 - cos(phi)) ;
 }
 
 Vec3f Vec3f::symmetry(Vec3f x) {
@@ -38,3 +42,5 @@ bool Vec3f::operator==(Vec3f vec) {
 bool Vec3f::operator!=(Vec3f vec) {
     return !(operator==(vec));
 }
+
+#endif

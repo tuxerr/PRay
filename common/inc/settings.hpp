@@ -19,7 +19,7 @@ private:
     static std::map<std::string,bool> boolSettings;
 
 public:
-    static void init(std::string path); //   
+    static void init(std::string path); //
     static Settings& getInstance();     //
     static std::string getAsString(std::string name);
     static double getAsDouble(std::string name);

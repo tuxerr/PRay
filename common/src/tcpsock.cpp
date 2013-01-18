@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #include "tcpsock.hpp"
 
 TCPSocket::TCPSocket() {
@@ -39,3 +41,5 @@ int TCPSocket::connect_to_server(const char *ip,int port) {
     }
     return connect_res;
 }
+
+#endif

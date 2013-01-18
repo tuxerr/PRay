@@ -12,11 +12,9 @@ Display& Display::getInstance() {
     return *display_ptr;
 }
 
-#ifndef __INTEL_COMPILER
 void Display::register_keyhook(std::function< void(void) > met,SDLKey key) {
     bindings.push_back(pair<std::function<void(void)>,SDLKey>(met,key));
 }
-#endif
 
 void Display::refresh_display() {
     if(line_refresh) {
@@ -50,18 +48,17 @@ bool Display::refresh_controls() {
     while(SDL_PollEvent(&event)==1) {
         switch(event.type) {
         case SDL_KEYDOWN:
-#ifndef __INTEL_COMPILER
             for(unsigned int i=0;i<bindings.size();i++) {
-                if(bindings[i].second == event.key.keysym.sym) {
+                if(bindings[i].second == event.key.keysym.unicode
+                   || bindings[i].second == event.key.keysym.sym) {
                     (bindings[i].first)();
                     change=true;
                     new_press=true;
                 }
-                if(event.key.keysym.sym == SDLK_ESCAPE) {
+                if(event.key.keysym.unicode == SDLK_ESCAPE) {
                     quit_pressed=true;
                 }
             }
-#endif
             break;
 
         case SDL_QUIT:
@@ -101,6 +98,8 @@ Display::Display(int p_width,int p_height) :
         exit(EXIT_FAILURE);
     }
 
+    SDL_EnableUNICODE(1);
+
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
     const SDL_VideoInfo* videoInfos = SDL_GetVideoInfo();
@@ -139,7 +138,10 @@ void Display::add_pixel(int x,int y,Color color) {
     Uint32 *p = (Uint32 *)screen->pixels + x  + y * screen->pitch/4;
     *p=SDL_MapRGB(screen->format,color.getR()*255,color.getG()*255,color.getB()*255);
 //  Logger::log()<<"Updating pixel "<<x<<y<<std::endl;
-    new_lines_to_refresh.insert(y);
+
+// SIGSEGV on Linux 32bits
+//  new_lines_to_refresh.insert(y);
+
     SDL_UnlockSurface(screen);
 }
 

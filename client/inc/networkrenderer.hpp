@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #ifndef DEF_NETWORKRENDERER
 #define DEF_NETWORKRENDERER
 
@@ -29,5 +31,7 @@ private:
     Server &serv;
     Client_Status status;
 };
+
+#endif
 
 #endif

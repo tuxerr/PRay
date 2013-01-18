@@ -24,9 +24,7 @@ class Display {
 public:
     static void init(int height=DEFAULT_HEIGHT,int width=DEFAULT_WIDTH);
     static Display& getInstance();
-#ifndef __INTEL_COMPILER
     void register_keyhook(std::function<void(void)> met,SDLKey key);
-#endif
     void refresh_display();
     void refresh_part_display_timecheck();
     bool refresh_controls();
@@ -47,9 +45,7 @@ private:
     int width;
     static Display *display_ptr;
     bool quit_pressed;
-#ifndef __INTEL_COMPILER
     std::vector< std::pair< std::function<void(void)>,SDLKey > > bindings;
-#endif
     SDL_Surface *screen;
     bool new_press;
     Uint32 last_refresh;

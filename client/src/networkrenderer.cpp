@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #include "networkrenderer.hpp"
 
 using namespace std;
@@ -110,4 +112,4 @@ void NetworkRenderer::run() {
     
 }
 
-
+#endif

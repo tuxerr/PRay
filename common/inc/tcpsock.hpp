@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #ifndef DEF_TCPSOCK
 #define DEF_TCPSOCK
 
@@ -26,5 +28,7 @@ class TCPSocket {
     SOCKET sock;	
 
 };
+
+#endif
 
 #endif
