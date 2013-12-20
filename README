@@ -5,3 +5,11 @@ Camera control keys : (AZERTY keyboard)
  - translations : q/d + s/z + f/r
  - rotations : a/e + arrow keys
  - print camera information : c
+
+Dependences (to build and run on a GNU/Linux platform) :
+ - CMake (2.6+)
+ - make (or some CMake-supported IDE)
+ - C++ compiler with C++11 & OpenMP support
+ - pthread
+ - SDL
+ - tinyxml
