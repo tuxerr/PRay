@@ -1,10 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cmake .
 
 make pray_client
 
-(
-    cd client
-    ./pray_client --standalone --file ../scenes/suzanne_968.xml
-)
+cd client
+./pray_client --standalone --file ../scenes/suzanne_968.xml
