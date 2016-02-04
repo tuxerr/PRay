@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
-	
+
+cmake_policy(SET CMP0015 NEW)
+
 #Configuration du projet
 project(server)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
