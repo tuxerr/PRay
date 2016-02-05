@@ -71,6 +71,7 @@ void NetworkRenderer::set_rendering_file(string xmlfile) {
     if(rstatus==RENDERER_RENDERING) {
         Logger::log(LOG_WARNING)<<"A render is in progress, cannot change scene file"<<std::endl;
     } else if(rstatus==RENDERER_WAITING) {
+        Logger::log(LOG_INFO)<<"Set scene file: <"<<xmlfile<<">"<<std::endl;
         string tosend("SETSCENE ");
         tosend.append(xmlfile);
         network.send_to_all(tosend);
@@ -147,7 +148,7 @@ void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
     }
     display.add_line_group(0,act_height,realresult);
 
-    Logger::log()<<"received "<<packet_number<<" of "<<result.size()<<"(height : "<<act_height<<")"<<std::endl;
+    Logger::log()<<"Received "<<packet_number<<" of "<<result.size()<<" (height="<<act_height<<")"<<std::endl;
 //    display.refresh_part_display_timecheck();
 }
 

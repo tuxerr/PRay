@@ -54,6 +54,7 @@ void NetworkRenderer::run() {
         if(head=="SETSCENE") {
             string filexml;
             mes_ss>>filexml;
+            Logger::log(LOG_INFO)<<"Set scene file: <"<<filexml<<">"<<std::endl;
             sceneLoader.load(filexml,&scene,global_width,global_height);
             renderer.set_scene(scene);
 
