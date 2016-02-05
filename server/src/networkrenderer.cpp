@@ -142,7 +142,7 @@ void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
     }
 //    display.add_surface(0,act_height,rendering_width,height,result);
     std::vector<Color> realresult;
-    for(int i=0;i<1280*5;i++) {
+    for(int i=0;i<Settings::getAsInt("window_width")*5;i++) {
         realresult.push_back(Color(1,0,0));
 
     }
