@@ -4,15 +4,15 @@
 
 using namespace std;
 
-NetworkRenderer::NetworkRenderer(Server &serv) : 
-    serv(serv), status(CLIENT_WAITING) 
+NetworkRenderer::NetworkRenderer(Server &serv) :
+    serv(serv), status(CLIENT_WAITING)
 {
 
 }
 
 void NetworkRenderer::run() {
-    while(!serv.is_connected() && 
-          serv.get_failed_connections()<MAX_FAILED_CONNECTIONS) 
+    while(!serv.is_connected() &&
+          serv.get_failed_connections()<MAX_FAILED_CONNECTIONS)
     {
         Logger::log()<<"Waiting for server"<<std::endl;
         sleep(1);
@@ -56,7 +56,7 @@ void NetworkRenderer::run() {
             mes_ss>>filexml;
             sceneLoader.load(filexml,&scene,global_width,global_height);
             renderer.set_scene(scene);
-            
+
         } else if(head=="CALCULATE") {
             serv.send_message("CALCULATING");
             int task_number,y,width,height;
@@ -74,7 +74,7 @@ void NetworkRenderer::run() {
             }
 
             serv.send_message(result_message.str());
-        } else if(head=="INFO") { 
+        } else if(head=="INFO") {
             mes_ss>>global_width>>global_height;
         } else if(head=="CAM") {
             string cam_operation;
@@ -103,13 +103,13 @@ void NetworkRenderer::run() {
                 scene->getCamera()->yawLeft();
             } else if(cam_operation=="yR") {
                 scene->getCamera()->yawRight();
-            } else if(cam_operation=="sM") 
+            } else if(cam_operation=="sM")
 {               scene->getCamera()->switchMode();
-            } 
+            }
         }
 
     }
-    
+
 }
 
 #endif

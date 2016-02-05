@@ -21,16 +21,16 @@ void NetworkRenderer::renderer_thread() {
         }
         Client *cl = network.get_client(id);
         string recv = cl->unstack_message();
-        
+
         if(recv=="CALCULATING") {
            rendering_clients[id].status=CLIENT_RENDERING;
         } else if(recv.find("RESULT")==0) {
 
             stringstream recv_ss(stringstream::in | stringstream::out);
             recv_ss<<recv.substr(6);
-            
+
             parse_network_result_output(recv_ss);
-            
+
             rendering_clients[id].status=CLIENT_WAITING;
             int sent_task = send_task_to_client(id);
 
@@ -42,7 +42,7 @@ void NetworkRenderer::renderer_thread() {
             ncursesui.get_clients_win()->modify_string(
                 rendering_clients[id].curses_id,
                 newstring.str());
-                                    
+
 
             result_number++;
             if(result_number==rendering_task_number) {
@@ -95,7 +95,7 @@ void NetworkRenderer::render(int width,int height) {
             if( i+CLIENT_TASK_LINES>height) {
                 currenttask.height=height-i;
             } else {
-                currenttask.height=CLIENT_TASK_LINES;                
+                currenttask.height=CLIENT_TASK_LINES;
             }
 
             network_tasks.push_back(currenttask);
@@ -128,7 +128,7 @@ void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
         b=(float)ib/(float)255;
         if(recv_ss.good()) {
             Color c(r,g,b);
-            result.push_back(c); 
+            result.push_back(c);
         }
 
     }
@@ -161,7 +161,7 @@ int NetworkRenderer::send_task_to_client(int id) {
         send<<"CALCULATE "<<network_tasks.size()<<" "<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
         cl->send_message(send.str());
         return network_tasks.size();
-    } 
+    }
     return -1;
 }
 
@@ -180,66 +180,66 @@ void NetworkRenderer::camera_translate_backwards() {
 
 void NetworkRenderer::camera_translate_left() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM tL");    
+        network.send_to_all("CAM tL");
     }
 }
 
 void NetworkRenderer::camera_translate_right() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM tR");    
+        network.send_to_all("CAM tR");
     }
 }
 
 void NetworkRenderer::camera_translate_up() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM tU");    
+        network.send_to_all("CAM tU");
     }
 }
 
 void NetworkRenderer::camera_translate_down() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM tD");    
+        network.send_to_all("CAM tD");
     }
 }
 
 void NetworkRenderer::camera_roll_left() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM rL");    
+        network.send_to_all("CAM rL");
     }
 }
 
 void NetworkRenderer::camera_roll_right() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM rR");    
+        network.send_to_all("CAM rR");
     }
 }
 
 void NetworkRenderer::camera_pitch_up() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM pU");    
+        network.send_to_all("CAM pU");
     }
 }
 
 void NetworkRenderer::camera_pitch_down() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM pD");    
+        network.send_to_all("CAM pD");
     }
 }
 
 void NetworkRenderer::camera_yaw_left() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM yL");    
+        network.send_to_all("CAM yL");
     }
 }
 
 void NetworkRenderer::camera_yaw_right() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM yR");    
+        network.send_to_all("CAM yR");
     }
 }
 
 void NetworkRenderer::camera_switch_mode() {
     if(rstatus==RENDERER_WAITING) {
-        network.send_to_all("CAM sM"); 
-    }   
+        network.send_to_all("CAM sM");
+    }
 }
