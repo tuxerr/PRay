@@ -1,0 +1,20 @@
+$ ./pray_client --standalone --file ../scenes/suzanne_62976.xml
+[INF] Start loading settings : settings.xml
+[INF] Settings loaded
+[INF] SDL initialised (video and controls) in 1920x1080
+[INF] Start loading scene : ../scenes/suzanne_62976.xml
+[INF] Scene loaded (62976 objects) (0.362 s)
+[INF] Start building kd-tree
+[INF]  - number of nodes : 591617
+[INF]  - number of leaves : 295809
+[INF]  - number of empty leaves : 96665
+[INF]  - number of objects : 545208
+[INF]  - empty volume : 95.9956%
+[INF] Kd-tree building completed (369.289 s)
+[INF] Rendering started in 1920x1080
+[INF] Number of logical processors : 4
+[INF] Frame 0 rendered in 5.271 seconds (total is 5.271 seconds)
+[INF] Rendering terminated
+[INF] Rendered image saved
+[INF] SDL Quit
+
