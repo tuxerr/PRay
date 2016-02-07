@@ -1,0 +1,5 @@
+Refraction in the sphere in scenes/bille.xml
+============================================
+
+c33cfa1  there is refraction
+3e5e02a  there is no more refraction
