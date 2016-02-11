@@ -1,0 +1,18 @@
+[INF] Start loading settings : settings.xml
+[INF] Settings loaded
+[INF] SDL initialised (video and controls) in 1920x1080
+[INF] Start loading scene : ../scenes/billes.xml
+[INF] Scene loaded (603 objects) (0.004 s)
+[INF] Start building kd-tree
+[INF]  - number of nodes : 405
+[INF]  - number of leaves : 203
+[INF]  - number of empty leaves : 26
+[INF]  - number of objects : 723
+[INF]  - empty volume : 49.405%
+[INF] Kd-tree building completed (0.004 s)
+[INF] Rendering started in 1920x1080
+[INF] Number of logical processors : 4
+[INF] Frame 0 rendered in 1.939 seconds (total is 1.939 seconds)
+[INF] Rendering terminated
+[INF] Rendered image saved
+[INF] SDL Quit
