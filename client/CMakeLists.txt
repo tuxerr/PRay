@@ -23,9 +23,6 @@ add_executable(
 	${src}
 )
 
-# Release
-set(CMAKE_CXX_FLAGS "-W -Wall -fopenmp -O2 -march=native -std=c++11")
-# Debug
-#set(CMAKE_CXX_FLAGS "-W -Wall -g -ggdb -fopenmp -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 
 target_link_libraries(pray_client m rt SDL common pthread tinyxml)
