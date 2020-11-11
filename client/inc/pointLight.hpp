@@ -17,6 +17,7 @@ public :
 	       float g,
 	       float b,
 	       const VEC3F &point);
+    ~PointLight() {};
     VEC3F getPoint();
     VEC3F getDirection();
     VEC3F getDirection(VEC3F &point);

@@ -8,6 +8,7 @@ public :
     AmbientLight (const Color &color);
     AmbientLight (float grey =1);
     AmbientLight (float r, float g, float b);
+    ~AmbientLight() {};
     VEC3F getDirection(VEC3F &point);
 };
 

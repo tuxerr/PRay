@@ -11,6 +11,7 @@ public :
     Light (const Color &color);
     Light (float grey =1);
     Light (float r, float g, float b);
+    virtual ~Light() {};
     Color getColor();
     virtual VEC3F getDirection(VEC3F &point) = 0;
 };

@@ -11,6 +11,7 @@ private:
   Color color;
 public :
   UglyMaterial(const Color &color);
+  ~UglyMaterial() {};
   Color getColor();
   Color renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene);
 };

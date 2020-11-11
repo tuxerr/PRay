@@ -66,6 +66,8 @@ public :
 		  float refractiveIn = 1,
 		  float refractiveOut = 1);
 
+    ~PhongMaterial() {};
+
     Color renderRay(Ray &ray, float distance, const VEC3F &normal, Scene *scene);
 };
 
