@@ -24,6 +24,6 @@ VEC3F DirectionalLight::getDirection() {
     return direction;
 }
 
-VEC3F DirectionalLight::getDirection(VEC3F &point) {
+VEC3F DirectionalLight::getDirection(__attribute__((unused)) VEC3F &point) {
     return this->direction;
 }

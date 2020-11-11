@@ -18,6 +18,6 @@ AmbientLight::AmbientLight (float r, float g, float b) :
 
 }
 
-VEC3F AmbientLight::getDirection(VEC3F &point) {
+VEC3F AmbientLight::getDirection(__attribute__((unused)) VEC3F &point) {
     return VEC3F(0,0,0);
 }

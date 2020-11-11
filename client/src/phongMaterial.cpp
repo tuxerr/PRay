@@ -208,12 +208,3 @@ void PhongMaterial::addRefraction(float &r, float &g, float &b,
     
     }
 }
-
-
-void PhongMaterial::addPathTracing(float &r, float &g, float &b,
-				   Ray &ray, VEC3F &point,
-				   const VEC3F &normal, Scene *scene) {
-
-
-
-}

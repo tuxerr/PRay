@@ -51,10 +51,6 @@ private :
 		       Ray &ray, VEC3F &point,
 		       const VEC3F &normal, Scene *scene);
 
-    void addPathTracing(float &r, float &g, float &b,
-			Ray &ray, VEC3F &point,
-			const VEC3F &normal, Scene *scene);
-
 public :
     PhongMaterial(const Color &color, 
 		  float specularReflection, 
