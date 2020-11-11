@@ -30,9 +30,9 @@ void NetworkRenderer::run() {
     serv.send_message(login_string);
 
     SceneLoader sceneLoader;
-    Scene *scene;
+    Scene *scene = NULL;
     int global_width,global_height;
-    Renderer renderer(scene,NULL);
+    Renderer renderer(NULL,NULL);
 
     int numOfCPUs = sysconf(_SC_NPROCESSORS_ONLN);
 
@@ -55,6 +55,8 @@ void NetworkRenderer::run() {
             string filexml;
             mes_ss>>filexml;
             Logger::log(LOG_INFO)<<"Set scene file: <"<<filexml<<">"<<std::endl;
+            if (scene != NULL)
+                delete scene;
             sceneLoader.load(filexml,&scene,global_width,global_height);
             renderer.set_scene(scene);
 
@@ -104,13 +106,15 @@ void NetworkRenderer::run() {
                 scene->getCamera()->yawLeft();
             } else if(cam_operation=="yR") {
                 scene->getCamera()->yawRight();
-            } else if(cam_operation=="sM")
-{               scene->getCamera()->switchMode();
+            } else if(cam_operation=="sM") {
+                scene->getCamera()->switchMode();
             }
         }
 
     }
 
+    if (scene != NULL)
+        delete scene;
 }
 
 #endif

@@ -146,7 +146,7 @@ void Display::add_pixel(int x,int y,Color color) {
 }
 
 void Display::add_surface(int x,int y,int width,int height,std::vector<Color> &pixels) {
-    Logger::log()<<x<<"/"<<y<<"/"<<width<<"/"<<height<<std::endl;
+    //Logger::log()<<x<<"/"<<y<<"/"<<width<<"/"<<height<<std::endl;
     SDL_LockSurface(screen);
     // all pixels are 32b-encoded
     int i=0;

@@ -13,6 +13,7 @@ NcursesUI::~NcursesUI()
     delete client_ptr;
     delete log_ptr;
     delete status_ptr;
+    delete text_ptr;
 }
 
 

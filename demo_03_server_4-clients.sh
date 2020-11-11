@@ -13,8 +13,17 @@ do
     ./pray_client --server 127.0.0.1 --port $PORT --fork > pray_client.$i.out.log 2> pray_client.$i.err.log
 done
 
-cd ../server
-./pray_server --port $PORT
+escape=$(echo -e '\e')
 
-#type: scene ../scenes/bille.xml
-#type: render
+cd ../server
+expect <(cat <<EOF
+    spawn -noecho ./pray_server --port $PORT
+    sleep 2
+    send -- "scene ../scenes/bille.xml\r"
+    sleep 2
+    send -- "render\r"
+    expect "Network rendering finished"
+    sleep 3
+    send -- $escape
+EOF
+)

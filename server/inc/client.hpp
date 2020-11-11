@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <cassert>
 #include "tcpsock.hpp"
 #include "mutex.hpp"
 #include "conditional.hpp"

@@ -27,7 +27,7 @@ void NetworkRenderer::renderer_thread() {
         } else if(recv.find("RESULT")==0) {
 
             stringstream recv_ss(stringstream::in | stringstream::out);
-            recv_ss<<recv.substr(6);
+            recv_ss<<recv.substr(7);
 
             parse_network_result_output(recv_ss);
 
@@ -114,7 +114,7 @@ void NetworkRenderer::render(int width,int height) {
 void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
     int packet_number;
     recv_ss>>packet_number;
-    recv_ss.get();
+    assert(recv_ss.get() == ' ');
     std::vector<Color> result;
     while(recv_ss.good()) {
 
@@ -140,16 +140,10 @@ void NetworkRenderer::parse_network_result_output(stringstream &recv_ss) {
     } else {
         height=CLIENT_TASK_LINES;
     }
-//    display.add_surface(0,act_height,rendering_width,height,result);
-    std::vector<Color> realresult;
-    for(int i=0;i<Settings::getAsInt("window_width")*5;i++) {
-        realresult.push_back(Color(1,0,0));
-
-    }
-    display.add_line_group(0,act_height,realresult);
-
-    Logger::log()<<"Received "<<packet_number<<" of "<<result.size()<<" (height="<<act_height<<")"<<std::endl;
-//    display.refresh_part_display_timecheck();
+    assert(result.size() == (unsigned long)(height * rendering_width));
+    display.add_surface(0,act_height,rendering_width,height,result);
+    Logger::log()<<"Received #"<<packet_number<<" ("<<result.size()<<" pixels, height="<<act_height<<")"<<std::endl;
+    display.refresh_part_display_timecheck();
 }
 
 int NetworkRenderer::send_task_to_client(int id) {

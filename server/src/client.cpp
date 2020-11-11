@@ -79,18 +79,18 @@ void Client::main_loop() {
     while(continue_loop) {
 
         fd_set fd_sock; FD_ZERO(&fd_sock); FD_SET(sock,&fd_sock);
-	struct timeval rp_time;	
-	rp_time.tv_sec=0; rp_time.tv_usec=NETWORK_CLIENT_SLEEPTIME;
+        struct timeval rp_time;
+        rp_time.tv_sec=0; rp_time.tv_usec=NETWORK_CLIENT_SLEEPTIME;
 
-	int sel_res=select(sock+1,&fd_sock,NULL,NULL,&rp_time);
+        int sel_res=select(sock+1,&fd_sock,NULL,NULL,&rp_time);
 
-	if(sel_res==-1) {
-	    Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
+        if(sel_res==-1) {
+            Logger::log(LOG_ERROR)<<"Client "<<ip_addr<<" : TCP reception error"<<std::endl;
             continue_loop=false;
-	} else if(sel_res>0) {
+        } else if(sel_res>0) {
 
             socket_mutex.lock();
-	    ssize_t message_length = recv(sock,recv_str,RECV_L,0);    
+            ssize_t message_length = recv(sock,recv_str,RECV_L,0);
             socket_mutex.unlock();
 
             if(message_length==0) { // TCP DISCONNECT
@@ -101,36 +101,37 @@ void Client::main_loop() {
                 continue_loop=false;
             } else {
 
-		string recvd_message(recv_str,message_length-1);
-		size_t space_pos = recvd_message.find(' ');
-		int message_size=atoi(recvd_message.substr(0,space_pos).c_str());
-		recvd_message=recvd_message.substr(space_pos+1);
+                string recvd_message(recv_str,message_length);
+                size_t space_pos = recvd_message.find(' ');
+                int message_size=atoi(recvd_message.substr(0,space_pos).c_str());
+                recvd_message=recvd_message.substr(space_pos+1);
+                if (recvd_message.size() > (unsigned int)message_size) {
+                    recvd_message.resize(message_size); // discard '\0' at the end of the message
+                }
 
-		if(message_length<RECV_L) {
-		    received_messages_mutex.lock();
-		    received_messages.push_back(recvd_message);
-		    received_messages_mutex.unlock();		    
-		} else {
-		    char *recv2 = new char[message_size];
+                if(recvd_message.size() < (unsigned int)message_size) {
+                    int remaining_size = message_size-recvd_message.size();
 
-		    socket_mutex.lock();
-		    ssize_t message_length2 = recv(sock,recv2,message_size,0);    
-		    socket_mutex.unlock();
+                    char *recv2 = new char[remaining_size+1];
 
-		    if(message_length2!=0 && message_length2!=-1) {
-			string final_string(recvd_message);
-			final_string.append(recv2,message_length2);
+                    socket_mutex.lock();
+                    recv(sock,recv2,remaining_size+1,0);
+                    socket_mutex.unlock();
 
-			received_messages_mutex.lock();
-			received_messages.push_back(final_string);
-			received_messages_mutex.unlock();
-		    }
-		    delete [] recv2;
+                    recvd_message.append(recv2,remaining_size);
 
-		}
+                    delete [] recv2;
+                }
+
+                assert(recvd_message.size() == (unsigned int)message_size);
+
+                received_messages_mutex.lock();
+                received_messages.push_back(recvd_message);
+                received_messages_mutex.unlock();
+
                 recv_cond.signal();
             }
-	}
+        }
     }
 
     islaunched=false;
