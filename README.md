@@ -62,3 +62,8 @@ current directory.
 - pthread
 - SDL
 - tinyxml
+- ncurses
+
+#### Ubuntu 20.04
+
+    sudo apt-get install cmake make g++ libsdl1.2-dev libtinyxml-dev libncurses-dev
