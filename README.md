@@ -67,3 +67,8 @@ current directory.
 #### Ubuntu 20.04
 
     sudo apt-get install cmake make g++ libsdl1.2-dev libtinyxml-dev libncurses-dev
+
+#### CentOS 8
+
+    sudo dnf install epel-release
+    sudo dnf install cmake make gcc-c++ SDL-devel tinyxml-devel ncurses-devel
