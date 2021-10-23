@@ -22,9 +22,7 @@ void NetworkRenderer::renderer_thread() {
         Client *cl = network.get_client(id);
         string recv = cl->unstack_message();
 
-        if(recv=="CALCULATING") {
-           rendering_clients[id].status=CLIENT_RENDERING;
-        } else if(recv.find("RESULT")==0) {
+        if(recv.find("RESULT")==0) {
 
             stringstream recv_ss(stringstream::in | stringstream::out);
             recv_ss<<recv.substr(7);
@@ -63,6 +61,16 @@ void NetworkRenderer::renderer_thread() {
             stringstream infos(stringstream::out);
             infos<<"INFO "<<Settings::getAsInt("window_width")<<" "<<Settings::getAsInt("window_height");
             cl->send_message(infos.str());
+            rendering_clients[id].status=CLIENT_INFO;
+        } else if(recv.find("INFODONE")==0) {
+            //assert(rendering_clients[id].status == CLIENT_INFO);
+            rendering_clients[id].status=CLIENT_WAITING;
+        } else if(recv.find("SETSCENEDONE")==0) {
+            //assert(rendering_clients[id].status == CLIENT_SETSCENE);
+            rendering_clients[id].status=CLIENT_WAITING;
+        } else if(recv.find("CAMDONE")==0) {
+            //assert(rendering_clients[id].status == CLIENT_CAM);
+            rendering_clients[id].status=CLIENT_WAITING;
         }
     }
 }
@@ -74,6 +82,9 @@ void NetworkRenderer::set_rendering_file(string xmlfile) {
         Logger::log(LOG_INFO)<<"Set scene file: <"<<xmlfile<<">"<<std::endl;
         string tosend("SETSCENE ");
         tosend.append(xmlfile);
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_SETSCENE;
+        }
         network.send_to_all(tosend);
     }
 }
@@ -154,6 +165,7 @@ int NetworkRenderer::send_task_to_client(int id) {
         Client* cl = network.get_client(id);
         stringstream send(stringstream::in | stringstream::out);
         send<<"CALCULATE "<<network_tasks.size()<<" "<<currenttask.y<<" "<<currenttask.width<<" "<<currenttask.height;
+        rendering_clients[id].status=CLIENT_RENDERING;
         cl->send_message(send.str());
         return network_tasks.size();
     }
@@ -163,78 +175,117 @@ int NetworkRenderer::send_task_to_client(int id) {
 // functions to bind to display keys
 void NetworkRenderer::camera_translate_forward() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM tF");
     }
 }
 
 void NetworkRenderer::camera_translate_backwards() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM tB");
     }
 }
 
 void NetworkRenderer::camera_translate_left() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM tL");
     }
 }
 
 void NetworkRenderer::camera_translate_right() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM tR");
     }
 }
 
 void NetworkRenderer::camera_translate_up() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM tU");
     }
 }
 
 void NetworkRenderer::camera_translate_down() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM tD");
     }
 }
 
 void NetworkRenderer::camera_roll_left() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM rL");
     }
 }
 
 void NetworkRenderer::camera_roll_right() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM rR");
     }
 }
 
 void NetworkRenderer::camera_pitch_up() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM pU");
     }
 }
 
 void NetworkRenderer::camera_pitch_down() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM pD");
     }
 }
 
 void NetworkRenderer::camera_yaw_left() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM yL");
     }
 }
 
 void NetworkRenderer::camera_yaw_right() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM yR");
     }
 }
 
 void NetworkRenderer::camera_switch_mode() {
     if(rstatus==RENDERER_WAITING) {
+        for(int id : network.get_client_ids()) {
+            rendering_clients[id].status=CLIENT_CAM;
+        }
         network.send_to_all("CAM sM");
     }
 }

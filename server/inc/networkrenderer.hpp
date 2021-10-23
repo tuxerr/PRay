@@ -22,6 +22,9 @@ typedef enum {
 
 typedef enum {
     CLIENT_WAITING,
+    CLIENT_INFO,
+    CLIENT_CAM,
+    CLIENT_SETSCENE,
     CLIENT_RENDERING
 } Client_Status;
 

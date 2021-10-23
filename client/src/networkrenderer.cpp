@@ -59,9 +59,9 @@ void NetworkRenderer::run() {
                 delete scene;
             sceneLoader.load(filexml,&scene,global_width,global_height);
             renderer.set_scene(scene);
+            serv.send_message("SETSCENEDONE");
 
         } else if(head=="CALCULATE") {
-            serv.send_message("CALCULATING");
             int task_number,y,width,height;
             stringstream result_message(stringstream::out);
             mes_ss>>task_number>>y>>width>>height;
@@ -79,6 +79,7 @@ void NetworkRenderer::run() {
             serv.send_message(result_message.str());
         } else if(head=="INFO") {
             mes_ss>>global_width>>global_height;
+            serv.send_message("INFODONE");
         } else if(head=="CAM") {
             string cam_operation;
             mes_ss>>cam_operation;
@@ -109,6 +110,7 @@ void NetworkRenderer::run() {
             } else if(cam_operation=="sM") {
                 scene->getCamera()->switchMode();
             }
+            serv.send_message("CAMDONE");
         }
 
     }
