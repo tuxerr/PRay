@@ -87,9 +87,9 @@ void NetworkRenderer::run() {
                 scene->getCamera()->translateForward();
             } else if(cam_operation=="tB") {
                 scene->getCamera()->translateBackwards();
-            } else if(cam_operation=="tL") {
-                scene->getCamera()->translateRight();
             } else if(cam_operation=="tR") {
+                scene->getCamera()->translateRight();
+            } else if(cam_operation=="tL") {
                 scene->getCamera()->translateLeft();
             } else if(cam_operation=="tU") {
                 scene->getCamera()->translateUp();
