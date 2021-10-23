@@ -56,7 +56,7 @@ current directory.
 
 ### Dependencies (to build and run on a GNU/Linux platform)
 
-- CMake (2.6+)
+- CMake (2.8+)
 - make (or some CMake-supported IDE)
 - C++ compiler with C++11 & OpenMP support
 - pthread
