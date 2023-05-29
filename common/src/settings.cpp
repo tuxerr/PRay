@@ -45,36 +45,46 @@ Settings::Settings(string path) {
             attributeName = attribute->Name();
             if ( attributeName.compare("s")==0 ) {
                 string value;
-                node->QueryStringAttribute(attributeName.c_str(), &value);
-                stringSettings.insert(pair<string,string>(node->Value(), value));
+                if ( node->QueryStringAttribute(attributeName.c_str(), &value) == TIXML_SUCCESS ) {
+                    stringSettings.insert(pair<string,string>(node->Value(), value));
+                } else {
+                    Logger::log(LOG_ERROR)<<"Failed to load string parameter : "<<node->Value()<<endl;
+                }
 
             } else if ( attributeName.compare("d")==0 ) {
                 double value;
-                node->QueryDoubleAttribute(attributeName.c_str(), &value);
-                doubleSettings.insert(pair<string,double>(node->Value(), value));
+                if ( node->QueryDoubleAttribute(attributeName.c_str(), &value) == TIXML_SUCCESS ) {
+                    doubleSettings.insert(pair<string,double>(node->Value(), value));
+                } else {
+                    Logger::log(LOG_ERROR)<<"Failed to load double parameter : "<<node->Value()<<endl;
+                }
 
             } else if ( attributeName.compare("f")==0 ) {
                 float value;
-                node->QueryFloatAttribute(attributeName.c_str(), &value);
-                floatSettings.insert(pair<string,float>(node->Value(), value));
+                if ( node->QueryFloatAttribute(attributeName.c_str(), &value) == TIXML_SUCCESS ) {
+                    floatSettings.insert(pair<string,float>(node->Value(), value));
+                } else {
+                    Logger::log(LOG_ERROR)<<"Failed to load float parameter : "<<node->Value()<<endl;
+                }
 
             } else if ( attributeName.compare("i")==0 ) {
                 int value;
-                node->QueryIntAttribute(attributeName.c_str(), &value);
-                intSettings.insert(pair<string,int>(node->Value(), value));
+                if ( node->QueryIntAttribute(attributeName.c_str(), &value) == TIXML_SUCCESS ) {
+                    intSettings.insert(pair<string,int>(node->Value(), value));
+                } else {
+                    Logger::log(LOG_ERROR)<<"Failed to load int parameter : "<<node->Value()<<endl;
+                }
 
             } else if ( attributeName.compare("b")==0 ) {
-                bool value;
                 string s_value;
                 node->QueryStringAttribute(attributeName.c_str(), &s_value);
                 if ( s_value.compare("true")==0 ) {
-                    value = true;
+                    boolSettings.insert(pair<string,bool>(node->Value(), true));
                 } else if ( s_value.compare("false")==0 ) {
-                    value = false;
+                    boolSettings.insert(pair<string,bool>(node->Value(), false));
                 } else {
                     Logger::log(LOG_ERROR)<<"Unknown value of boolean parameter : "<<node->Value()<<endl;
                 }
-                boolSettings.insert(pair<string,bool>(node->Value(), value));
 
             } else {
                 Logger::log(LOG_ERROR)<<"Unknown type of parameter : "<<node->Value()<<endl;
